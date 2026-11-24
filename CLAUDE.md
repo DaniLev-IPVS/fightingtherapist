@@ -18,6 +18,7 @@ Next.js 16 (App Router, Cache Components on) + Tailwind v4, deployed on Vercel. 
 - Review quotes are verbatim excerpts from Google reviews; an ellipsis marks a cut. Never paraphrase inside quote marks.
 - Every form posts to `/api/leads` with attribution from `src/lib/attribution.ts` (UTM, click IDs, referrer, first and last touch); leads are stored in Neon and the first touch sets `source`.
 - Products (coaching offers, PDFs, lessons) live in Neon, edited at /admin/products. Each published product gets a sales page at `/programs/[slug]` and a landing page at `/go/[slug]` (`src/components/offer-pages.tsx`); saving in the dashboard refreshes them via `updateTag("products")`. The `goal` field links a coaching product to its offer in `site.ts` and picks its reviews.
+- Lead pipeline stages, counters and the monthly client goal live in `src/lib/pipeline.ts` (client-safe). The board (`src/components/admin/pipeline-board.tsx`) drags with pointer events so it works on phones (long-press, then drop on a column or the bottom dock). Lead photos are resized in the browser and stored as small JPEG data URLs (`photo`, `photo_thumb`).
 - Admin lives in `src/app/admin` (sign-in, CRM, products). Every data function calls `requireAdmin()` from `src/lib/auth/dal.ts`; `src/proxy.ts` only bounces signed-out visitors.
 - `next/image`: use `preload` (not `priority`); allowed qualities are 75 and 85.
 - English first; French comes after launch, so keep copy in data files.

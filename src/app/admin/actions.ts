@@ -6,7 +6,9 @@ import { db } from "@/lib/db";
 import { createSession, destroySession, getSessionUser, hashToken } from "@/lib/auth/session";
 import { hashPassword, verifyPassword, MIN_PASSWORD } from "@/lib/auth/password";
 import { requireAdmin } from "@/lib/auth/dal";
-import { addLeadNote, deleteLead, isStatus, setLeadStatus } from "@/lib/crm";
+import { addLeadNote, bumpCounter, deleteLead, isStatus, setLeadPhoto, setLeadStatus, updateLeadDetails } from "@/lib/crm";
+import { GOALS } from "@/lib/leads";
+import { isCounter, isStage, type Counter, type Stage } from "@/lib/pipeline";
 import {
   LANDING_FIELDS,
   SALES_FIELDS,
@@ -93,6 +95,78 @@ export async function updateLeadStatus(form: FormData) {
   if (!isStatus(status)) return;
   await setLeadStatus(id, status);
   revalidatePath("/admin", "layout");
+}
+
+/** Drag and drop on the board. */
+export async function moveLead(id: string, stage: Stage) {
+  if (!isStage(stage)) return;
+  await setLeadStatus(id, stage);
+  revalidatePath("/admin", "layout");
+}
+
+/** +1 / -1 on calls, follow-ups or follow-ups after the call. */
+export async function bumpLead(id: string, counter: Counter, delta: 1 | -1, outcome?: "no_answer" | "answered") {
+  if (!isCounter(counter) || (delta !== 1 && delta !== -1)) return;
+  await bumpCounter(id, counter, delta, outcome);
+  revalidatePath("/admin", "layout");
+}
+
+export async function bumpLeadForm(form: FormData) {
+  const counter = str(form, "counter");
+  const outcome = str(form, "outcome");
+  if (!isCounter(counter)) return;
+  await bumpLead(str(form, "id"), counter, str(form, "delta") === "-1" ? -1 : 1, outcome === "no_answer" || outcome === "answered" ? outcome : undefined);
+}
+
+const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+const money = (v: string) => {
+  const clean = v.replace(/[$,\s]/g, "");
+  if (!clean) return { cents: null as number | null };
+  const n = Number(clean);
+  return Number.isFinite(n) && n >= 0 && n < 10_000_000 ? { cents: Math.round(n * 100) } : { error: "Enter an amount like 450 or 1200." };
+};
+
+export async function saveLeadDetails(_: FormState, form: FormData): Promise<FormState> {
+  const id = str(form, "id");
+  const name = str(form, "name");
+  const email = str(form, "email").toLowerCase();
+  const phone = str(form, "phone");
+  const instagram = str(form, "instagram").replace(/^@/, "");
+  const goal = str(form, "goal");
+  const nextFollowUp = str(form, "next_follow_up");
+  const monthly = money(str(form, "monthly"));
+  const deal = money(str(form, "deal"));
+  const fieldErrors: Record<string, string> = {};
+  if (name.length < 2 || name.length > 120) fieldErrors.name = "Enter a name.";
+  if (!EMAIL.test(email)) fieldErrors.email = "Enter an email like name@example.com.";
+  if (phone && !/^[+()\-.\s\d]{7,25}$/.test(phone)) fieldErrors.phone = "Use digits, spaces, + or dashes.";
+  if (instagram && !/^[\w.]{1,30}$/.test(instagram)) fieldErrors.instagram = "Just the handle, like zack.fights";
+  if (!GOALS.some((g) => g.value === goal)) fieldErrors.goal = "Pick a goal.";
+  if (nextFollowUp && !/^\d{4}-\d{2}-\d{2}$/.test(nextFollowUp)) fieldErrors.next_follow_up = "Pick a date.";
+  if (monthly.error) fieldErrors.monthly = monthly.error;
+  if (deal.error) fieldErrors.deal = deal.error;
+  if (Object.keys(fieldErrors).length) return { fieldErrors, error: "Fix the highlighted fields." };
+  await updateLeadDetails(id, {
+    name,
+    email,
+    phone: phone || null,
+    instagram: instagram || null,
+    goal,
+    monthly_cents: monthly.cents ?? null,
+    deal_cents: deal.cents ?? null,
+    next_follow_up: nextFollowUp || null,
+  });
+  revalidatePath("/admin", "layout");
+  return { ok: true };
+}
+
+/** Photos arrive already resized to small JPEGs by the browser. */
+export async function saveLeadPhoto(id: string, photo: string | null, thumb: string | null) {
+  const ok = (v: string | null, max: number) => v === null || (v.startsWith("data:image/jpeg;base64,") && v.length <= max);
+  if (!ok(photo, 200_000) || !ok(thumb, 20_000) || (photo === null) !== (thumb === null)) return { error: "That image couldn't be saved. Try a different photo." };
+  await setLeadPhoto(id, photo, thumb);
+  revalidatePath("/admin", "layout");
+  return { ok: true };
 }
 
 export async function addNote(form: FormData) {
