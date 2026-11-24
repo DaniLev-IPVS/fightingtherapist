@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { closeLabel, formatPrice, kindLabel, landingPath, listProducts, salesPath } from "@/lib/products";
 import { Card, PageHeader, Pill, btnPrimary, formatDate } from "@/components/admin/ui";
-import { CopyLink } from "@/components/admin/copy-link";
+import { PageLink } from "@/components/admin/copy-link";
 
 export const metadata = { title: "Products" };
 
@@ -41,8 +41,8 @@ export default async function ProductsPage() {
                   </div>
                 </div>
                 <div className="flex flex-wrap gap-2">
-                  <CopyLink path={salesPath(p.slug)} label="Copy sales link" />
-                  <CopyLink path={landingPath(p.slug)} label="Copy landing link" />
+                  <PageLink path={salesPath(p.slug)} label="Sales page" live={p.status === "published"} />
+                  <PageLink path={landingPath(p.slug)} label="Landing page" live={p.status === "published"} />
                 </div>
               </Card>
             </li>

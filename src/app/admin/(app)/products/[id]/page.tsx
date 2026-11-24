@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import { LANDING_FIELDS, SALES_FIELDS, getProduct, landingPath, salesPath } from "@/lib/products";
 import { deleteProduct } from "@/app/admin/actions";
 import { PageHeader, btnDanger } from "@/components/admin/ui";
-import { CopyLink } from "@/components/admin/copy-link";
+import { PageLink } from "@/components/admin/copy-link";
 import { ProductForm } from "@/components/admin/product-form";
 
 export const metadata = { title: "Edit product" };
@@ -32,8 +32,8 @@ export default async function EditProductPage({ params, searchParams }: PageProp
         }
         actions={
           <>
-            <CopyLink path={salesPath(product.slug)} label="Copy sales link" />
-            <CopyLink path={landingPath(product.slug)} label="Copy landing link" />
+            <PageLink path={salesPath(product.slug)} label="Sales page" live={product.status === "published"} />
+            <PageLink path={landingPath(product.slug)} label="Landing page" live={product.status === "published"} />
           </>
         }
       />
