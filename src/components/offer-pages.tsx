@@ -103,14 +103,16 @@ export function OfferPageFallback() {
 
 /* ───────────────────────── Proof blocks ───────────────────────── */
 
-/** One client result: the number first, real before/after photos when we have them. */
-function ResultCard({ result, tone = "dark" }: { result: ClientResult; tone?: "dark" | "light" }) {
-  const dark = tone === "dark";
+/**
+ * One-line client testimonial: their own words in quote marks, the result as a
+ * chip, then name and stars. Real before/after photos show when we have them.
+ */
+function ResultCard({ result, className }: { result: ClientResult; className?: string }) {
   const pics = result.photos;
   return (
-    <figure className={cn("flex overflow-hidden rounded-[6px] border", dark ? "border-white/15 bg-ink/80 backdrop-blur" : "border-line bg-paper")}>
+    <figure className={cn("relative flex overflow-hidden rounded-[8px] bg-paper text-charcoal shadow-[0_18px_50px_rgba(0,0,0,0.35)]", className)}>
       {pics && (
-        <div className="grid w-[46%] shrink-0 grid-cols-2 gap-px bg-ink">
+        <div className="grid w-[40%] shrink-0 grid-cols-2 gap-px bg-ink">
           {(["before", "after"] as const).map((k) => (
             <div key={k} className="relative">
               <Image src={pics[k]} alt={`${result.name}, ${k}`} fill sizes="120px" className="object-cover" />
@@ -119,12 +121,15 @@ function ResultCard({ result, tone = "dark" }: { result: ClientResult; tone?: "d
           ))}
         </div>
       )}
-      <div className="flex flex-col gap-1.5 p-5">
-        <span className={cn("display text-[44px] leading-none", dark ? "text-blue-pale" : "text-blue")}>{result.stat}</span>
-        <span className={cn("text-[15px] leading-snug", dark ? "text-off-white" : "text-charcoal")}>{result.line}</span>
-        <figcaption className={cn("mt-1 flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.12em]", dark ? "text-steel-light" : "text-steel")}>
-          <Stars className="text-[11px]" label="5 stars" /> {result.name} · Google review
-        </figcaption>
+      <div className="flex flex-1 flex-col gap-2.5 p-5">
+        <div className="flex items-center justify-between gap-3">
+          <Stars className="text-[13px]" label="5 out of 5 stars" />
+          <span className="rounded-full bg-blue-wash px-2.5 py-1 font-mono text-[11px] uppercase tracking-[0.08em] text-blue">
+            {result.stat} · {result.line}
+          </span>
+        </div>
+        <blockquote className="text-[16px] font-semibold leading-snug">“{result.quote}”</blockquote>
+        <figcaption className="font-mono text-[11px] uppercase tracking-[0.12em] text-steel">{result.name} · Google review</figcaption>
       </div>
     </figure>
   );
@@ -280,25 +285,24 @@ export function SalesPage({ product }: { product: PublicProduct }) {
 
   return (
     <>
-      {/* 1. Who it's for and the outcome, with client results beside it */}
+      {/* 1. Who it's for and the outcome, with client testimonials beside it */}
       <section className="relative isolate overflow-hidden bg-charcoal text-off-white">
-        <Photo src={heroImage(product)} alt="" preload sizes="100vw" className="-z-20 object-cover object-[65%_35%] opacity-60" />
-        <div aria-hidden="true" className="absolute inset-0 -z-10 bg-[linear-gradient(90deg,rgba(9,16,28,0.97)_0%,rgba(9,16,28,0.88)_55%,rgba(9,16,28,0.6)_100%)] max-lg:bg-[rgba(9,16,28,0.86)]" />
-        <Container className="grid items-end gap-10 pb-16 pt-32 sm:pb-20 sm:pt-40 lg:min-h-[90svh] lg:grid-cols-[1.25fr_1fr] lg:gap-14">
-          <div className="flex flex-col gap-6">
+        <Photo src={heroImage(product)} alt="" preload sizes="100vw" className="-z-20 object-cover object-[65%_35%] opacity-70" />
+        <div aria-hidden="true" className="absolute inset-0 -z-10 bg-[linear-gradient(90deg,rgba(9,16,28,0.97)_0%,rgba(9,16,28,0.86)_50%,rgba(9,16,28,0.45)_100%)] max-lg:bg-[rgba(9,16,28,0.86)]" />
+        <Container className="grid items-center gap-10 pb-16 pt-28 sm:pb-20 sm:pt-32 lg:min-h-[min(88svh,900px)] lg:grid-cols-[1.1fr_1fr] lg:gap-16 lg:py-28">
+          <div className="flex flex-col gap-5">
             {s.callout && <p className="eyebrow text-blue-pale">{s.callout}</p>}
-            <h1 className="display max-w-[18ch] text-[44px] leading-[0.92] sm:text-[64px] lg:text-[76px]">{s.headline || product.title}</h1>
-            {(s.subheadline || product.summary) && <p className="max-w-[58ch] text-[18px] leading-relaxed text-mist sm:text-[20px]">{s.subheadline || product.summary}</p>}
+            <h1 className="display max-w-[20ch] text-[40px] leading-[0.95] sm:text-[52px] lg:text-[60px]">{s.headline || product.title}</h1>
+            {(s.subheadline || product.summary) && <p className="max-w-[50ch] text-[18px] leading-relaxed text-mist">{s.subheadline || product.summary}</p>}
             <div className="flex flex-wrap items-center gap-4 pt-1">
               <Button href="#start" size="lg">{cta} <Arrow /></Button>
-              <span className="text-[14px] text-steel-light">{product.title}</span>
             </div>
             <ProofLine />
           </div>
           {results.length > 0 && (
-            <div className="flex flex-col gap-3">
-              {results.slice(0, 3).map((r) => (
-                <ResultCard key={r.name} result={r} />
+            <div className="flex flex-col gap-4 lg:pl-4">
+              {results.slice(0, 3).map((r, i) => (
+                <ResultCard key={r.name} result={r} className={cn("lg:max-w-[460px]", i % 2 === 1 ? "lg:ml-10" : "lg:mr-10")} />
               ))}
             </div>
           )}
@@ -435,11 +439,11 @@ export function LandingPage({ product }: { product: PublicProduct }) {
       <section className="relative isolate overflow-hidden bg-charcoal text-off-white">
         <Photo src={heroImage(product)} alt="" preload sizes="100vw" className="-z-20 object-cover object-[65%_35%] opacity-60" />
         <div aria-hidden="true" className="absolute inset-0 -z-10 bg-[linear-gradient(90deg,rgba(9,16,28,0.96)_0%,rgba(9,16,28,0.86)_50%,rgba(9,16,28,0.6)_100%)] max-lg:bg-[rgba(9,16,28,0.86)]" />
-        <Container className="grid items-center gap-10 pb-16 pt-28 sm:pt-32 lg:min-h-[100svh] lg:grid-cols-[1.05fr_1fr] lg:gap-14 lg:py-24">
+        <Container className="grid items-center gap-10 pb-16 pt-28 sm:pt-32 lg:min-h-[min(100svh,960px)] lg:grid-cols-[1.05fr_1fr] lg:gap-14 lg:py-24">
           <div className="flex flex-col gap-5">
             {s.callout && <p className="eyebrow text-blue-pale">{s.callout}</p>}
-            <h1 className="display text-[44px] leading-[0.92] sm:text-[64px] lg:text-[72px]">{l.headline || s.headline || product.title}</h1>
-            {(l.subheadline || s.subheadline) && <p className="max-w-[50ch] text-[18px] leading-relaxed text-mist sm:text-[20px]">{l.subheadline || s.subheadline}</p>}
+            <h1 className="display max-w-[18ch] text-[40px] leading-[0.95] sm:text-[52px] lg:text-[60px]">{l.headline || s.headline || product.title}</h1>
+            {(l.subheadline || s.subheadline) && <p className="max-w-[48ch] text-[18px] leading-relaxed text-mist">{l.subheadline || s.subheadline}</p>}
             <ProofLine />
           </div>
           <div id="form" className="scroll-mt-24 rounded-[6px] border border-line-dark bg-charcoal/90 p-6 shadow-[0_30px_80px_rgba(0,0,0,0.45)] backdrop-blur sm:p-8">
@@ -457,7 +461,7 @@ export function LandingPage({ product }: { product: PublicProduct }) {
         <section aria-label="Client results" className="bg-off-white pt-12 sm:pt-16">
           <Container className="grid gap-3 md:grid-cols-3">
             {results.slice(0, 3).map((r) => (
-              <ResultCard key={r.name} result={r} tone="light" />
+              <ResultCard key={r.name} result={r} className="border border-line shadow-none" />
             ))}
           </Container>
         </section>

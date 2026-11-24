@@ -440,33 +440,36 @@ export function reviewsForGoal(goal: string, count = 6) {
 export type ClientResult = {
   name: string;
   stat: string;
+  /** Short line in our words, for the stat chip. */
   line: string;
+  /** Verbatim excerpt from the client's Google review (an ellipsis marks a cut). */
+  quote: string;
   photos?: { before: string; after: string };
 };
 
 export const resultsByGoal: Record<string, ClientResult[]> = {
   nutrition: [
-    { name: "Shawn K.", stat: "−74 lb", line: "274 lb down to 200 lb, and he's kept it off" },
-    { name: "Sagar M.", stat: "−25 lb", line: "Lost over eight months, dinners and wine included" },
-    { name: "Sonia S.", stat: "−20 lb", line: "175 lb down to 155 lb in a few months" },
+    { name: "Shawn K.", stat: "−74 lb", line: "274 lb down to 200 lb", quote: "…I have not only reached my objective of 200 lbs, but it has maintained…" },
+    { name: "Sagar M.", stat: "−25 lb", line: "Over eight months", quote: "With Zak's guidance, I've lost 25 pounds over the past eight months." },
+    { name: "Sonia S.", stat: "−20 lb", line: "In a few months", quote: "I started at 175 lbs, and now, just a few months later, I'm down to 155 lbs." },
   ],
   training: [
-    { name: "Sonia S.", stat: "−20 lb", line: "175 lb down to 155 lb with strength training and a tailored nutrition plan" },
-    { name: "Bilal B.", stat: "12 weeks", line: "Reached his weight goal and gained a lot of strength" },
-    { name: "Shawn K.", stat: "−74 lb", line: "274 lb down to 200 lb, and he's kept it off" },
+    { name: "Sonia S.", stat: "−20 lb", line: "In a few months", quote: "I started at 175 lbs, and now, just a few months later, I'm down to 155 lbs." },
+    { name: "Bilal B.", stat: "12 weeks", line: "Weight goal reached", quote: "I reached my weight goal and gained so much strength." },
+    { name: "Shawn K.", stat: "−74 lb", line: "274 lb down to 200 lb", quote: "…I have not only reached my objective of 200 lbs, but it has maintained…" },
   ],
   rehab: [
-    { name: "Arash S.", stat: "11 months", line: "From a torn ACL, partly torn MCL and meniscus tears to back on the basketball court" },
-    { name: "Mehdi C.", stat: "80%", line: "Better in a few weeks, after thousands spent on physio and chiro" },
-    { name: "Michel G.", stat: "6 months", line: "To get past the worst low back injury he'd ever had" },
+    { name: "Arash S.", stat: "Torn ACL", line: "Back on the court", quote: "I'm now 11 months into this rehabilitation journey and back on the basketball court." },
+    { name: "Mehdi C.", stat: "80% better", line: "In a few weeks", quote: "I'm 80% better after just a few weeks…" },
+    { name: "Michel G.", stat: "6 months", line: "Worst back injury, beaten", quote: "In six months of working with him he has helped me overcome the worst low back injury I've ever had." },
   ],
   "fight-camp": [
-    { name: "Andrew R.", stat: "Pro title", line: "Won a pro Muay Thai title after Zack ran his weight cut and rehydration" },
-    { name: "Hanna E.", stat: "Back on the mats", line: "Returned to grappling and wrestling after shoulder surgery" },
+    { name: "Andrew R.", stat: "Pro title", line: "Weight cut and rehydration", quote: "…we were very successful in optimizing my performance and securing a Pro Muay Thai title!" },
+    { name: "Hanna E.", stat: "Back on the mats", line: "After shoulder surgery", quote: "Zack knows what he's doing as he's a martial artist himself…" },
   ],
   group: [
-    { name: "Bilal B.", stat: "12 weeks", line: "Reached his weight goal and gained a lot of strength" },
-    { name: "Sonia S.", stat: "−20 lb", line: "175 lb down to 155 lb in a few months" },
+    { name: "Bilal B.", stat: "12 weeks", line: "Weight goal reached", quote: "I reached my weight goal and gained so much strength." },
+    { name: "Sonia S.", stat: "−20 lb", line: "In a few months", quote: "I started at 175 lbs, and now, just a few months later, I'm down to 155 lbs." },
   ],
 };
 
