@@ -290,12 +290,13 @@ function YesBadge() {
  * What you don't get vs what you get, point by point. Desktop: two rounded cards
  * whose rows line up (subgrid). Phone: one rounded card per pair.
  */
-function Comparison({ rows, left }: { rows: [string, string][]; left: string }) {
+function Comparison({ rows, left, title, joined }: { rows: [string, string][]; left: string; title: string; joined: boolean }) {
   const span = { gridRow: `span ${rows.length + 1}` };
   return (
-    <section className="bg-off-white py-20 sm:py-28">
+    // Follows straight on from the problem (same background), so problem and solution read as one story.
+    <section className={cn("pb-20 sm:pb-28", joined ? "bg-paper pt-2 sm:pt-4" : "bg-off-white pt-20 sm:pt-28")}>
       <Container className="flex flex-col gap-10">
-        <h2 className="display max-w-[20ch] text-[38px] leading-[0.95] text-charcoal sm:text-[52px]">What&apos;s different about working with Zack</h2>
+        <h2 className="display max-w-[22ch] text-[34px] leading-[0.95] text-charcoal sm:text-[44px]">{title}</h2>
 
         {/* Desktop */}
         <div className="relative hidden gap-6 md:grid md:grid-cols-2" style={{ gridTemplateRows: `repeat(${rows.length + 1}, auto)` }}>
@@ -390,7 +391,7 @@ export function SalesPage({ product }: { product: PublicProduct }) {
 
       {/* 3. The problem, in the reader's words */}
       {problem.length > 0 && (
-        <section className="bg-paper py-20 sm:py-28">
+        <section className="bg-paper pb-14 pt-20 sm:pb-16 sm:pt-28">
           <Container className="grid items-center gap-10 lg:grid-cols-[1fr_1.15fr] lg:gap-16">
             <div className="relative aspect-[4/5] overflow-hidden rounded-[6px] bg-charcoal max-lg:max-h-[560px]">
               <Photo src={pain.src} alt={pain.alt} sizes="(min-width: 1024px) 45vw, 100vw" className="object-cover" />
@@ -410,7 +411,9 @@ export function SalesPage({ product }: { product: PublicProduct }) {
       )}
 
       {/* 4. What's different */}
-      {compare.length > 0 && <Comparison rows={compare} left={s.compareLeft || "The usual way"} />}
+      {compare.length > 0 && (
+        <Comparison rows={compare} left={s.compareLeft || "The usual way"} title={s.compareTitle || "What's different about working with Zack"} joined={problem.length > 0} />
+      )}
 
       {/* 5. Benefits */}
       {outcomes.length > 0 && (
