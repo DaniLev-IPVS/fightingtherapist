@@ -431,3 +431,50 @@ export function reviewsForGoal(goal: string, count = 6) {
   const rest = reviews.filter((r) => r.tag !== tag).sort((a, b) => Number(!!b.featured) - Number(!!a.featured));
   return [...matching, ...rest].slice(0, count);
 }
+
+/**
+ * Client results shown at the top of offer pages, taken from the Google reviews
+ * above (numbers only as the reviewer stated them). `photos` takes real
+ * before/after pictures once a client has given permission; never use made-up ones.
+ */
+export type ClientResult = {
+  name: string;
+  stat: string;
+  line: string;
+  photos?: { before: string; after: string };
+};
+
+export const resultsByGoal: Record<string, ClientResult[]> = {
+  nutrition: [
+    { name: "Shawn K.", stat: "−74 lb", line: "274 lb down to 200 lb, and he's kept it off" },
+    { name: "Sagar M.", stat: "−25 lb", line: "Lost over eight months, dinners and wine included" },
+    { name: "Sonia S.", stat: "−20 lb", line: "175 lb down to 155 lb in a few months" },
+  ],
+  training: [
+    { name: "Sonia S.", stat: "−20 lb", line: "175 lb down to 155 lb with strength training and a tailored nutrition plan" },
+    { name: "Bilal B.", stat: "12 weeks", line: "Reached his weight goal and gained a lot of strength" },
+    { name: "Shawn K.", stat: "−74 lb", line: "274 lb down to 200 lb, and he's kept it off" },
+  ],
+  rehab: [
+    { name: "Arash S.", stat: "11 months", line: "From a torn ACL, partly torn MCL and meniscus tears to back on the basketball court" },
+    { name: "Mehdi C.", stat: "80%", line: "Better in a few weeks, after thousands spent on physio and chiro" },
+    { name: "Michel G.", stat: "6 months", line: "To get past the worst low back injury he'd ever had" },
+  ],
+  "fight-camp": [
+    { name: "Andrew R.", stat: "Pro title", line: "Won a pro Muay Thai title after Zack ran his weight cut and rehydration" },
+    { name: "Hanna E.", stat: "Back on the mats", line: "Returned to grappling and wrestling after shoulder surgery" },
+  ],
+  group: [
+    { name: "Bilal B.", stat: "12 weeks", line: "Reached his weight goal and gained a lot of strength" },
+    { name: "Sonia S.", stat: "−20 lb", line: "175 lb down to 155 lb in a few months" },
+  ],
+};
+
+/** The review quoted large on each offer page. */
+export const quoteForGoal: Record<string, string> = {
+  rehab: "Arash S.",
+  nutrition: "Shawn K.",
+  "fight-camp": "Andrew R.",
+  training: "Sonia S.",
+  group: "Bilal B.",
+};

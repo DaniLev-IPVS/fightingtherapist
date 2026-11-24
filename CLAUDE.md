@@ -14,6 +14,7 @@ Next.js 16 (App Router, Cache Components on) + Tailwind v4, deployed on Vercel. 
 - All site facts, offers, reviews and press live in `src/content/site.ts`. Change copy there, not in components.
 - Design tokens are in `src/app/globals.css` (`@theme`): charcoal, logo blue, off-white, steel. No dark-mode switch.
 - Name is "Zakaria Benbouchta", short form "Zack". Credentials: CAT(C), 10+ years, 100+ clients, 50+ fights.
+- Offer page copy (sales/landing): plain sentences to the reader about their real situation. No slogan or tagline lines ("Real clients. Real comebacks."), no repeating the same point across sections. Proof goes high: client results (`resultsByGoal` in `site.ts`) and reviews right under the hero. Never use AI or stock before/after photos as client results; only real ones with permission.
 - Review quotes are verbatim excerpts from Google reviews; an ellipsis marks a cut. Never paraphrase inside quote marks.
 - Every form posts to `/api/leads` with attribution from `src/lib/attribution.ts` (UTM, click IDs, referrer, first and last touch); leads are stored in Neon and the first touch sets `source`.
 - Products (coaching offers, PDFs, lessons) live in Neon, edited at /admin/products. Each published product gets a sales page at `/programs/[slug]` and a landing page at `/go/[slug]` (`src/components/offer-pages.tsx`); saving in the dashboard refreshes them via `updateTag("products")`. The `goal` field links a coaching product to its offer in `site.ts` and picks its reviews.

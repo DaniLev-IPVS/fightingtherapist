@@ -1,14 +1,24 @@
 /** Product options, types and helpers shared by the dashboard (client) and the server. */
 
-/** Text blocks for the long sales page, in Daniel's order (no FAQ). */
+/**
+ * Text blocks for the long sales page. Order on the page: callout and headline,
+ * client results and reviews, the problem, what's different, the benefits, how it
+ * works, what's included, then the close. Write to the reader in plain sentences.
+ */
 export const SALES_FIELDS = [
-  { key: "headline", label: "Dream outcome headline", rows: 2 },
-  { key: "subheadline", label: "Subheadline", rows: 2 },
-  { key: "whoFor", label: "Who it's for (one per line)", rows: 4 },
-  { key: "outcomes", label: "Dream outcome points (one per line, short bold line, a colon, then one sentence)", rows: 5 },
+  { key: "callout", label: "Who it's for, one line above the headline (e.g. For fighters in camp)", rows: 1 },
+  { key: "headline", label: "Headline: the outcome, aimed at the person", rows: 2 },
+  { key: "subheadline", label: "Subheadline", rows: 3 },
+  { key: "problemTitle", label: "Problem heading", rows: 2 },
+  { key: "problem", label: "The problem, in the reader's words (one paragraph per line)", rows: 6 },
+  { key: "compareLeft", label: "Comparison: name for the usual way (e.g. Diets)", rows: 1 },
+  { key: "compare", label: "Comparison rows (one per line: the usual way | with Zack)", rows: 5 },
+  { key: "outcomesTitle", label: "Benefits heading", rows: 1 },
+  { key: "outcomes", label: "Benefits (one per line: short bold line, a colon, then one sentence)", rows: 6 },
+  { key: "steps", label: "How it works (one per line: step name, a colon, then one sentence)", rows: 3 },
   { key: "included", label: "What's included (one per line)", rows: 5 },
-  { key: "outcomeAgain", label: "Dream outcome, restated before the close", rows: 3 },
-  { key: "closeTitle", label: "Close heading (above the form or buy button)", rows: 1 },
+  { key: "outcomeAgain", label: "Dream outcome, restated at the close", rows: 3 },
+  { key: "closeTitle", label: "Close heading (above the form)", rows: 1 },
   { key: "cta", label: "Button text", rows: 1 },
 ] as const;
 
