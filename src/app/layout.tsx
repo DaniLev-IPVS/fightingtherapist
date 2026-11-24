@@ -36,7 +36,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     siteName: site.name,
-    images: [{ url: "/images/hero/home.jpg", width: 1792, height: 1008, alt: "Zack Benbouchta, The Fighting Therapist" }],
+    images: [{ url: "/images/hero/zack-studio.jpg", width: 2000, height: 857, alt: "Zack Benbouchta, The Fighting Therapist" }],
   },
   twitter: { card: "summary_large_image" },
   icons: { icon: "/favicon.ico" },

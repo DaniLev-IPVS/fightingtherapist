@@ -1,4 +1,4 @@
-import Image from "next/image";
+import Image, { getImageProps } from "next/image";
 import Link from "next/link";
 import {
   goals,
@@ -18,18 +18,38 @@ import { Scroller } from "@/components/scroller";
 
 /* ───────────────────────── Hero ───────────────────────── */
 
+const heroAlt =
+  "Zack Benbouchta with arms crossed in a dark training studio, with kettlebells and a heavy bag behind him";
+
 export function Hero() {
+  // Art direction: the wide studio shot from md up, the matching portrait on phones (the wide one goes soft there).
+  const {
+    props: { srcSet: wideSrcSet },
+  } = getImageProps({ alt: heroAlt, src: "/images/hero/zack-studio.jpg", width: 2000, height: 857, quality: 85, sizes: "100vw" });
+  const {
+    props: { srcSet: portraitSrcSet, ...imgProps },
+  } = getImageProps({
+    alt: heroAlt,
+    src: "/images/hero/zack-studio-portrait.jpg",
+    width: 1072,
+    height: 1856,
+    quality: 85,
+    sizes: "100vw",
+  });
+
   return (
     <section className="relative isolate overflow-hidden bg-charcoal text-off-white">
-      <Image
-        src="/images/hero/home.jpg"
-        alt="Zack Benbouchta with arms crossed in a training studio with a treatment table and heavy bag behind him"
-        fill
-        preload
-        sizes="100vw"
-        quality={85}
-        className="-z-20 object-cover object-[74%_25%]"
-      />
+      <picture>
+        <source media="(min-width: 768px)" srcSet={wideSrcSet} sizes="100vw" />
+        <img
+          {...imgProps}
+          srcSet={portraitSrcSet}
+          alt={heroAlt}
+          fetchPriority="high"
+          loading="eager"
+          className="absolute inset-0 -z-20 h-full w-full object-cover object-[50%_12%] md:object-[72%_25%]"
+        />
+      </picture>
       <div aria-hidden="true" className="absolute inset-0 -z-10 bg-[linear-gradient(90deg,rgba(9,16,28,0.96)_0%,rgba(9,16,28,0.78)_36%,rgba(9,16,28,0.2)_64%,rgba(9,16,28,0)_100%)] max-md:bg-[linear-gradient(0deg,rgba(9,16,28,0.98)_0%,rgba(9,16,28,0.82)_48%,rgba(9,16,28,0.2)_82%)]" />
       <div aria-hidden="true" className="absolute inset-x-0 bottom-0 -z-10 h-56 bg-gradient-to-t from-charcoal to-transparent" />
 
