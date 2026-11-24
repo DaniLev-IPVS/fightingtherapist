@@ -13,7 +13,7 @@ const offers = [
     slug: "rehab",
     title: "Online Rehab Coaching",
     goal: "rehab",
-    image: "/images/programs/rehab.jpg",
+    image: "/images/offers/rehab/hero.jpg",
     price_note: "Monthly coaching",
     summary: "A step-by-step online rehab plan for back, neck, shoulder, knee, hip or post-surgery pain.",
     sales: {
@@ -53,7 +53,7 @@ const offers = [
     slug: "training",
     title: "1:1 Online Coaching",
     goal: "training",
-    image: "/images/programs/training.jpg",
+    image: "/images/offers/training/hero.jpg",
     price_note: "Monthly, 3-month minimum. 25% off your last month on a 6-month commitment.",
     summary: "A personalized training and nutrition program from Zack, with coaching by text and email.",
     sales: {
@@ -94,7 +94,7 @@ const offers = [
     slug: "nutrition",
     title: "Nutrition Coaching",
     goal: "nutrition",
-    image: "/images/programs/nutrition.jpg",
+    image: "/images/offers/nutrition/hero.jpg",
     price_note: "Part of 1:1 coaching",
     summary: "A nutrition plan built around how you already eat, with recipes, check-ins and adjustments.",
     sales: {
@@ -133,7 +133,7 @@ const offers = [
     slug: "fight-camp",
     title: "Fight Camp Weight Cut",
     goal: "fight-camp",
-    image: "/images/programs/fight.jpg",
+    image: "/images/offers/fight-camp/hero.jpg",
     price_note: "Priced to your camp. Travel not included.",
     summary: "Weight cut, rehydration and fight-week support for amateur and pro fighters.",
     sales: {
@@ -173,7 +173,7 @@ const offers = [
     slug: "group",
     title: "10-Week Group Program",
     goal: "group",
-    image: "/images/programs/group.jpg",
+    image: "/images/offers/group/hero.jpg",
     price_note: "10 weeks. Next group opens when enough people join.",
     summary: "A 10-week workout plan and nutrition guide, coached by Zack, in a group of 5 to 20 people.",
     sales: {

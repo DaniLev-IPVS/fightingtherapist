@@ -374,36 +374,45 @@ export const reels = [
 export const instagram = { handle: "@the.fighting.therapist", followers: "2.6K", posts: "490" };
 
 
+type Photo = { src: string; alt: string };
+
 /**
- * Supporting photos for offer sales and landing pages, by goal: [0] sits next to
- * "who it's for", [1] behind the restated dream outcome. The hero image is set per
- * product in the dashboard.
+ * Photos for offer sales and landing pages, by goal (made for these pages, not
+ * reused from the homepage). pain: the real problem, next to "Sound familiar?".
+ * win: the result, next to the benefits list. again: behind the restated dream
+ * outcome. The hero photo is set per product in the dashboard.
  */
-export const offerImages: Record<string, { src: string; alt: string }[]> = {
-  rehab: [
-    { src: "/images/services/rehab-3.jpg", alt: "Zack testing a client's shoulder range of motion" },
-    { src: "/images/goals/injured.jpg", alt: "A woman sprinting on an indoor track with tape on her knee" },
-  ],
-  training: [
-    { src: "/images/services/train-2.jpg", alt: "Zack watching a client squat" },
-    { src: "/images/goals/strong.jpg", alt: "A man finishing a heavy deadlift in a dark gym" },
-  ],
-  nutrition: [
-    { src: "/images/services/nutrition-1.jpg", alt: "Zack portioning meal prep" },
-    { src: "/images/goals/fat.jpg", alt: "A lean man smiling after a morning run by the water" },
-  ],
-  "fight-camp": [
-    { src: "/images/zack/fight-kick.jpg", alt: "Zack throwing a high kick during a Karate Combat fight" },
-    { src: "/images/zack/fight-win.jpg", alt: "Zack with his hand raised after a win" },
-  ],
-  group: [
-    { src: "/images/services/train-3.jpg", alt: "Zack guiding a client through a hip mobility drill" },
-    { src: "/images/goals/strong.jpg", alt: "A man finishing a heavy deadlift in a dark gym" },
-  ],
-  other: [
-    { src: "/images/zack/coaching.jpg", alt: "Zack coaching a client through a kettlebell press" },
-    { src: "/images/zack/treating.jpg", alt: "Zack assessing a client's ankle" },
-  ],
+export const offerImages: Record<string, { pain: Photo; win: Photo; again: Photo }> = {
+  rehab: {
+    pain: { src: "/images/offers/rehab/pain.jpg", alt: "A man grimacing and clutching his lower back as a deadlift goes wrong" },
+    win: { src: "/images/offers/rehab/win.jpg", alt: "A woman in a knee sleeve driving to the basket, back playing basketball" },
+    again: { src: "/images/offers/rehab/again.jpg", alt: "Two men grappling hard on the mats" },
+  },
+  training: {
+    pain: { src: "/images/offers/training/pain.jpg", alt: "A frustrated man on a gym bench staring at a workout app" },
+    win: { src: "/images/offers/training/win.jpg", alt: "A man finishing a weighted pull-up" },
+    again: { src: "/images/offers/training/again.jpg", alt: "A man driving a heavy sled across gym turf" },
+  },
+  nutrition: {
+    pain: { src: "/images/offers/nutrition/pain.jpg", alt: "A discouraged man standing on a bathroom scale at night" },
+    win: { src: "/images/offers/nutrition/win.jpg", alt: "A woman laughing at dinner with friends, a glass of wine in hand" },
+    again: { src: "/images/offers/nutrition/again.jpg", alt: "A lean man running up outdoor stairs at sunrise" },
+  },
+  "fight-camp": {
+    pain: { src: "/images/offers/fight-camp/pain.jpg", alt: "A drained fighter in a sauna suit slumped against a wall during a weight cut" },
+    win: { src: "/images/offers/fight-camp/win.jpg", alt: "A fighter throwing a hard right hand in the cage" },
+    again: { src: "/images/offers/fight-camp/again.jpg", alt: "A fighter roaring as the referee raises his hand" },
+  },
+  group: {
+    pain: { src: "/images/offers/group/pain.jpg", alt: "A bored woman alone on a treadmill in an empty gym at night" },
+    win: { src: "/images/offers/group/win.jpg", alt: "Three people high-fiving after a hard group workout" },
+    again: { src: "/images/offers/group/again.jpg", alt: "A group lying on gym turf, exhausted and laughing after a workout" },
+  },
+  other: {
+    pain: { src: "/images/offers/rehab/pain.jpg", alt: "A man grimacing and clutching his lower back as a deadlift goes wrong" },
+    win: { src: "/images/offers/training/win.jpg", alt: "A man finishing a weighted pull-up" },
+    again: { src: "/images/offers/training/again.jpg", alt: "A man driving a heavy sled across gym turf" },
+  },
 };
 
 /** Which review tag each offer goal shows first. */
