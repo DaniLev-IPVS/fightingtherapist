@@ -1,0 +1,101 @@
+@import "tailwindcss";
+
+/*
+  The Fighting Therapist design tokens.
+  Palette approved in step 3: charcoal, logo blue, off-white, steel.
+  The site commits to one look (no dark-mode switch): dark charcoal bands
+  for drama, off-white bands for reading.
+*/
+@theme {
+  --color-ink: #09101c;
+  --color-charcoal: #0e1a2b;
+  --color-charcoal-2: #16243a;
+  --color-charcoal-3: #22324c;
+  --color-blue: #0a8fd6;
+  --color-blue-bright: #3fb0ef;
+  --color-blue-pale: #7cc8f0;
+  --color-blue-wash: #e3f2fb;
+  --color-off-white: #f3f5f8;
+  --color-paper: #ffffff;
+  --color-steel: #56637a;
+  --color-steel-light: #9aa8bd;
+  --color-mist: #c9d3e2;
+  --color-line: #dbe2ec;
+  --color-line-dark: #2a3a55;
+  --color-star: #f5b301;
+
+  --font-display: var(--font-saira), "Arial Narrow", Arial, sans-serif;
+  --font-sans: var(--font-source), "Segoe UI", Helvetica, Arial, sans-serif;
+  --font-mono: var(--font-jetbrains), ui-monospace, Menlo, Consolas, monospace;
+
+  --animate-fade-3: fade-3 9s infinite;
+  --animate-fade-2: fade-2 6s infinite;
+
+  @keyframes fade-3 {
+    0% { opacity: 0; }
+    5%, 33% { opacity: 1; }
+    38%, 100% { opacity: 0; }
+  }
+  @keyframes fade-2 {
+    0% { opacity: 0; }
+    7%, 50% { opacity: 1; }
+    57%, 100% { opacity: 0; }
+  }
+}
+
+@layer base {
+  html {
+    color-scheme: light;
+    -webkit-text-size-adjust: 100%;
+    scroll-behavior: smooth;
+  }
+  body {
+    background: var(--color-off-white);
+    color: var(--color-charcoal);
+    font-family: var(--font-sans);
+    font-size: 17px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    text-wrap: balance;
+    line-height: 0.95;
+    letter-spacing: 0.005em;
+  }
+  ::selection {
+    background: var(--color-blue);
+    color: #fff;
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-blue-bright);
+    outline-offset: 3px;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
+    }
+  }
+}
+
+@layer components {
+  /* Page gutter that also clears phone safe areas */
+  .gutter {
+    padding-left: max(20px, env(safe-area-inset-left, 0px));
+    padding-right: max(20px, env(safe-area-inset-right, 0px));
+  }
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+  .display {
+    font-family: var(--font-display);
+    font-weight: 800;
+    text-transform: uppercase;
+  }
+}

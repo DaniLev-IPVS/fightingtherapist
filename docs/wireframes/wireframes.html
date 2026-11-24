@@ -1,0 +1,718 @@
+<title>Fighting Therapist Wireframes</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Saira+Condensed:wght@600;700;800&family=Source+Sans+3:wght@400;600;700&family=JetBrains+Mono:wght@500;700&display=swap">
+<style>
+/* Layout: a working document. Each wireframe section sits in a row with its rationale beside it, pinned to the audit problem it fixes. */
+:root{
+  --bg:#f5f7fa; --surface:#ffffff; --ink:#0e1a2b; --muted:#56637a; --line:#dbe2ec;
+  --blue:#0a8fd6; --blue-soft:#e3f2fb; --red:#d23a2e; --red-soft:#fbe9e7; --green:#1f8a55; --green-soft:#e4f4ec; --amber:#a86a02; --amber-soft:#fbf1dc;
+  --wf-bg:#eef1f5; --wf-box:#dde3eb; --wf-line:#b9c3d1; --wf-ink:#3b4658; --wf-dark:#2a3345;
+  --on-accent:#ffffff;
+  --display:"Saira Condensed","Arial Narrow",Arial,sans-serif;
+  --body:"Source Sans 3","Segoe UI",Helvetica,Arial,sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0b121d; --surface:#121c2b; --ink:#e7edf5; --muted:#9aa8bd; --line:#24324a;
+  --blue:#3fb0ef; --blue-soft:#10273b; --red:#f06a5e; --red-soft:#33171a; --green:#4cc58a; --green-soft:#0f2a1f; --amber:#e3a43a; --amber-soft:#2e2310;
+  --wf-bg:#162234; --wf-box:#22314a; --wf-line:#3a4b66; --wf-ink:#c4cfdf; --wf-dark:#c9d3e2; --on-accent:#0b121d; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0b121d; --surface:#121c2b; --ink:#e7edf5; --muted:#9aa8bd; --line:#24324a;
+  --blue:#3fb0ef; --blue-soft:#10273b; --red:#f06a5e; --red-soft:#33171a; --green:#4cc58a; --green-soft:#0f2a1f; --amber:#e3a43a; --amber-soft:#2e2310;
+  --wf-bg:#162234; --wf-box:#22314a; --wf-line:#3a4b66; --wf-ink:#c4cfdf; --wf-dark:#c9d3e2; --on-accent:#0b121d; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.55}
+.wrap{max-width:1120px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:40px 80px;display:flex;flex-direction:column;gap:64px}
+h1,h2,h3{font-family:var(--display);text-wrap:balance;margin:0;line-height:1.05}
+h1{font-size:clamp(40px,7vw,66px);font-weight:800;text-transform:uppercase}
+h2{font-size:clamp(28px,4vw,38px);font-weight:700;text-transform:uppercase}
+h3{font-size:22px;font-weight:700}
+p{margin:0;max-width:70ch}
+a{color:var(--blue)}
+a:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.section{display:flex;flex-direction:column;gap:20px}
+.lede{font-size:19px;color:var(--muted)}
+code{font-family:var(--mono);font-size:.85em;background:var(--wf-bg);padding:1px 5px;border-radius:3px}
+.toc{display:flex;flex-wrap:wrap;gap:8px}
+.toc a{font-family:var(--mono);font-size:13px;text-decoration:none;border:1px solid var(--line);background:var(--surface);padding:6px 12px;border-radius:3px;color:var(--ink)}
+.toc a:hover{border-color:var(--blue);color:var(--blue)}
+.pin{display:inline-flex;align-items:center;justify-content:center;min-width:22px;height:22px;padding:0 6px;border-radius:11px;background:var(--red);color:#fff;font-family:var(--mono);font-size:11px;font-weight:700;line-height:1}
+.legend{display:flex;flex-wrap:wrap;gap:8px 18px;font-size:14px;color:var(--muted)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+
+/* Services table */
+.tscroll{overflow-x:auto;border:1px solid var(--line);border-radius:6px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;min-width:1040px}
+th,td{text-align:left;padding:12px 14px;border-bottom:1px solid var(--line);vertical-align:top;font-size:15px}
+tr:last-child td{border-bottom:0}
+th{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:500}
+tr.group td{background:var(--wf-bg);font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);padding:8px 14px}
+td b{font-size:16px}
+.chip{display:inline-block;font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;padding:3px 8px;border-radius:3px;white-space:nowrap}
+.chip.keep{background:var(--green-soft);color:var(--green)}
+.chip.prem{background:var(--amber-soft);color:var(--amber)}
+.chip.fold{background:var(--blue-soft);color:var(--blue)}
+.chip.cut{background:var(--red-soft);color:var(--red)}
+.chip.need{border:1px dashed var(--muted);color:var(--muted)}
+
+/* Decision switch: three positions, thumb slides to the chosen one */
+td.sw-cell{width:244px;vertical-align:middle}
+.switch{position:relative;display:grid;grid-template-columns:repeat(3,1fr);width:228px;padding:3px;border:1px solid var(--line);border-radius:999px;background:var(--wf-bg)}
+.switch .thumb{position:absolute;top:3px;bottom:3px;left:3px;width:calc((100% - 6px)/3);border-radius:999px;background:var(--green);transition:transform .22s ease,background-color .22s ease}
+.switch[data-state="off"] .thumb{transform:translateX(100%);background:var(--amber)}
+.switch[data-state="remove"] .thumb{transform:translateX(200%);background:var(--red)}
+.switch label{position:relative;z-index:1;cursor:pointer;display:block}
+.switch input{position:absolute;inset:0;opacity:0;margin:0;cursor:pointer}
+.switch span{display:block;text-align:center;padding:6px 0;border-radius:999px;font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);transition:color .22s ease;user-select:none}
+.switch input:checked + span{color:var(--on-accent);font-weight:700}
+.switch input:focus-visible + span{outline:2px solid var(--blue);outline-offset:2px}
+tr[data-state="off"] td:not(.sw-cell){opacity:.62}
+tr[data-state="remove"] td:not(.sw-cell){opacity:.42}
+tr[data-state="remove"] td:first-child b{text-decoration:line-through}
+.tally{display:flex;flex-wrap:wrap;align-items:center;gap:8px 16px;font-size:15px}
+.tally b{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.tally .k{color:var(--green)} .tally .o{color:var(--amber)} .tally .r{color:var(--red)}
+.tally .status{margin-left:auto;font-family:var(--mono);font-size:12px;color:var(--muted)}
+@media (prefers-reduced-motion:reduce){.switch .thumb,.switch span{transition:none}}
+
+
+/* Round 2: real-image hero, rotating service cards, concepts, admin */
+.hero-wf{position:relative;border-radius:6px;overflow:hidden;aspect-ratio:16/8;max-width:100%;background:#0e1a2b;display:flex;align-items:center}
+.hero-wf.short{aspect-ratio:16/6}
+.hero-wf > img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:70% 30%}
+.hero-wf::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(9,16,28,.92) 0%,rgba(9,16,28,.6) 42%,rgba(9,16,28,0) 70%)}
+.hero-copy{position:relative;z-index:1;display:flex;flex-direction:column;gap:8px;padding:5%;max-width:52%;color:#f3f5f8}
+.hero-eyebrow{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:#7cc8f0}
+.hero-hl{font-family:var(--display);font-weight:800;text-transform:uppercase;font-size:clamp(24px,4.4vw,52px);line-height:.92;letter-spacing:.005em;text-wrap:balance}
+.hero-sub{font-size:clamp(12px,1.25vw,15px);color:#c9d3e2;max-width:40ch}
+.hero-btn{align-self:flex-start;font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;padding:8px 14px;border-radius:3px;background:#0a8fd6;color:#fff;margin-top:4px}
+.hero-proof{font-family:var(--mono);font-size:9.5px;color:#9aa8bd;letter-spacing:.04em}
+.phone-hero{aspect-ratio:3/4}
+.phone-hero > img{object-position:72% 20%}
+.phone-hero::after{background:linear-gradient(0deg,rgba(9,16,28,.94) 0%,rgba(9,16,28,.55) 45%,rgba(9,16,28,0) 75%)}
+.phone-hero{align-items:flex-end}
+.phone-hero .hero-copy{max-width:100%}
+.svc-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:10px}
+.svc-swipe{display:grid;grid-template-columns:repeat(2,78%);gap:8px;overflow-x:auto}
+.svc-card{position:relative;aspect-ratio:3/4;border-radius:6px;overflow:hidden;background:#0e1a2b;max-width:100%}
+.svc-card img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0}
+.svc-card img:first-child{opacity:1}
+.svc-card.three img{animation:fade3 9s infinite}
+.svc-card.three img:nth-child(1){animation-delay:-1s}
+.svc-card.three img:nth-child(2){animation-delay:2s}
+.svc-card.three img:nth-child(3){animation-delay:5s}
+.svc-card.two img{animation:fade2 6s infinite}
+.svc-card.two img:nth-child(1){animation-delay:-.5s}
+.svc-card.two img:nth-child(2){animation-delay:2.5s}
+@keyframes fade3{0%{opacity:0}5%,33%{opacity:1}38%,100%{opacity:0}}
+@keyframes fade2{0%{opacity:0}7%,50%{opacity:1}57%,100%{opacity:0}}
+.svc-card::after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(9,16,28,.9) 0%,rgba(9,16,28,0) 55%)}
+.svc-cap{position:absolute;left:0;right:0;bottom:0;z-index:1;padding:10px;display:flex;flex-direction:column;gap:2px;color:#f3f5f8}
+.svc-cap span{font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:#7cc8f0}
+.svc-cap b{font-family:var(--display);font-weight:800;text-transform:uppercase;font-size:clamp(13px,1.6vw,19px);line-height:1}
+.wf-photo{display:block;width:100%;max-width:100%;height:100%;min-height:170px;object-fit:cover;border-radius:4px}
+.row.moved .canvas{box-shadow:inset 4px 0 0 var(--blue)}
+.step{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:4px;background:var(--ink);color:var(--bg);font-family:var(--mono);font-size:12px}
+.concepts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.concepts figure{margin:0;display:flex;flex-direction:column;gap:8px;min-width:0}
+.concepts img{display:block;width:100%;max-width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:6px;border:1px solid var(--line)}
+.concepts figcaption{font-size:14px;color:var(--muted);display:flex;flex-direction:column;gap:6px;align-items:flex-start}
+.concepts figcaption b{color:var(--ink)}
+.fold{position:relative;padding-bottom:18px;border-bottom:2px dashed var(--red)}
+.fold-line{position:absolute;right:0;bottom:-11px;background:var(--wf-bg);padding:0 6px;font-family:var(--mono);font-size:10px;color:var(--red);text-transform:uppercase;letter-spacing:.1em}
+.admin-table{display:flex;flex-direction:column;border:1px solid var(--wf-line);border-radius:4px;background:var(--surface);overflow-x:auto}
+.ah,.ar{display:grid;grid-template-columns:1.5fr .8fr .9fr .7fr 1.9fr .9fr;gap:8px;padding:8px 10px;align-items:center;min-width:560px;font-size:12px;color:var(--wf-ink)}
+.ah{font-family:var(--mono);font-size:9.5px;text-transform:uppercase;letter-spacing:.08em;border-bottom:1px solid var(--wf-line)}
+.ar + .ar{border-top:1px solid var(--wf-line)}
+.ar b{color:var(--ink);font-size:13px}
+.acc{font-family:var(--mono);font-size:10px;padding:2px 6px;border-radius:3px;justify-self:start}
+.acc.paid{background:var(--blue-soft);color:var(--blue)} .acc.free{background:var(--green-soft);color:var(--green)}
+.links2{display:flex;gap:6px;flex-wrap:wrap}
+.links2 i{font-style:normal;font-family:var(--mono);font-size:9.5px;padding:3px 6px;border:1px solid var(--wf-line);border-radius:3px;white-space:nowrap}
+.toggle-row{display:flex;align-items:center;gap:8px;font-family:var(--mono);font-size:10px;color:var(--wf-ink)}
+.tg{width:30px;height:16px;border-radius:8px;background:var(--wf-line);position:relative;display:inline-block}
+.tg::after{content:"";position:absolute;top:2px;left:2px;width:12px;height:12px;border-radius:50%;background:var(--surface)}
+.tg.on{background:var(--blue)} .tg.on::after{left:16px}
+@media (prefers-reduced-motion:reduce){.svc-card img{animation:none!important}}
+@media (max-width:860px){.concepts{grid-template-columns:1fr}.hero-copy{max-width:70%}}
+@media (max-width:520px){.svc-row{grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}.svc-cap{padding:6px}.hero-sub,.hero-proof{display:none}.hero-copy{max-width:80%}}
+
+/* References */
+.refs{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+.ref{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:20px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.ref header{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap}
+.ref .why{font-size:15px;color:var(--muted)}
+.ref dl{margin:0;display:grid;grid-template-columns:72px 1fr;gap:6px 12px;font-size:15px}
+.ref dt{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);padding-top:3px}
+.ref dd{margin:0}
+
+/* Sitemap tree */
+.tree{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:22px;display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.tree div{display:flex;flex-direction:column;gap:8px;min-width:0}
+.tree h3{font-size:18px;text-transform:uppercase;color:var(--muted)}
+.tree ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+.tree li{font-size:15px;padding:8px 10px;border:1px solid var(--line);border-radius:4px;display:flex;justify-content:space-between;gap:8px;align-items:center}
+.tree li small{font-family:var(--mono);font-size:11px;color:var(--muted)}
+.tree li.new{border-color:var(--blue);background:var(--blue-soft)}
+.tree li.priv{border-style:dashed}
+
+/* Wireframe rows */
+.wf-page{display:flex;flex-direction:column;gap:0;border:1px solid var(--line);border-radius:6px;overflow:hidden;background:var(--surface)}
+.wf-head{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:12px 16px;border-bottom:1px solid var(--line);font-family:var(--mono);font-size:12px;color:var(--muted)}
+.row{display:grid;grid-template-columns:minmax(0,1.75fr) minmax(0,1fr);border-bottom:1px solid var(--line)}
+.row:last-child{border-bottom:0}
+.canvas{background:var(--wf-bg);padding:14px;min-width:0}
+.note{padding:16px 18px;display:flex;flex-direction:column;gap:8px;font-size:15px;min-width:0}
+.note .t{display:flex;align-items:center;gap:8px;font-family:var(--display);font-size:19px;font-weight:700;text-transform:uppercase}
+.note p{color:var(--muted)}
+.note .copy{color:var(--ink);font-style:italic}
+
+/* Wireframe primitives */
+.f{display:flex;gap:10px;min-width:0}
+.col{flex-direction:column}
+.g{display:grid;gap:10px}
+.box{background:var(--wf-box);border-radius:4px;padding:10px;min-width:0;display:flex;flex-direction:column;gap:6px}
+.box.line{background:transparent;border:1.5px dashed var(--wf-line)}
+.lab{font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--wf-ink);opacity:.8}
+.img{background:var(--wf-box) linear-gradient(to top right,transparent calc(50% - 1px),var(--wf-line) 50%,transparent calc(50% + 1px)),linear-gradient(to top left,transparent calc(50% - 1px),var(--wf-line) 50%,transparent calc(50% + 1px));border-radius:4px;min-height:60px;position:relative;display:flex;align-items:flex-end;padding:6px}
+.img .lab{background:var(--wf-bg);padding:2px 5px;border-radius:2px}
+.hl{font-family:var(--display);font-weight:800;text-transform:uppercase;color:var(--wf-dark);line-height:.98;letter-spacing:.01em}
+.hl.xl{font-size:clamp(22px,3.4vw,40px)}
+.hl.l{font-size:clamp(18px,2.4vw,26px)}
+.hl.m{font-size:17px}
+.ln{height:7px;background:var(--wf-line);border-radius:2px}
+.ln.w90{width:90%}.ln.w75{width:75%}.ln.w60{width:60%}.ln.w40{width:40%}
+.btn{display:inline-flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:10px;letter-spacing:.06em;text-transform:uppercase;padding:7px 12px;border-radius:3px;background:var(--wf-dark);color:var(--wf-bg);white-space:nowrap}
+.btn.ghost{background:transparent;color:var(--wf-dark);border:1.5px solid var(--wf-dark)}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chips span{font-family:var(--mono);font-size:10px;padding:4px 7px;border:1px solid var(--wf-line);border-radius:3px;color:var(--wf-ink)}
+.stat{font-family:var(--display);font-weight:800;font-size:clamp(20px,2.6vw,30px);color:var(--wf-dark);line-height:1}
+.navbar{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.navbar .links{display:flex;gap:12px;flex-wrap:wrap;font-family:var(--mono);font-size:10px;color:var(--wf-ink);text-transform:uppercase}
+.logo{width:56px;height:22px;border-radius:3px;background:var(--wf-dark)}
+.field{height:22px;border:1.5px solid var(--wf-line);border-radius:3px;background:var(--surface);display:flex;align-items:center;padding:0 7px;font-family:var(--mono);font-size:10px;color:var(--wf-ink)}
+.field.hidden{border-style:dashed;background:transparent;color:var(--red)}
+.g2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.g3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.g4{grid-template-columns:repeat(4,minmax(0,1fr))}
+.split{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:12px;align-items:stretch}
+.dark{background:var(--wf-dark);border-radius:4px;padding:12px}
+.dark .hl,.dark .stat{color:var(--wf-bg)}
+.dark .lab{color:var(--wf-bg)}
+.dark .ln{background:var(--wf-ink);opacity:.5}
+
+/* Phone */
+.phones{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
+.phone{border:2px solid var(--wf-line);border-radius:22px;padding:12px 10px;background:var(--wf-bg);display:flex;flex-direction:column;gap:8px;max-width:300px;width:100%;justify-self:center}
+.phone .cap{font-family:var(--mono);font-size:11px;color:var(--muted);text-align:center}
+
+/* Direction */
+.dir{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.dir > div{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:18px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.sw{display:flex;gap:8px;flex-wrap:wrap}
+.sw span{display:flex;flex-direction:column;gap:4px;font-family:var(--mono);font-size:11px;color:var(--muted)}
+.sw i{display:block;width:52px;height:40px;border-radius:4px;border:1px solid var(--line)}
+.typesample{font-family:var(--display);font-weight:800;font-size:34px;text-transform:uppercase;line-height:.95}
+.decide{margin:0;padding-left:22px;display:flex;flex-direction:column;gap:10px}
+.decide li{max-width:76ch}
+.foot{font-size:14px;color:var(--muted);border-top:1px solid var(--line);padding-top:18px}
+
+@media (max-width:860px){
+  .row{grid-template-columns:1fr}
+  .refs,.tree,.dir{grid-template-columns:1fr}
+  .phones{grid-template-columns:1fr}
+}
+@media (max-width:520px){
+  .g4{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .g3{grid-template-columns:1fr}
+  .split{grid-template-columns:1fr}
+}
+</style>
+
+<div class="wrap">
+
+  <header class="section">
+    <span class="eyebrow">Step 3 · Round 2 · 23 Nov 2026</span>
+    <h1>Fighting Therapist Wireframes</h1>
+    <p class="lede">Round 2 of the layout, reworked from your notes: Jeff Nippard's structure, a goal-first headline over a big AI hero image, testimonials earlier, and two page types for every offer (a long sales page and a short landing page). Every section is still tied to a problem from the audit.</p>
+    <nav class="toc" aria-label="Sections">
+      <a href="#services">1 · Services to prune</a>
+      <a href="#references">2 · References</a>
+      <a href="#sitemap">3 · Sitemap</a>
+      <a href="#concepts">4 · Hero images</a>
+      <a href="#home">5 · Homepage</a>
+      <a href="#mobile">6 · Mobile</a>
+      <a href="#sales">7 · Sales page</a>
+      <a href="#landing">8 · Landing page</a>
+      <a href="#admin">9 · Products dashboard</a>
+      <a href="#direction">10 · Visual direction</a>
+      <a href="#decide">11 · Your call</a>
+    </nav>
+    <div class="legend">
+      <span><i class="pin">1</i> Proof buried</span><span><i class="pin">2</i> Weak hero</span><span><i class="pin">3</i> Services mismatch</span><span><i class="pin">4</i> No tracking</span><span><i class="pin">5</i> Confusing CTA</span><span><i class="pin">6</i> Polish</span><span><i class="pin">7</i> Template look</span><span><i class="pin">8</i> Slow build</span>
+    </div>
+  </header>
+
+  <section class="section" id="services">
+    <span class="eyebrow">Everything Zack sells today, found on the site</span>
+    <h2>1 · Services to prune</h2>
+    <p>Every offer I found on fightingtherapist.com, including pages that aren't in the menu. Flip the switch on each row: <b>Keep</b> it on the new site, turn it <b>Off</b> (hidden for now, can come back later), or <b>Remove</b> it for good. Each switch starts at my suggestion. Your choices save as you go, and I'll read them to lock the list for the landing pages (step 6).</p>
+    <div class="tally" aria-live="polite"><span><b class="k" id="n-keep">0</b> keep</span><span><b class="o" id="n-off">0</b> off</span><span><b class="r" id="n-remove">0</b> remove</span><span class="status" id="save-status">Starting at my suggestions</span></div>
+    <div class="tscroll">
+      <table>
+        <thead><tr><th>Offer</th><th>What's in it today</th><th>Terms on the site</th><th>Found on</th><th>Suggestion</th><th>Decision</th></tr></thead>
+        <tbody>
+          <tr class="group"><td colspan="6">Online</td></tr>
+          <tr data-svc="coaching" data-default="keep" data-state="keep"><td><b>1:1 Online Coaching</b><br>"Fitness Transformation"</td><td>Personalized workout program, nutrition guide, text and email coaching, bi-weekly calls for training and recipes</td><td>Monthly, 3-month minimum. 25% off the last month on 6 months</td><td>/virtual-booking</td><td><span class="chip keep">Keep · core offer</span></td><td class="sw-cell"></td></tr>
+          <tr data-svc="coaching-advanced" data-default="keep" data-state="keep"><td><b>Advanced Online Coaching</b><br>"Advanced Fitness Transformation"</td><td>Everything above plus two 30-min video calls a month</td><td>Same commitment</td><td>/virtual-booking</td><td><span class="chip fold">Fold in as top tier of 1:1</span></td><td class="sw-cell"></td></tr>
+          <tr data-svc="group" data-default="off" data-state="off"><td><b>10-Week Group Program</b></td><td>Workout plan, nutrition guide with recipes, bi-weekly message check-ins, group motivation</td><td>5 to 20 people per group</td><td>/virtual-booking</td><td><span class="chip need">Your call · cohort or self-paced?</span></td><td class="sw-cell"></td></tr>
+          <tr data-svc="fight-camp" data-default="keep" data-state="keep"><td><b>Fight Camp Weight Cut</b></td><td>Weight-cut strategy, rehydration protocol after weigh-in, meal prep, 1:1 consults, fight-day support</td><td>Custom pricing, travel extra</td><td>/virtual-booking</td><td><span class="chip keep">Keep · his niche</span></td><td class="sw-cell"></td></tr>
+          <tr data-svc="rehab" data-default="keep" data-state="keep"><td><b>Online Rehab Coaching</b></td><td>Remote rehab programs for shoulder, knee, back, ACL. Not listed as an offer, but it's the biggest theme in his reviews</td><td>Not on the site</td><td>Google reviews</td><td><span class="chip keep">Keep · make it its own page</span></td><td class="sw-cell"></td></tr>
+          <tr data-svc="nutrition" data-default="keep" data-state="keep"><td><b>Nutrition coaching</b></td><td>Praised in many reviews. Today it's only part of coaching</td><td>Not priced separately</td><td>Reviews, /personal-training</td><td><span class="chip fold">Fold into coaching tiers</span></td><td class="sw-cell"></td></tr>
+          <tr data-svc="pdfs" data-default="keep" data-state="keep"><td><b>PDF guides and lessons</b></td><td>Not on the site and I couldn't find a public store</td><td>Unknown</td><td>Not found</td><td><span class="chip need">Need titles, prices, files</span></td><td class="sw-cell"></td></tr>
+          <tr class="group"><td colspan="6">In person · 3510 Griffith St, Saint-Laurent</td></tr>
+          <tr data-svc="in-person-therapy" data-default="off" data-state="off"><td><b>Athletic Therapy sessions</b></td><td>Treatment by body region: lumbar, knee, elbow, ankle, hip, neck, wrist, thoracic, shoulder</td><td>Starts with the $50 consult</td><td>/athletic-therapy</td><td><span class="chip prem">Premium or remove</span></td><td class="sw-cell"></td></tr>
+          <tr data-svc="in-person-training" data-default="off" data-state="off"><td><b>1:1 Personal Training</b></td><td>MMA-infused gym training with nutrition advice</td><td>Starts with the $50 consult</td><td>/personal-training</td><td><span class="chip prem">Premium or remove</span></td><td class="sw-cell"></td></tr>
+          <tr data-svc="in-person-mma" data-default="remove" data-state="remove"><td><b>MMA Training</b></td><td>Private MMA-based fitness sessions</td><td>Starts with the $50 consult</td><td>/mma-training</td><td><span class="chip cut">Remove</span></td><td class="sw-cell"></td></tr>
+          <tr data-svc="consult" data-default="remove" data-state="remove"><td><b>30-min Consultation</b></td><td>Paid intro call for therapy or training</td><td>$50 + tax, non-refundable</td><td>/book-an-appointment</td><td><span class="chip fold">Replace with free application</span></td><td class="sw-cell"></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Also worth reusing: a hidden page at <code>/book</code> already asks visitors to pick a goal (lose weight, build muscle, injury rehab, elite athlete training). That's the routing idea behind the homepage below, and it already exists in his own words.</p>
+  </section>
+
+  <section class="section" id="references">
+    <span class="eyebrow">Sites in the same world, picked for one idea each</span>
+    <h2>2 · References</h2>
+    <p>Four sites worth borrowing from, each for one specific idea. None of them gets copied whole. Two are clinician-athletes like Zack, one sells digital programs well, one sells credibility hard.</p>
+    <div class="refs">
+      <article class="ref">
+        <header><h3>The Prehab Guys</h3><a href="https://theprehabguys.com/">theprehabguys.com</a></header>
+        <p class="why">Physical therapists who moved their care online. The closest match to where Zack is heading.</p>
+        <dl>
+          <dt>Borrow</dt><dd>A hero that names the pain ("stop guessing what to do about your pain") with the star rating right under the button. A four-up "why us" row, a three-step "how it works", and a dark results band with outcome stats.</dd>
+          <dt>Fixes</dt><dd><span class="pin">1</span> <span class="pin">2</span> <span class="pin">5</span></dd>
+          <dt>Skip</dt><dd>The app focus and the discount banners.</dd>
+        </dl>
+      </article>
+      <article class="ref">
+        <header><h3>Jeff Nippard</h3><a href="https://jeffnippard.com/">jeffnippard.com</a></header>
+        <p class="why">A content creator who sells programs. Bold, cinematic, all black and white.</p>
+        <dl>
+          <dt>Borrow</dt><dd>Huge condensed headlines over a dark photo of the coach. A program shelf where each card shows price, rating and small level/goal meters, so people pick the right PDF without asking.</dd>
+          <dt>Fixes</dt><dd><span class="pin">3</span> <span class="pin">7</span></dd>
+          <dt>Skip</dt><dd>The carousel hero. Zack's hero should stay still and say one thing.</dd>
+        </dl>
+      </article>
+      <article class="ref">
+        <header><h3>Squat University</h3><a href="https://squatuniversity.com/">squatuniversity.com</a></header>
+        <p class="why">Dr. Aaron Horschig, a physical therapist and strength coach. Same clinician-plus-athlete positioning as Zack.</p>
+        <dl>
+          <dt>Borrow</dt><dd>The three-line promise: "Improve technique. Decrease pain. Increase performance." Short, rhythmic and specific. Zack's version can follow the same shape.</dd>
+          <dt>Fixes</dt><dd><span class="pin">2</span> <span class="pin">6</span></dd>
+          <dt>Skip</dt><dd>The dated blog-card layout below the hero.</dd>
+        </dl>
+      </article>
+      <article class="ref">
+        <header><h3>Athlean-X</h3><a href="https://athleanx.com/">athleanx.com</a></header>
+        <p class="why">Jeff Cavaliere built the brand on his credentials as a physical therapist and pro team strength coach.</p>
+        <dl>
+          <dt>Borrow</dt><dd>Credential badges sitting beside the main button ("backed by…"), so proof and action share one glance. For Zack: CAT(C), 50+ fights, 10+ years, 5.0 stars.</dd>
+          <dt>Fixes</dt><dd><span class="pin">1</span></dd>
+          <dt>Skip</dt><dd>The supplement-store layout and the red-and-black look.</dd>
+        </dl>
+      </article>
+    </div>
+  </section>
+
+  <section class="section" id="sitemap">
+    <span class="eyebrow">Every offer and product gets two pages</span>
+    <h2>3 · New sitemap</h2>
+    <div class="tree">
+      <div>
+        <h3>Public</h3>
+        <ul>
+          <li>Home <small>proof + routing</small></li>
+          <li class="new">About Zack <small>story, record, press</small></li>
+          <li class="new">Results <small>client stories</small></li>
+          <li class="new">Programs <small>coaching + PDFs + lessons</small></li>
+          <li>Blog / Learn <small>later, optional</small></li>
+          <li class="new">Contact <small>one tracked form</small></li>
+        </ul>
+      </div>
+      <div>
+        <h3>Per offer: sales + landing</h3>
+        <ul>
+          <li class="new">/rehab <small>sales page</small></li>
+          <li class="new">/go/rehab <small>landing page</small></li>
+          <li class="new">/training · /go/training <small>sales · landing</small></li>
+          <li class="new">/nutrition · /go/nutrition <small>sales · landing</small></li>
+          <li class="new">/fight-camp · /go/fight-camp <small>sales · landing</small></li>
+          <li class="new">/programs/[slug] · /go/[slug] <small>each PDF or lesson</small></li>
+        </ul>
+      </div>
+      <div>
+        <h3>Behind login</h3>
+        <ul>
+          <li class="new priv">/login <small>one sign-in page</small></li>
+          <li class="new priv">/admin/leads <small>CRM: source, offer, stage</small></li>
+          <li class="new priv">/admin/products <small>PDFs, lessons, offers</small></li>
+          <li class="new priv">/portal <small>each client</small></li>
+        </ul>
+      </div>
+    </div>
+    <p>The <b>sales page</b> is the long version that sells. The <b>landing page</b> is the short version with the form above the fold, for warm traffic that already knows Zack. Neither has the main menu, so ad and link-in-bio traffic stays on the page. Every form and checkout records <code>utm_source</code>, <code>utm_medium</code>, <code>utm_campaign</code>, the referring site, the page type and the offer, then creates a lead or sale in the CRM. <span class="pin">4</span></p>
+  </section>
+
+  <section class="section" id="concepts">
+    <span class="eyebrow">Made with GPT Image 2.5 from his real photos</span>
+    <h2>4 · Hero image concepts</h2>
+    <p>Three AI-generated hero shots for the big first-screen image, made from Zack's photos on the current site. All three leave the left side dark for the headline. <b>Zack should approve the likeness before any of these go live.</b> If one direction lands, I'll make more variations of it.</p>
+    <div class="concepts">
+      <figure><img src="img/hero-b-studio.jpg" alt="AI image: Zack with arms crossed in a dark studio with a treatment table and heavy bag behind him, blue rim light" loading="lazy"><figcaption><b>B · Clinic meets gym.</b> Treatment table and heavy bag in one frame. Says rehab and training at once. <span class="chip keep">My pick for Home</span></figcaption></figure>
+      <figure><img src="img/hero-a-arena.jpg" alt="AI image: Zack shirtless in fight pants with taped hands standing in a dark arena under blue light" loading="lazy"><figcaption><b>A · Arena.</b> Pure fighter energy, the biggest wow. Best for the Fight Camp pages.</figcaption></figure>
+      <figure><img src="img/hero-c-wraps.jpg" alt="AI image: Zack sitting on a ring apron wrapping his hands, head down, spotlight from above" loading="lazy"><figcaption><b>C · Hand wraps.</b> Quiet and focused. Best for About Zack or the Training pages.</figcaption></figure>
+    </div>
+  </section>
+
+  <section class="section" id="home">
+    <span class="eyebrow">Desktop, top to bottom · Jeff Nippard's structure</span>
+    <h2>5 · Homepage</h2>
+    <p>Rebuilt around your notes: a goal-first headline over a big image, a rotating service row like Jeff's product cards, and testimonials moved up before "What brings you here?". Body text comes from the current site, tightened.</p>
+    <div class="wf-page">
+      <div class="wf-head"><span>fightingtherapist.com /</span><span>1440 wide · 13 sections</span></div>
+
+      <div class="row">
+        <div class="canvas"><div class="navbar"><span class="logo"></span><span class="links"><span>Programs</span><span>Results</span><span>About Zack</span><span>Login</span></span><span class="btn">Find your program</span></div></div>
+        <div class="note"><span class="t">Nav <span class="pin">5</span></span><p>Four links and one button. The header button matches the hero button everywhere: "Find your program".</p></div>
+      </div>
+
+      <div class="row">
+        <div class="canvas">
+          <div class="hero-wf">
+            <img src="img/hero-b-studio.jpg" alt="" aria-hidden="true">
+            <div class="hero-copy">
+              <span class="hero-eyebrow">Rehab · Training · Nutrition</span>
+              <div class="hero-hl">Fight-tested coaching.</div>
+              <p class="hero-sub">Get out of pain, get strong and fuel right, with a plan built by an athletic therapist who fights.</p>
+              <span class="hero-btn">Find your program</span>
+              <span class="hero-proof">Zack Benbouchta · CAT(C) · 50+ fights · ★ 5.0 from 69 reviews</span>
+            </div>
+          </div>
+          <div class="svc-row">
+            <div class="svc-card three"><img src="img/rehab-1.jpg" alt="Zack treating a client's ankle"><img src="img/rehab-2.jpg" alt=""><img src="img/rehab-3.jpg" alt=""><div class="svc-cap"><span>Rehab</span><b>Get out of pain for good</b></div></div>
+            <div class="svc-card three"><img src="img/train-1.jpg" alt="Zack coaching a kettlebell press"><img src="img/train-2.jpg" alt=""><img src="img/train-3.jpg" alt=""><div class="svc-cap"><span>Training</span><b>Build a body that holds up</b></div></div>
+            <div class="svc-card two"><img src="img/nutrition-1.jpg" alt="AI image: Zack portioning meal prep"><img src="img/fight-1.jpg" alt=""><div class="svc-cap"><span>Nutrition</span><b>Lose fat or make weight</b></div></div>
+          </div>
+        </div>
+        <div class="note"><span class="t">Hero + service row <span class="pin">2</span> <span class="pin">3</span></span>
+          <p>The headline names what the visitor gets, the way "Science-based coaching" does for Jeff. Zack's credentials drop to a small proof line under the button.</p>
+          <p>Below it, one card each for rehab, training and nutrition. Each card cycles through 2 or 3 photos (live here) and links to that service's sales page.</p>
+          <p class="copy">Headline options: "Fight-tested coaching." · "Get out of pain. Get strong. Stay in the fight." · "Rehab, training and nutrition that hold up under pressure."</p>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="canvas"><div class="box"><span class="lab">As seen on / fought for</span><div class="g g4"><div class="box line"><span class="lab">Karate Combat</span></div><div class="box line"><span class="lab">Global News</span></div><div class="box line"><span class="lab">The Fight Space</span></div><div class="box line"><span class="lab">TriStar Gym</span></div></div></div></div>
+        <div class="note"><span class="t">Proof bar <span class="pin">1</span></span><p>Kept as you liked it. Karate Combat is confirmed by his fight photos and his Fight Space podcast episode.</p></div>
+      </div>
+
+      <div class="row moved">
+        <div class="canvas"><div class="f col"><span class="lab">Results · moved up</span><div class="hl l">Real clients. Real comebacks.</div>
+          <div class="g g3">
+            <div class="box"><div class="hl m">Pro Muay Thai title</div><div class="ln w90"></div><div class="ln w75"></div><span class="lab">Weight cut · Andrew R.</span></div>
+            <div class="box"><div class="hl m">Back on court after ACL</div><div class="ln w90"></div><div class="ln w75"></div><span class="lab">Rehab · Arash S.</span></div>
+            <div class="box"><div class="hl m">74 lb down, no migraines</div><div class="ln w90"></div><div class="ln w75"></div><span class="lab">Nutrition · Shawn K.</span></div>
+          </div>
+          <div class="box line"><span class="lab">★ 5.0 · 69 Google reviews · see all</span></div></div></div>
+        <div class="note"><span class="t">Testimonials <span class="pin">1</span></span><p>Moved up so proof lands before people choose a path. One story per service: nutrition, rehab, training. Names only with permission.</p></div>
+      </div>
+
+      <div class="row">
+        <div class="canvas"><div class="f col"><span class="lab">Pick your fight</span><div class="hl l">What brings you here?</div>
+          <div class="g g4">
+            <div class="box"><div class="hl m">I'm injured</div><div class="ln w75"></div><span class="lab">→ /rehab</span></div>
+            <div class="box"><div class="hl m">I want to get strong</div><div class="ln w75"></div><span class="lab">→ /training</span></div>
+            <div class="box"><div class="hl m">I want to lose fat</div><div class="ln w75"></div><span class="lab">→ /nutrition</span></div>
+            <div class="box"><div class="hl m">I have a fight</div><div class="ln w75"></div><span class="lab">→ /fight-camp</span></div>
+          </div></div></div>
+        <div class="note"><span class="t">Routing <span class="pin">3</span></span><p>Kept. Problem-first doors that match the goal options on his current /book page.</p></div>
+      </div>
+
+      <div class="row">
+        <div class="canvas"><div class="dark"><div class="g g4"><div><div class="stat">10+</div><span class="lab">years</span></div><div><div class="stat">100+</div><span class="lab">clients</span></div><div><div class="stat">50+</div><span class="lab">fights</span></div><div><div class="stat">5.0★</div><span class="lab">69 reviews</span></div></div></div></div>
+        <div class="note"><span class="t">Numbers band <span class="pin">1</span></span><p>Kept as is.</p></div>
+      </div>
+
+      <div class="row">
+        <div class="canvas"><div class="split" style="grid-template-columns:minmax(0,1fr) minmax(0,1.3fr)"><img class="wf-photo" src="img/fight-2.jpg" alt="Zack landing a punch in a Karate Combat fight"><div class="f col" style="justify-content:center"><span class="lab">Meet Zack</span><div class="hl l">Studied it in the clinic. Proved it in the ring.</div><div class="ln w90"></div><div class="ln w90"></div><div class="ln w60"></div><span class="btn ghost" style="align-self:flex-start">His story</span></div></div></div>
+        <div class="note"><span class="t">Meet Zack <span class="pin">1</span> <span class="pin">7</span></span><p>New headline: he learned the science and he lived it. The paragraph covers his training as an athletic therapist and his years fighting.</p><p class="copy">Options: "Studied it in the clinic. Proved it in the ring." · "Textbook-trained. Fight-tested." · "He learned the science. Then he lived it."</p></div>
+      </div>
+
+      <div class="row">
+        <div class="canvas"><div class="f col"><span class="lab">How it works</span><div class="g g3"><div class="box"><span class="lab">Step 1</span><div class="hl m">Pick your program</div><div class="ln w75"></div></div><div class="box"><span class="lab">Step 2</span><div class="hl m">Get your plan</div><div class="ln w75"></div></div><div class="box"><span class="lab">Step 3</span><div class="hl m">Train with check-ins</div><div class="ln w75"></div></div></div></div></div>
+        <div class="note"><span class="t">How it works <span class="pin">5</span></span><p>Kept.</p></div>
+      </div>
+
+      <div class="row">
+        <div class="canvas"><div class="f col"><div class="navbar"><span class="hl l">Programs</span><span class="lab">View all →</span></div>
+          <div class="g g4">
+            <div class="box"><div class="img" style="min-height:80px"><span class="lab">Cover</span></div><div class="ln w75"></div><span class="lab">$29 · Goal ▮▮▯</span><span class="btn">Buy now</span></div>
+            <div class="box"><div class="img" style="min-height:80px"><span class="lab">Cover</span></div><div class="ln w75"></div><span class="lab">$49 · Goal ▮▮▮</span><span class="btn">Buy now</span></div>
+            <div class="box"><div class="img" style="min-height:80px"><span class="lab">Cover</span></div><div class="ln w75"></div><span class="lab">Free · Goal ▮▯▯</span><span class="btn ghost">Get it free</span></div>
+            <div class="box"><div class="img" style="min-height:80px"><span class="lab">Cover</span></div><div class="ln w75"></div><span class="lab">Coaching · from $X/mo</span><span class="btn ghost">Learn more</span></div>
+          </div></div></div>
+        <div class="note"><span class="t">Program shelf <span class="pin">3</span></span><p>Jeff's shelf: his PDFs, lessons and coaching side by side. Paid ones buy straight from the card; free ones ask for an email. All of it is managed from the products dashboard.</p></div>
+      </div>
+
+      <div class="row">
+        <div class="canvas"><div class="f col"><span class="lab">In the press</span><div class="g g3"><div class="img" style="min-height:80px"><span class="lab">Global News</span></div><div class="img" style="min-height:80px"><span class="lab">Interview</span></div><div class="img" style="min-height:80px"><span class="lab">The Fight Space</span></div></div></div></div>
+        <div class="note"><span class="t">Press <span class="pin">1</span></span><p>Kept.</p></div>
+      </div>
+
+      <div class="row">
+        <div class="canvas"><div class="f col"><div class="navbar"><span class="hl m">Free advice, daily</span><span class="f"><span class="btn ghost">Instagram</span><span class="btn ghost">TikTok</span></span></div><div class="g g4"><div class="img" style="min-height:90px"></div><div class="img" style="min-height:90px"></div><div class="img" style="min-height:90px"></div><div class="img" style="min-height:90px"></div></div></div></div>
+        <div class="note"><span class="t">Social strip</span><p>Kept.</p></div>
+      </div>
+
+      <div class="row">
+        <div class="canvas"><div class="dark"><div class="split"><div class="f col" style="justify-content:center"><div class="hl l">Not sure which program fits?</div><div class="ln w75"></div></div><div class="f col" style="gap:6px"><div class="field">Name</div><div class="field">Email</div><div class="field">What do you need? ▾</div><div class="field hidden">utm_source · utm_medium · utm_campaign · referrer</div><span class="btn" style="background:var(--wf-bg);color:var(--wf-dark)">Send</span></div></div></div></div>
+        <div class="note"><span class="t">Contact <span class="pin">4</span></span><p>A short form for people who'd rather talk first. Hidden fields carry the traffic source into the CRM.</p></div>
+      </div>
+
+      <div class="row">
+        <div class="canvas"><div class="g g4"><div class="box line"><span class="logo"></span><div class="ln w75"></div></div><div class="box line"><span class="lab">Programs</span><div class="ln w60"></div><div class="ln w60"></div></div><div class="box line"><span class="lab">Company</span><div class="ln w60"></div><div class="ln w60"></div></div><div class="box line"><span class="lab">Contact</span><div class="ln w60"></div><div class="ln w40"></div></div></div></div>
+        <div class="note"><span class="t">Footer <span class="pin">6</span></span><p>One phone number, one spelling of his name, EN/FR switch once French ships.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="mobile">
+    <span class="eyebrow">Most traffic comes from Instagram and TikTok on phones</span>
+    <h2>6 · Mobile</h2>
+    <p>Same order as desktop. The service cards become a horizontal swipe row. "Find your program" stays pinned to the bottom of the screen after the hero scrolls away.</p>
+    <div class="phones">
+      <div class="phone">
+        <div class="navbar"><span class="logo" style="width:44px"></span><span class="btn">Find</span></div>
+        <div class="hero-wf phone-hero"><img src="img/hero-b-studio.jpg" alt="" aria-hidden="true"><div class="hero-copy"><span class="hero-eyebrow">Rehab · Training · Nutrition</span><div class="hero-hl">Fight-tested coaching.</div><span class="hero-btn">Find your program</span></div></div>
+        <span class="cap">First screen: outcome + image + action</span>
+      </div>
+      <div class="phone">
+        <div class="svc-swipe"><div class="svc-card three"><img src="img/rehab-1.jpg" alt=""><img src="img/rehab-2.jpg" alt=""><img src="img/rehab-3.jpg" alt=""><div class="svc-cap"><span>Rehab</span><b>Get out of pain</b></div></div><div class="svc-card three"><img src="img/train-1.jpg" alt=""><img src="img/train-2.jpg" alt=""><img src="img/train-3.jpg" alt=""><div class="svc-cap"><span>Training</span><b>Get strong</b></div></div></div>
+        <div class="box"><div class="hl m">Pro Muay Thai title</div><div class="ln w90"></div><span class="lab">swipe →</span></div>
+        <span class="cap">Service cards swipe sideways, results follow</span>
+      </div>
+      <div class="phone">
+        <span class="lab">What brings you here?</span>
+        <div class="box"><div class="hl m">I'm injured →</div></div>
+        <div class="box"><div class="hl m">I want to get strong →</div></div>
+        <div class="box"><div class="hl m">I want to lose fat →</div></div>
+        <div class="box"><div class="hl m">I have a fight →</div></div>
+        <div class="dark" style="padding:8px;display:flex;justify-content:center"><span class="btn" style="background:var(--wf-bg);color:var(--wf-dark)">Find your program · sticky</span></div>
+        <span class="cap">Routing rows, sticky button</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="sales">
+    <span class="eyebrow">Page type 1 of 2 · the long version</span>
+    <h2>7 · Sales page template</h2>
+    <p>The full pitch for one offer or product. It brings the dream outcome back every few sections so nobody forgets why they're reading. No FAQ and no separate apply step: the page ends in one of three closes, set per offer in the dashboard.</p>
+    <div class="wf-page">
+      <div class="wf-head"><span>fightingtherapist.com/rehab (example)</span><span>no main nav · sticky CTA</span></div>
+      <div class="row">
+        <div class="canvas"><div class="hero-wf short"><img src="img/hero-b-studio.jpg" alt="" aria-hidden="true"><div class="hero-copy"><span class="hero-eyebrow">Online rehab</span><div class="hero-hl">Back to training without the pain.</div><p class="hero-sub">A rehab plan built around your injury and your sport.</p><span class="hero-btn">Start my rehab</span></div></div></div>
+        <div class="note"><span class="t"><span class="step">1</span> Dream outcome</span><p>The promise, as you liked it. Big image, one line on what they get, one button.</p></div>
+      </div>
+      <div class="row">
+        <div class="canvas"><div class="g g2"><div class="box"><span class="lab">This is for you if</span><div class="ln w90"></div><div class="ln w75"></div><div class="ln w90"></div></div><div class="box line"><span class="lab">Not for you if</span><div class="ln w75"></div><div class="ln w60"></div></div></div></div>
+        <div class="note"><span class="t"><span class="step">2</span> Who it's for</span><p>Lets the right people recognise themselves and the wrong ones leave early.</p></div>
+      </div>
+      <div class="row">
+        <div class="canvas"><div class="g g3"><div class="box"><div class="hl m">No more flare-ups</div><div class="ln w75"></div></div><div class="box"><div class="hl m">Stronger than before</div><div class="ln w75"></div></div><div class="box"><div class="hl m">Know what to do</div><div class="ln w75"></div></div></div><div class="f" style="margin-top:10px"><span class="btn">Start my rehab</span></div></div>
+        <div class="note"><span class="t"><span class="step">3</span> Dream outcome points</span><p>Three to five concrete results, each a short bold line plus one sentence. First CTA repeat.</p></div>
+      </div>
+      <div class="row">
+        <div class="canvas"><div class="g g4"><div class="box"><span class="lab">Plan</span><div class="ln w75"></div></div><div class="box"><span class="lab">Check-ins</span><div class="ln w75"></div></div><div class="box"><span class="lab">Video calls</span><div class="ln w75"></div></div><div class="box"><span class="lab">PDF guide</span><div class="ln w75"></div></div></div></div>
+        <div class="note"><span class="t"><span class="step">4</span> What's included</span><p>For coaching: plan, check-ins, calls, nutrition guide. For a PDF or lesson: what's inside, page or video count, a preview image.</p></div>
+      </div>
+      <div class="row">
+        <div class="canvas"><div class="g g3"><div class="box"><div class="hl m">Result</div><div class="ln w90"></div><span class="lab">Client</span></div><div class="box"><div class="hl m">Result</div><div class="ln w90"></div><span class="lab">Client</span></div><div class="box"><div class="hl m">Result</div><div class="ln w90"></div><span class="lab">Client</span></div></div><div class="box line" style="margin-top:10px"><span class="lab">★ 5.0 · 69 reviews · CAT(C) · 50+ fights</span></div></div>
+        <div class="note"><span class="t"><span class="step">5</span> Proof for this offer <span class="pin">1</span></span><p>Only stories about this problem, plus the credential line.</p></div>
+      </div>
+      <div class="row">
+        <div class="canvas"><div class="dark"><div class="hl l">Picture yourself back on the mats, pain-free.</div><div class="ln w75" style="margin-top:8px"></div><div class="f" style="margin-top:10px"><span class="btn" style="background:var(--wf-bg);color:var(--wf-dark)">Start my rehab</span></div></div></div>
+        <div class="note"><span class="t"><span class="step">6</span> Dream outcome, again</span><p>Restates the promise in different words right before the close, so the offer lands on the benefit.</p></div>
+      </div>
+      <div class="row">
+        <div class="canvas"><div class="g g3">
+          <div class="box"><span class="lab">Close A · Buy</span><div class="hl m">$49</div><div class="ln w75"></div><span class="btn">Buy now</span><span class="lab">Stripe checkout</span></div>
+          <div class="box"><span class="lab">Close B · Contact</span><div class="field">Name</div><div class="field">Email</div><div class="field hidden">utm + offer</div><span class="btn">Send</span></div>
+          <div class="box"><span class="lab">Close C · Free</span><div class="field">Email</div><span class="btn">Send me the PDF</span><span class="lab">instant download</span></div>
+        </div></div>
+        <div class="note"><span class="t"><span class="step">7</span> Close <span class="pin">4</span> <span class="pin">5</span></span><p>One close per page, chosen in the dashboard: <b>Buy</b> (price and checkout on the page), <b>Contact</b> (form, then Zack sells on the phone), or <b>Free</b> (email for the download). Every close lands in the CRM with its source.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="landing">
+    <span class="eyebrow">Page type 2 of 2 · the short version</span>
+    <h2>8 · Landing page template</h2>
+    <p>For people who already know Zack from his videos. Everything needed to act fits above the fold; proof follows for anyone who scrolls.</p>
+    <div class="wf-page">
+      <div class="wf-head"><span>fightingtherapist.com/go/rehab (example)</span><span>logo only · form above the fold</span></div>
+      <div class="row">
+        <div class="canvas"><div class="fold"><div class="split">
+          <div class="f col" style="justify-content:center;gap:10px"><span class="lab">Headline</span><div class="hl xl">Back to training without the pain.</div><span class="lab">Subheadline</span><div class="ln w90"></div><div class="ln w75"></div></div>
+          <div class="box" style="gap:8px"><span class="lab">Form, or buy / free download</span><div class="field">Name</div><div class="field">Email</div><div class="field">Injury or goal</div><div class="field hidden">utm + offer + page=landing</div><span class="btn">Start my rehab</span></div>
+        </div><span class="fold-line">fold</span></div></div>
+        <div class="note"><span class="t">Above the fold <span class="pin">2</span> <span class="pin">5</span></span><p>Headline, subheadline with more context, and the form. For a PDF or lesson, the form becomes a buy button or a free-download email field.</p></div>
+      </div>
+      <div class="row">
+        <div class="canvas"><div class="g g3"><div class="box"><div class="hl m">Result</div><div class="ln w90"></div><span class="lab">Client</span></div><div class="box"><div class="hl m">Result</div><div class="ln w90"></div><span class="lab">Client</span></div><div class="box"><div class="hl m">Result</div><div class="ln w90"></div><span class="lab">Client</span></div></div></div>
+        <div class="note"><span class="t">Testimonials <span class="pin">1</span></span><p>Stories for this offer only.</p></div>
+      </div>
+      <div class="row">
+        <div class="canvas"><div class="dark"><div class="g g4"><div><div class="stat">10+</div><span class="lab">years</span></div><div><div class="stat">CAT(C)</div><span class="lab">certified</span></div><div><div class="stat">50+</div><span class="lab">fights</span></div><div><div class="stat">5.0★</div><span class="lab">69 reviews</span></div></div></div><div class="box line" style="margin-top:10px"><span class="lab">Karate Combat · Global News · The Fight Space · TriStar Gym</span></div></div>
+        <div class="note"><span class="t">Proof</span><p>Numbers band and press logos, then a repeat of the form button.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="admin">
+    <span class="eyebrow">Built with the admin in step 5, shown now so the pages fit it</span>
+    <h2>9 · Products dashboard</h2>
+    <p>Where Zack adds and edits PDFs, lessons and coaching offers. Each item gets both page types automatically, with one-click links to copy into his bio, DMs or ads.</p>
+    <div class="wf-page">
+      <div class="wf-head"><span>fightingtherapist.com/admin/products</span><span>signed in as Zack</span></div>
+      <div class="row">
+        <div class="canvas">
+          <div class="navbar" style="margin-bottom:10px"><span class="hl m">Products</span><span class="btn">+ New product</span></div>
+          <div class="admin-table">
+            <div class="ah"><span>Name</span><span>Type</span><span>Access</span><span>Close</span><span>Links</span><span>Leads · Sales</span></div>
+            <div class="ar"><span><b>Shoulder Rehab Guide</b></span><span>PDF</span><span class="acc paid">$29</span><span>Buy</span><span class="links2"><i>Copy sales link</i><i>Copy landing link</i></span><span>41 · 18</span></div>
+            <div class="ar"><span><b>Weight Cut Basics</b></span><span>Lesson</span><span class="acc free">Free</span><span>Free</span><span class="links2"><i>Copy sales link</i><i>Copy landing link</i></span><span>212 · –</span></div>
+            <div class="ar"><span><b>Online Rehab Coaching</b></span><span>Coaching</span><span class="acc paid">from $X/mo</span><span>Contact</span><span class="links2"><i>Copy sales link</i><i>Copy landing link</i></span><span>27 · 6</span></div>
+          </div>
+          <span class="lab" style="display:block;margin-top:8px">Example rows, not real data</span>
+        </div>
+        <div class="note"><span class="t">Product list</span><p>Every PDF, lesson and coaching offer in one table, with leads and sales next to each. The two link buttons copy the sales page or landing page URL in one click.</p></div>
+      </div>
+      <div class="row">
+        <div class="canvas"><div class="split">
+          <div class="f col" style="gap:6px"><span class="lab">Edit · Shoulder Rehab Guide</span><div class="field">Title</div><div class="field">Headline</div><div class="field">Subheadline</div><div class="box line"><span class="lab">Dream outcome points</span><div class="ln w75"></div><div class="ln w60"></div></div><div class="box line"><span class="lab">What's included</span><div class="ln w75"></div></div><div class="box line"><span class="lab">Testimonials · pick from reviews</span></div></div>
+          <div class="f col" style="gap:6px"><span class="lab">Settings</span><div class="toggle-row"><span>Free</span><i class="tg on"></i><span>Paid</span></div><div class="field">Price $29</div><div class="field">Close: Buy ▾</div><div class="box line"><span class="lab">File · shoulder-guide.pdf</span></div><div class="field">Status: Live ▾</div><span class="btn">Save</span></div>
+        </div></div>
+        <div class="note"><span class="t">Edit screen</span><p>Every piece of page text is editable here, section by section. Upload the file, switch free or paid, set the price and pick the close. Paid items take payment through Stripe and email the file on purchase.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="direction">
+    <span class="eyebrow">Confirmed</span>
+    <h2>10 · Visual direction</h2>
+    <div class="dir">
+      <div><h3>Color</h3><p>Keep his logo blue as the single accent. Deep charcoal and off-white carry the rest, so his photos do the work.</p><div class="sw"><span><i style="background:#0e1a2b"></i>Charcoal</span><span><i style="background:#0a8fd6"></i>Logo blue</span><span><i style="background:#f3f5f8"></i>Off-white</span><span><i style="background:#56637a"></i>Steel</span></div></div>
+      <div><h3>Type</h3><p>A heavy condensed face for headlines and numbers, like fight-poster lettering. A clean sans for reading.</p><div class="typesample">50+ fights</div></div>
+      <div><h3>Imagery</h3><p>Full-bleed real photos of Zack fighting, treating and coaching, all from the current site. No stock photos anywhere.</p></div>
+    </div>
+  </section>
+
+  <section class="section" id="decide">
+    <span class="eyebrow">Before step 4</span>
+    <h2>11 · Your call</h2>
+    <ol class="decide">
+      <li><b>Hero image.</b> B (clinic meets gym) for Home? Zack should approve his likeness in whichever we pick.</li>
+      <li><b>Headlines.</b> "Fight-tested coaching." for the hero and "Studied it in the clinic. Proved it in the ring." for Meet Zack, or one of the alternates?</li>
+      <li><b>Services.</b> Flip the switches in section 1.</li>
+      <li><b>Closes.</b> For each coaching offer: Buy (price on the page) or Contact (he sells on the phone)?</li>
+      <li><b>PDFs and lessons.</b> Titles, prices and files, so they can go into the products dashboard and onto the pages.</li>
+      <li><b>Client stories.</b> OK to feature the three reviewers by first name and last initial?</li>
+    </ol>
+  </section>
+
+  <p class="foot">Service list taken from fightingtherapist.com on 23 Nov 2026, including the unlisted /virtual-booking and /book pages. References reviewed the same day. Hero and nutrition images are AI-generated from his real photos and need his approval. Wireframes are layout only; final copy and styling come in step 4.</p>
+
+</div>
+
+<script>
+(function(){
+  var STATES=[["keep","Keep"],["off","Off"],["remove","Remove"]];
+  var rows=[].slice.call(document.querySelectorAll("tr[data-svc]"));
+  var statusEl=document.getElementById("save-status");
+  var db=null, queue={}, pending={};
+  function setStatus(t){statusEl.textContent=t;}
+  function tally(){
+    var c={keep:0,off:0,remove:0};
+    rows.forEach(function(r){c[r.dataset.state]++;});
+    document.getElementById("n-keep").textContent=c.keep;
+    document.getElementById("n-off").textContent=c.off;
+    document.getElementById("n-remove").textContent=c.remove;
+  }
+  function apply(row,val){
+    if(!/^(keep|off|remove)$/.test(val)) return;
+    row.dataset.state=val;
+    var sw=row.querySelector(".switch");
+    sw.dataset.state=val;
+    var input=sw.querySelector('input[value="'+val+'"]');
+    if(input) input.checked=true;
+  }
+  function save(row,val){
+    if(!db){ try{localStorage.setItem("svc-"+row.dataset.svc,val);}catch(e){} setStatus("Saved in this browser only"); return; }
+    var id=row.dataset.svc;
+    pending[id]=val;
+    setStatus("Saving…");
+    queue[id]=(queue[id]||Promise.resolve()).then(function(){
+      if(pending[id]!==val) return;
+      return db.doc("services/"+id).set({state:val,service:row.querySelector("td b").textContent,updatedAt:new Date().toISOString()});
+    }).then(function(){
+      if(pending[id]===val){delete pending[id];}
+      if(!Object.keys(pending).length) setStatus("All choices saved");
+    },function(err){
+      delete pending[id];
+      setStatus(err&&err.code==="invalid_argument"?"View only: you can't change these":"Couldn't save. Try again");
+    });
+  }
+  rows.forEach(function(row){
+    var id=row.dataset.svc, name=row.querySelector("td b").textContent;
+    var sw=document.createElement("div");
+    sw.className="switch"; sw.setAttribute("role","radiogroup"); sw.setAttribute("aria-label","Decision for "+name);
+    var thumb=document.createElement("i"); thumb.className="thumb"; thumb.setAttribute("aria-hidden","true"); sw.appendChild(thumb);
+    STATES.forEach(function(st){
+      var lab=document.createElement("label");
+      var inp=document.createElement("input");
+      inp.type="radio"; inp.name="svc-"+id; inp.id="svc-"+id+"-"+st[0]; inp.value=st[0];
+      var sp=document.createElement("span"); sp.textContent=st[1];
+      inp.addEventListener("change",function(){ if(inp.checked){ apply(row,st[0]); tally(); save(row,st[0]); } });
+      lab.appendChild(inp); lab.appendChild(sp); sw.appendChild(lab);
+    });
+    row.querySelector(".sw-cell").appendChild(sw);
+    apply(row,row.dataset.default);
+  });
+  tally();
+  function localFallback(){
+    rows.forEach(function(row){ try{ var v=localStorage.getItem("svc-"+row.dataset.svc); if(v) apply(row,v);}catch(e){} });
+    tally();
+  }
+  var use=window.claude&&window.claude.use;
+  if(!use){ localFallback(); setStatus("Choices save in this browser only"); return; }
+  window.claude.use("db").then(function(d){
+    if(!d){ localFallback(); setStatus("Choices save in this browser only"); return; }
+    db=d;
+    var timer=setTimeout(function(){ setStatus("Can't reach saved choices yet"); },10000);
+    db.collection("services").onSnapshot(function(snap){
+      if(!snap.metadata.fromCache){ clearTimeout(timer); }
+      var saved=0;
+      snap.docs.forEach(function(doc){
+        var data=doc.data()||{}; var row=document.querySelector('tr[data-svc="'+doc.id+'"]');
+        if(row && !(doc.id in pending)){ apply(row,String(data.state)); saved++; }
+      });
+      tally();
+      if(!Object.keys(pending).length && !snap.metadata.fromCache) setStatus(saved?"Showing saved choices":"Starting at my suggestions");
+    },function(){ clearTimeout(timer); setStatus("Saved choices unavailable"); });
+  });
+})();
+</script>
