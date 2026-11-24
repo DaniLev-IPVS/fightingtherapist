@@ -1,11 +1,8 @@
 import { NextResponse } from "next/server";
 import { validateLead, type LeadInput } from "@/lib/leads";
+import { saveLead } from "@/lib/crm";
 
-/**
- * Receives every form on the site.
- * STEP 5 TODO: save to the CRM database and notify Zack. Until then leads are
- * only logged, so don't point real traffic at forms before step 5 ships.
- */
+/** Receives every form on the site and files it in the CRM. */
 export async function POST(request: Request) {
   let body: Partial<LeadInput>;
   try {
@@ -22,20 +19,15 @@ export async function POST(request: Request) {
     return NextResponse.json({ ok: false, errors }, { status: 422 });
   }
 
-  const lead = {
-    name: body.name!.trim(),
-    email: body.email!.trim().toLowerCase(),
-    phone: body.phone?.trim() || null,
-    goal: body.goal,
-    message: body.message?.trim() || null,
-    offer: body.offer ?? null,
-    pageType: body.pageType ?? "other",
-    attribution: body.attribution ?? null,
-    userAgent: request.headers.get("user-agent")?.slice(0, 300) ?? null,
-    receivedAt: new Date().toISOString(),
-  };
-
-  console.info("[lead]", JSON.stringify(lead));
+  try {
+    await saveLead(body as LeadInput, request.headers.get("user-agent"));
+  } catch (error) {
+    console.error("[lead] save failed", error);
+    return NextResponse.json(
+      { ok: false, error: "Something went wrong on our side. Please call or email Zack instead." },
+      { status: 500 },
+    );
+  }
 
   return NextResponse.json({ ok: true });
 }

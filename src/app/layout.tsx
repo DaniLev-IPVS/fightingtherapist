@@ -2,10 +2,6 @@ import type { Metadata, Viewport } from "next";
 import { Saira_Condensed, Source_Sans_3, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { site } from "@/content/site";
-import { Header } from "@/components/header";
-import { Footer } from "@/components/footer";
-import { AttributionCapture } from "@/components/attribution-capture";
-import { StickyCta } from "@/components/sticky-cta";
 
 const saira = Saira_Condensed({
   subsets: ["latin"],
@@ -63,17 +59,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return (
     <html lang="en" className={`${saira.variable} ${source.variable} ${jetbrains.variable}`}>
       <body>
-        <a
-          href="#main"
-          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded focus:bg-blue focus:px-4 focus:py-2 focus:text-white"
-        >
-          Skip to content
-        </a>
-        <Header />
-        <main id="main">{children}</main>
-        <Footer />
-        <StickyCta />
-        <AttributionCapture />
+        {children}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }}

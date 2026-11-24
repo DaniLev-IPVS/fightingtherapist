@@ -66,6 +66,16 @@ export function Header() {
           <span className="hidden sm:block">
             <Button href="/programs">Find your program</Button>
           </span>
+          <Link
+            href="/admin/login"
+            className="inline-flex h-11 items-center gap-2 rounded-[4px] border border-white/20 px-3 font-mono text-[12px] uppercase tracking-[0.12em] text-mist transition-colors hover:border-white hover:text-white"
+          >
+            <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" aria-hidden="true">
+              <circle cx="12" cy="8" r="4" stroke="currentColor" strokeWidth="2" />
+              <path d="M4 20c1.5-4 4.5-6 8-6s6.5 2 8 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+            </svg>
+            Sign in
+          </Link>
           <button
             type="button"
             className="inline-flex h-11 w-11 items-center justify-center rounded border border-white/20 text-white md:hidden"
