@@ -18,7 +18,18 @@ export default async function EditProductPage({ params, searchParams }: PageProp
       <Link href="/admin/products" className="text-[14px] text-blue hover:underline">← Products</Link>
       <PageHeader
         title={product.title}
-        intro="Sales and landing pages go live in the next step. Their links are ready to copy."
+        intro={
+          product.status === "published" ? (
+            <>
+              Live at{" "}
+              <a href={salesPath(product.slug)} target="_blank" rel="noopener noreferrer" className="text-blue hover:underline">sales page</a>
+              {" "}and{" "}
+              <a href={landingPath(product.slug)} target="_blank" rel="noopener noreferrer" className="text-blue hover:underline">landing page</a>.
+            </>
+          ) : (
+            "Draft: the pages stay hidden until you publish."
+          )
+        }
         actions={
           <>
             <CopyLink path={salesPath(product.slug)} label="Copy sales link" />

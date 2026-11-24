@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { formatPrice, landingPath, listProducts, salesPath } from "@/lib/products";
+import { closeLabel, formatPrice, kindLabel, landingPath, listProducts, salesPath } from "@/lib/products";
 import { Card, PageHeader, Pill, btnPrimary, formatDate } from "@/components/admin/ui";
 import { CopyLink } from "@/components/admin/copy-link";
 
@@ -11,13 +11,13 @@ export default async function ProductsPage() {
     <div className="flex flex-col gap-6">
       <PageHeader
         title="Products"
-        intro="PDFs and video lessons. Each gets a sales page and a landing page."
+        intro="Coaching offers, PDFs and video lessons. Each gets a sales page and a landing page."
         actions={<Link href="/admin/products/new" className={btnPrimary}>Add product</Link>}
       />
 
       {products.length === 0 ? (
         <Card className="flex flex-col items-start gap-3">
-          <p className="text-[15px] text-steel">No products yet. Add a PDF guide or a video lesson, choose free or paid, and write its page text.</p>
+          <p className="text-[15px] text-steel">No products yet. Add a coaching offer, PDF guide or video lesson and write its page text.</p>
           <Link href="/admin/products/new" className={btnPrimary}>Add the first product</Link>
         </Card>
       ) : (
@@ -31,7 +31,9 @@ export default async function ProductsPage() {
                   </Link>
                   <div className="flex flex-wrap items-center gap-2 text-[13px] text-steel">
                     <Pill tone={p.status}>{p.status === "published" ? "Published" : "Draft"}</Pill>
-                    <span>{p.kind === "pdf" ? "PDF" : "Video lesson"}</span>
+                    <span>{kindLabel(p.kind)}</span>
+                    <span aria-hidden="true">·</span>
+                    <span>{closeLabel(p.close)}</span>
                     <span aria-hidden="true">·</span>
                     <span>{formatPrice(p)}</span>
                     <span aria-hidden="true">·</span>

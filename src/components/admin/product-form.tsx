@@ -2,7 +2,7 @@
 
 import { useActionState, useState } from "react";
 import { saveProduct } from "@/app/admin/actions";
-import type { Product } from "@/lib/products";
+import { CLOSES, GOAL_OPTIONS, KINDS, type Close, type Product } from "@/lib/product-options";
 import { Card, Field, btnPrimary, inputClass } from "./ui";
 
 type FieldDef = { key: string; label: string; rows: number };
@@ -19,7 +19,7 @@ export function ProductForm({
   saved?: boolean;
 }) {
   const [state, action, pending] = useActionState(saveProduct, saved ? { ok: true } : undefined);
-  const [access, setAccess] = useState<"free" | "paid">(product?.access ?? "paid");
+  const [close, setClose] = useState<Close>(product?.close ?? "contact");
   const err = (k: string) => state?.fieldErrors?.[k];
   const aria = (k: string) => (err(k) ? { "aria-invalid": true, "aria-describedby": `${k}-error` } : {});
 
@@ -42,44 +42,60 @@ export function ProductForm({
         <div className="grid gap-5 sm:grid-cols-2">
           <fieldset className="flex flex-col gap-2">
             <legend className="mb-1.5 text-[14px] font-semibold">Type</legend>
-            {[
-              ["pdf", "PDF guide"],
-              ["lesson", "Video lesson"],
-            ].map(([v, l]) => (
-              <label key={v} className="flex items-center gap-2 text-[15px]">
-                <input type="radio" name="kind" value={v} defaultChecked={(product?.kind ?? "pdf") === v} /> {l}
+            {KINDS.map((k) => (
+              <label key={k.value} className="flex items-center gap-2 text-[15px]">
+                <input type="radio" name="kind" value={k.value} defaultChecked={(product?.kind ?? "pdf") === k.value} /> {k.label}
               </label>
             ))}
           </fieldset>
-          <fieldset className="flex flex-col gap-2">
-            <legend className="mb-1.5 text-[14px] font-semibold">Free or paid</legend>
-            {(["paid", "free"] as const).map((v) => (
-              <label key={v} className="flex items-center gap-2 text-[15px]">
-                <input type="radio" name="access" value={v} checked={access === v} onChange={() => setAccess(v)} />
-                {v === "paid" ? "Paid" : "Free (visitors give their email to get it)"}
-              </label>
-            ))}
-          </fieldset>
+          <Field label="Goal" htmlFor="goal" hint="Sets the form's goal and which client reviews show on the pages.">
+            <select id="goal" name="goal" defaultValue={product?.goal ?? "other"} className={inputClass}>
+              {GOAL_OPTIONS.map((g) => (
+                <option key={g.value} value={g.value}>{g.label}</option>
+              ))}
+            </select>
+          </Field>
         </div>
 
-        {access === "paid" && (
-          <Field label="Price (CAD)" htmlFor="price" error={err("price")}>
-            <input
-              id="price"
-              name="price"
-              inputMode="decimal"
-              defaultValue={product?.price_cents != null ? (product.price_cents / 100).toFixed(2) : ""}
-              placeholder="29.00"
-              className={`${inputClass} max-w-[160px]`}
-              {...aria("price")}
-            />
-          </Field>
+        <fieldset className="flex flex-col gap-2">
+          <legend className="mb-1.5 text-[14px] font-semibold">How the pages close</legend>
+          {CLOSES.map((c) => (
+            <label key={c.value} className="flex items-start gap-2 text-[15px]">
+              <input type="radio" name="close" value={c.value} checked={close === c.value} onChange={() => setClose(c.value)} className="mt-1.5" />
+              <span>
+                <span className="font-semibold">{c.label}.</span> <span className="text-steel">{c.hint}</span>
+              </span>
+            </label>
+          ))}
+        </fieldset>
+
+        {close !== "free" && (
+          <div className="grid gap-5 sm:grid-cols-[180px_1fr]">
+            <Field label="Price (CAD)" htmlFor="price" hint={close === "contact" ? "Optional." : undefined} error={err("price")}>
+              <input
+                id="price"
+                name="price"
+                inputMode="decimal"
+                defaultValue={product?.price_cents != null ? (product.price_cents / 100).toFixed(2) : ""}
+                placeholder="29.00"
+                className={inputClass}
+                {...aria("price")}
+              />
+            </Field>
+            <Field label="Price terms" htmlFor="price_note" hint="Shown with the price, e.g. Monthly, 3-month minimum.">
+              <input id="price_note" name="price_note" defaultValue={product?.price_note ?? ""} className={inputClass} />
+            </Field>
+          </div>
         )}
+
+        <Field label="Page image" htmlFor="image" hint="Big photo at the top of both pages: a /images/... path or an https link." error={err("image")}>
+          <input id="image" name="image" defaultValue={product?.image ?? ""} placeholder="/images/programs/rehab.jpg" className={inputClass} {...aria("image")} />
+        </Field>
 
         <Field
           label="File or video link"
           htmlFor="file_url"
-          hint="Link to the PDF or video for now. File uploads come with the storage setup."
+          hint="For PDFs and lessons. Free-download visitors get this link after they enter their email."
           error={err("file_url")}
         >
           <input id="file_url" name="file_url" type="url" defaultValue={product?.file_url ?? ""} placeholder="https://" className={inputClass} {...aria("file_url")} />

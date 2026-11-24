@@ -373,3 +373,52 @@ export const reels = [
 
 export const instagram = { handle: "@the.fighting.therapist", followers: "2.6K", posts: "490" };
 
+
+/**
+ * Supporting photos for offer sales and landing pages, by goal: [0] sits next to
+ * "who it's for", [1] behind the restated dream outcome. The hero image is set per
+ * product in the dashboard.
+ */
+export const offerImages: Record<string, { src: string; alt: string }[]> = {
+  rehab: [
+    { src: "/images/services/rehab-3.jpg", alt: "Zack testing a client's shoulder range of motion" },
+    { src: "/images/goals/injured.jpg", alt: "A woman sprinting on an indoor track with tape on her knee" },
+  ],
+  training: [
+    { src: "/images/services/train-2.jpg", alt: "Zack watching a client squat" },
+    { src: "/images/goals/strong.jpg", alt: "A man finishing a heavy deadlift in a dark gym" },
+  ],
+  nutrition: [
+    { src: "/images/services/nutrition-1.jpg", alt: "Zack portioning meal prep" },
+    { src: "/images/goals/fat.jpg", alt: "A lean man smiling after a morning run by the water" },
+  ],
+  "fight-camp": [
+    { src: "/images/zack/fight-kick.jpg", alt: "Zack throwing a high kick during a Karate Combat fight" },
+    { src: "/images/zack/fight-win.jpg", alt: "Zack with his hand raised after a win" },
+  ],
+  group: [
+    { src: "/images/services/train-3.jpg", alt: "Zack guiding a client through a hip mobility drill" },
+    { src: "/images/goals/strong.jpg", alt: "A man finishing a heavy deadlift in a dark gym" },
+  ],
+  other: [
+    { src: "/images/zack/coaching.jpg", alt: "Zack coaching a client through a kettlebell press" },
+    { src: "/images/zack/treating.jpg", alt: "Zack assessing a client's ankle" },
+  ],
+};
+
+/** Which review tag each offer goal shows first. */
+export const reviewTagForGoal: Record<string, Review["tag"]> = {
+  rehab: "Rehab",
+  training: "Training",
+  nutrition: "Nutrition",
+  "fight-camp": "Fight camp",
+  group: "Training",
+};
+
+/** Reviews for an offer page: matching ones first, topped up with featured reviews. */
+export function reviewsForGoal(goal: string, count = 6) {
+  const tag = reviewTagForGoal[goal];
+  const matching = reviews.filter((r) => r.tag === tag);
+  const rest = reviews.filter((r) => r.tag !== tag).sort((a, b) => Number(!!b.featured) - Number(!!a.featured));
+  return [...matching, ...rest].slice(0, count);
+}

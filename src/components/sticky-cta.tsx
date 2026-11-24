@@ -4,7 +4,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Button, cn } from "@/components/ui";
 
-/** Phone-only "Find your program" bar, shown once the hero has scrolled away. */
+/** Phone-only "Find your program" bar (or "Get started" on sales pages), shown once the hero has scrolled away. */
 export function StickyCta() {
   const pathname = usePathname();
   const [show, setShow] = useState(false);
@@ -17,6 +17,8 @@ export function StickyCta() {
   }, []);
 
   if (pathname === "/programs" || pathname === "/contact") return null;
+  // On a sales page the bar jumps to that page's own form.
+  const offerPage = pathname.startsWith("/programs/");
 
   return (
     <div
@@ -27,8 +29,8 @@ export function StickyCta() {
       style={{ paddingBottom: "max(12px, env(safe-area-inset-bottom, 0px))" }}
       aria-hidden={!show}
     >
-      <Button href="/programs" size="lg" className="w-full" tabIndex={show ? 0 : -1}>
-        Find your program
+      <Button href={offerPage ? "#start" : "/programs"} size="lg" className="w-full" tabIndex={show ? 0 : -1}>
+        {offerPage ? "Get started" : "Find your program"}
       </Button>
     </div>
   );

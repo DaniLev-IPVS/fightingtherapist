@@ -63,7 +63,7 @@ function ProgramTile({ offer, large = false, className }: { offer: Offer; large?
 }
 
 /** Full offer block on /programs. Alternates image side. */
-export function OfferBlock({ offer, index }: { offer: Offer; index: number }) {
+export function OfferBlock({ offer, index, href }: { offer: Offer; index: number; href?: string }) {
   const flip = index % 2 === 1;
   return (
     <article id={offer.key} className="scroll-mt-28 border-t border-line py-16 first:border-t-0 sm:py-20">
@@ -91,7 +91,14 @@ export function OfferBlock({ offer, index }: { offer: Offer; index: number }) {
           </ul>
           <p className="font-mono text-[12px] uppercase tracking-[0.1em] text-steel">{offer.terms}</p>
           <div className="flex flex-wrap gap-3 pt-1">
-            <Button href={`/contact?goal=${offer.key}`}>Apply for {offer.name}</Button>
+            {href ? (
+              <>
+                <Button href={href}>See the full program <Arrow /></Button>
+                <Button href={`/contact?goal=${offer.key}`} variant="ghost-dark">Apply now</Button>
+              </>
+            ) : (
+              <Button href={`/contact?goal=${offer.key}`}>Apply for {offer.name}</Button>
+            )}
           </div>
         </div>
       </div>

@@ -1,7 +1,7 @@
 "use server";
 
 import { redirect } from "next/navigation";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, updateTag } from "next/cache";
 import { db } from "@/lib/db";
 import { createSession, destroySession, getSessionUser, hashToken } from "@/lib/auth/session";
 import { hashPassword, verifyPassword, MIN_PASSWORD } from "@/lib/auth/password";
@@ -11,6 +11,9 @@ import {
   LANDING_FIELDS,
   SALES_FIELDS,
   insertProduct,
+  isClose,
+  isGoal,
+  isKind,
   removeProduct,
   slugTaken,
   slugify,
@@ -111,8 +114,12 @@ export async function saveProduct(_: FormState, form: FormData): Promise<FormSta
   const id = str(form, "id") || null;
   const title = str(form, "title");
   const slug = slugify(str(form, "slug") || title);
-  const kind = str(form, "kind") === "lesson" ? "lesson" : "pdf";
-  const access = str(form, "access") === "free" ? "free" : "paid";
+  const kindRaw = str(form, "kind");
+  const kind = isKind(kindRaw) ? kindRaw : "pdf";
+  const closeRaw = str(form, "close");
+  const close = isClose(closeRaw) ? closeRaw : "contact";
+  const goalRaw = str(form, "goal");
+  const goal = isGoal(goalRaw) ? goalRaw : "other";
   const priceRaw = str(form, "price").replace(/[$,\s]/g, "");
   const fieldErrors: Record<string, string> = {};
 
@@ -120,17 +127,22 @@ export async function saveProduct(_: FormState, form: FormData): Promise<FormSta
   if (!slug) fieldErrors.slug = "Add a link name using letters and numbers.";
   else if (await slugTaken(slug, id ?? undefined)) fieldErrors.slug = "Another product already uses this link name.";
   let price_cents: number | null = null;
-  if (access === "paid" && priceRaw) {
+  if (close !== "free" && priceRaw) {
     const n = Number(priceRaw);
     if (!Number.isFinite(n) || n < 0 || n > 100000) fieldErrors.price = "Enter a price like 29 or 29.99.";
     else price_cents = Math.round(n * 100);
   }
   const status = str(form, "status") === "published" ? "published" : "draft";
-  if (status === "published" && access === "paid" && price_cents == null) {
-    fieldErrors.price = "Paid products need a price before they can be published.";
+  if (status === "published" && close === "buy" && price_cents == null) {
+    fieldErrors.price = "Products sold with Buy need a price before they can be published.";
   }
   const fileUrl = str(form, "file_url");
   if (fileUrl && !/^https:\/\//.test(fileUrl)) fieldErrors.file_url = "Use a link that starts with https://";
+  if (status === "published" && close === "free" && !fileUrl) {
+    fieldErrors.file_url = "Free downloads need a file link before they can be published.";
+  }
+  const image = str(form, "image");
+  if (image && !/^(https:\/\/|\/images\/)/.test(image)) fieldErrors.image = "Use an https:// link or a path starting with /images/";
   if (Object.keys(fieldErrors).length) return { fieldErrors, error: "Fix the highlighted fields." };
 
   const pick = (prefix: string, fields: readonly { key: string }[]) =>
@@ -140,11 +152,15 @@ export async function saveProduct(_: FormState, form: FormData): Promise<FormSta
     slug,
     title,
     kind,
-    access,
-    price_cents: access === "free" ? null : price_cents,
+    close,
+    goal,
+    access: close === "free" ? "free" : "paid",
+    price_cents: close === "free" ? null : price_cents,
     currency: "CAD",
+    price_note: str(form, "price_note") || null,
     status,
     summary: str(form, "summary") || null,
+    image: image || null,
     sales_page: pick("sales", SALES_FIELDS),
     landing_page: pick("landing", LANDING_FIELDS),
     file_url: fileUrl || null,
@@ -153,6 +169,7 @@ export async function saveProduct(_: FormState, form: FormData): Promise<FormSta
   const savedId = id ?? (await insertProduct(input));
   if (id) await updateProduct(id, input);
   revalidatePath("/admin/products", "layout");
+  updateTag("products");
   if (!id) redirect(`/admin/products/${savedId}?saved=1`);
   return { ok: true };
 }
@@ -160,5 +177,6 @@ export async function saveProduct(_: FormState, form: FormData): Promise<FormSta
 export async function deleteProduct(form: FormData) {
   await removeProduct(str(form, "id"));
   revalidatePath("/admin/products", "layout");
+  updateTag("products");
   redirect("/admin/products");
 }

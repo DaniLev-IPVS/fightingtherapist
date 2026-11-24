@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { validateLead, type LeadInput } from "@/lib/leads";
 import { saveLead } from "@/lib/crm";
+import { freeDownloadFor } from "@/lib/products";
 
 /** Receives every form on the site and files it in the CRM. */
 export async function POST(request: Request) {
@@ -29,5 +30,7 @@ export async function POST(request: Request) {
     );
   }
 
-  return NextResponse.json({ ok: true });
+  // Free products: the file link goes back only after the email is saved.
+  const download = typeof body.offer === "string" && body.offer ? await freeDownloadFor(body.offer).catch(() => null) : null;
+  return NextResponse.json(download ? { ok: true, download } : { ok: true });
 }

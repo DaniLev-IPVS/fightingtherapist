@@ -9,7 +9,8 @@
     "lint": "eslint",
     "db:migrate": "node --env-file=.env.local scripts/migrate.mjs",
     "admin:invite": "node --env-file=.env.local scripts/invite-admin.mjs",
-    "admin:add": "node --env-file=.env.local scripts/add-admin.mjs"
+    "admin:add": "node --env-file=.env.local scripts/add-admin.mjs",
+    "db:seed-offers": "node --env-file=.env.local scripts/seed-offers.mjs"
   },
   "dependencies": {
     "@neondatabase/serverless": "^1.2.1",

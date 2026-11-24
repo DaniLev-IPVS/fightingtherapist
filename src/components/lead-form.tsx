@@ -14,12 +14,27 @@ type Props = {
   showMessage?: boolean;
   /** Preselect the goal from ?goal= in the URL (used on /contact). */
   goalFromUrl?: boolean;
+  /** Offer pages already know the goal: send defaultGoal without asking. */
+  hideGoal?: boolean;
+  /** Name and email only (free downloads). */
+  minimal?: boolean;
 };
 
-export function LeadForm({ tone = "dark", pageType, offer, defaultGoal, submitLabel = "Send", showMessage = true, goalFromUrl = false }: Props) {
+export function LeadForm({
+  tone = "dark",
+  pageType,
+  offer,
+  defaultGoal,
+  submitLabel = "Send",
+  showMessage = true,
+  goalFromUrl = false,
+  hideGoal = false,
+  minimal = false,
+}: Props) {
   const id = useId();
   const [errors, setErrors] = useState<LeadErrors>({});
   const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
+  const [download, setDownload] = useState<string | null>(null);
   const goalRef = useRef<HTMLSelectElement>(null);
 
   useEffect(() => {
@@ -62,8 +77,9 @@ export function LeadForm({ tone = "dark", pageType, offer, defaultGoal, submitLa
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ ...payload, attribution: getAttribution() }),
       });
-      const data = (await res.json()) as { ok: boolean; errors?: LeadErrors };
+      const data = (await res.json()) as { ok: boolean; errors?: LeadErrors; download?: string };
       if (res.ok && data.ok) {
+        if (data.download?.startsWith("https://")) setDownload(data.download);
         setStatus("sent");
       } else {
         setErrors(data.errors ?? {});
@@ -72,6 +88,23 @@ export function LeadForm({ tone = "dark", pageType, offer, defaultGoal, submitLa
     } catch {
       setStatus("error");
     }
+  }
+
+  if (status === "sent" && download) {
+    return (
+      <div role="status" className={cn("flex flex-col items-start gap-3 rounded-[6px] border p-6", dark ? "border-line-dark bg-charcoal-2" : "border-line bg-paper")}>
+        <p className={cn("display text-[30px]", dark ? "text-off-white" : "text-charcoal")}>It&apos;s yours.</p>
+        <p className={dark ? "text-mist" : "text-steel"}>Open it now, or save the link for later.</p>
+        <a
+          href={download}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center justify-center rounded-[4px] bg-blue px-7 py-4 font-mono text-[13px] uppercase tracking-[0.12em] text-white transition-colors hover:bg-blue-bright"
+        >
+          Open the download
+        </a>
+      </div>
+    );
   }
 
   if (status === "sent") {
@@ -99,26 +132,31 @@ export function LeadForm({ tone = "dark", pageType, offer, defaultGoal, submitLa
           {errors.email && <p id={`${id}-email-err`} className={errorText}>{errors.email}</p>}
         </div>
       </div>
-      <div className="grid gap-4 sm:grid-cols-2">
-        <div className="flex flex-col gap-1.5">
-          <label htmlFor={`${id}-phone`} className={label}>
-            Phone <span className="font-normal opacity-70">(optional)</span>
-          </label>
-          <input id={`${id}-phone`} name="phone" type="tel" autoComplete="tel" className={field} aria-invalid={!!errors.phone} aria-describedby={errors.phone ? `${id}-phone-err` : undefined} />
-          {errors.phone && <p id={`${id}-phone-err`} className={errorText}>{errors.phone}</p>}
+      {hideGoal && <input type="hidden" name="goal" value={defaultGoal ?? "other"} />}
+      {!minimal && (
+        <div className={cn("grid gap-4", !hideGoal && "sm:grid-cols-2")}>
+          <div className="flex flex-col gap-1.5">
+            <label htmlFor={`${id}-phone`} className={label}>
+              Phone <span className="font-normal opacity-70">(optional)</span>
+            </label>
+            <input id={`${id}-phone`} name="phone" type="tel" autoComplete="tel" className={field} aria-invalid={!!errors.phone} aria-describedby={errors.phone ? `${id}-phone-err` : undefined} />
+            {errors.phone && <p id={`${id}-phone-err`} className={errorText}>{errors.phone}</p>}
+          </div>
+          {!hideGoal && (
+            <div className="flex flex-col gap-1.5">
+              <label htmlFor={`${id}-goal`} className={label}>What do you need?</label>
+              <select ref={goalRef} id={`${id}-goal`} name="goal" defaultValue={defaultGoal ?? ""} className={field} aria-invalid={!!errors.goal} aria-describedby={errors.goal ? `${id}-goal-err` : undefined}>
+                <option value="" disabled>Choose one</option>
+                {GOALS.map((g) => (
+                  <option key={g.value} value={g.value}>{g.label}</option>
+                ))}
+              </select>
+              {errors.goal && <p id={`${id}-goal-err`} className={errorText}>{errors.goal}</p>}
+            </div>
+          )}
         </div>
-        <div className="flex flex-col gap-1.5">
-          <label htmlFor={`${id}-goal`} className={label}>What do you need?</label>
-          <select ref={goalRef} id={`${id}-goal`} name="goal" defaultValue={defaultGoal ?? ""} className={field} aria-invalid={!!errors.goal} aria-describedby={errors.goal ? `${id}-goal-err` : undefined}>
-            <option value="" disabled>Choose one</option>
-            {GOALS.map((g) => (
-              <option key={g.value} value={g.value}>{g.label}</option>
-            ))}
-          </select>
-          {errors.goal && <p id={`${id}-goal-err`} className={errorText}>{errors.goal}</p>}
-        </div>
-      </div>
-      {showMessage && (
+      )}
+      {showMessage && !minimal && (
         <div className="flex flex-col gap-1.5">
           <label htmlFor={`${id}-message`} className={label}>
             Tell Zack about your injury or goal <span className="font-normal opacity-70">(optional)</span>
