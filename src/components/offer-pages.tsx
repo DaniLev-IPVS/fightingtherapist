@@ -270,6 +270,82 @@ function CloseSection({ product, title, text, cta }: { product: PublicProduct; t
   );
 }
 
+function NoBadge() {
+  return (
+    <span aria-hidden="true" className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#fde8e8] text-[#d64545]">
+      <Cross className="h-4 w-4" />
+    </span>
+  );
+}
+
+function YesBadge() {
+  return (
+    <span aria-hidden="true" className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-blue text-white">
+      <Check className="h-4 w-4" />
+    </span>
+  );
+}
+
+/**
+ * What you don't get vs what you get, point by point. Desktop: two rounded cards
+ * whose rows line up (subgrid). Phone: one rounded card per pair.
+ */
+function Comparison({ rows, left }: { rows: [string, string][]; left: string }) {
+  const span = { gridRow: `span ${rows.length + 1}` };
+  return (
+    <section className="bg-off-white py-20 sm:py-28">
+      <Container className="flex flex-col gap-10">
+        <h2 className="display max-w-[20ch] text-[38px] leading-[0.95] text-charcoal sm:text-[52px]">What&apos;s different about working with Zack</h2>
+
+        {/* Desktop */}
+        <div className="relative hidden gap-6 md:grid md:grid-cols-2" style={{ gridTemplateRows: `repeat(${rows.length + 1}, auto)` }}>
+          <div className="grid grid-rows-subgrid gap-3 rounded-[24px] border border-line bg-paper p-6 lg:p-8" style={span}>
+            <p className="flex items-center gap-3 pb-2 font-mono text-[12px] uppercase tracking-[0.12em] text-steel">
+              <NoBadge /> {left}
+            </p>
+            {rows.map(([no]) => (
+              <p key={no} className="flex items-center gap-4 rounded-[16px] bg-off-white px-5 py-4 text-[17px] text-steel">
+                <NoBadge />
+                {no}
+              </p>
+            ))}
+          </div>
+          <div className="grid grid-rows-subgrid gap-3 rounded-[24px] bg-charcoal p-6 shadow-[0_24px_60px_rgba(9,16,28,0.25)] lg:p-8" style={span}>
+            <p className="flex items-center gap-3 pb-2 font-mono text-[12px] uppercase tracking-[0.12em] text-blue-pale">
+              <YesBadge /> Working with Zack
+            </p>
+            {rows.map(([, yes]) => (
+              <p key={yes} className="flex items-center gap-4 rounded-[16px] bg-white/[0.06] px-5 py-4 text-[17px] font-semibold text-off-white">
+                <YesBadge />
+                {yes}
+              </p>
+            ))}
+          </div>
+          <span aria-hidden="true" className="absolute left-1/2 top-7 flex h-12 w-12 -translate-x-1/2 items-center justify-center rounded-full border-4 border-off-white bg-blue font-mono text-[12px] uppercase tracking-[0.08em] text-white lg:top-9">
+            vs
+          </span>
+        </div>
+
+        {/* Phone */}
+        <ul className="flex flex-col gap-3 md:hidden">
+          {rows.map(([no, yes]) => (
+            <li key={no} className="overflow-hidden rounded-[20px] border border-line bg-paper">
+              <p className="flex items-center gap-3 px-4 py-3.5 text-[15px] text-steel">
+                <NoBadge />
+                {no}
+              </p>
+              <p className="flex items-center gap-3 bg-charcoal px-4 py-3.5 text-[15px] font-semibold text-off-white">
+                <YesBadge />
+                {yes}
+              </p>
+            </li>
+          ))}
+        </ul>
+      </Container>
+    </section>
+  );
+}
+
 /* ───────────────────────── Sales page ───────────────────────── */
 
 export function SalesPage({ product }: { product: PublicProduct }) {
@@ -334,31 +410,7 @@ export function SalesPage({ product }: { product: PublicProduct }) {
       )}
 
       {/* 4. What's different */}
-      {compare.length > 0 && (
-        <section className="bg-off-white py-20 sm:py-28">
-          <Container className="flex flex-col gap-10">
-            <h2 className="display max-w-[20ch] text-[38px] leading-[0.95] text-charcoal sm:text-[52px]">What&apos;s different about working with Zack</h2>
-            <div className="overflow-hidden rounded-[6px] border border-line">
-              <div className="grid grid-cols-2 bg-paper">
-                <p className="eyebrow border-r border-line p-4 text-[11px] text-steel sm:p-5">{s.compareLeft || "The usual way"}</p>
-                <p className="eyebrow bg-charcoal p-4 text-[11px] text-blue-pale sm:p-5">Working with Zack</p>
-              </div>
-              {compare.map(([left, right]) => (
-                <div key={left} className="grid grid-cols-2 border-t border-line">
-                  <p className="flex gap-3 border-r border-line bg-paper p-4 text-[15px] text-steel sm:p-5 sm:text-[17px]">
-                    <Cross className="mt-1 text-steel-light" />
-                    {left}
-                  </p>
-                  <p className="flex gap-3 border-t border-white/5 bg-charcoal p-4 text-[15px] font-semibold text-off-white sm:p-5 sm:text-[17px]">
-                    <Check className="mt-1 text-blue-bright" />
-                    {right}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </Container>
-        </section>
-      )}
+      {compare.length > 0 && <Comparison rows={compare} left={s.compareLeft || "The usual way"} />}
 
       {/* 5. Benefits */}
       {outcomes.length > 0 && (
