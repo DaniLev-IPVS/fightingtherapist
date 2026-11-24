@@ -25,9 +25,9 @@ const offers = [
     summary: "A step-by-step online rehab plan for back, neck, shoulder, knee, hip or post-surgery pain.",
     sales: {
       callout: "For athletes and lifters stuck with back, knee, shoulder or hip pain",
-      headline: "Rehab for athletes who are done training around pain",
+      headline: "Train hard again without the pain, even if your injury keeps coming back",
       subheadline:
-        "Zack is a certified athletic therapist and a fighter with 50+ bouts, so he knows what it takes to come back from an injury and train hard again. He assesses what's actually going on, builds your rehab around your sport, and adjusts it as you get stronger until you're back to full training.",
+        "Lift, run, spar and roll without bracing for the next flare-up. You rebuild the strength around your injury so it stops coming back, and you go back to your sport knowing you're ready.",
       problemTitle: "You've rested it, stretched it and paid for treatment, and it still hurts when you train",
       problem: [
         "Maybe it's your lower back after deadlifts, a knee that aches after every run, or a shoulder you can't press overhead anymore. You took time off and it felt better. Then you went back to training and it flared up again within a week.",
@@ -67,9 +67,9 @@ const offers = [
       cta: "Start my rehab",
     },
     landing: {
-      headline: "Still training around a back, knee or shoulder injury?",
+      headline: "Get back to training hard, without the pain coming back",
       subheadline:
-        "Tell Zack what hurts and what you want to get back to. He's a certified athletic therapist and a fighter, and he replies within 24 hours with how he'd approach your rehab.",
+        "Stop skipping the lifts that hurt and warming up for twenty minutes just to get through a session. Tell Zack what hurts and you'll hear back within 24 hours.",
       formTitle: "Tell Zack about your injury",
       cta: "Start my rehab",
     },
@@ -83,9 +83,9 @@ const offers = [
     summary: "A personalized training and nutrition program from Zack, with coaching by text and email.",
     sales: {
       callout: "For people who want to lose fat, build muscle or both, and stick with it this time",
-      headline: "1:1 coaching for people who are tired of starting over",
+      headline: "Get stronger every month and stay consistent, even if you've started over before",
       subheadline:
-        "You get a training and nutrition plan built around your body and your schedule, a coach you can text when you're stuck, and bi-weekly meetings that keep you on track. Zack adjusts the plan as you progress, so you keep moving forward instead of stalling.",
+        "Watch the weights go up, lose the fat that's been hanging around, and keep going on the weeks you'd normally quit, with a plan that fits your body, your schedule and your old injuries.",
       problemTitle: "You know you should be further along by now",
       problem: [
         "You've tried the apps, the YouTube programs and the 12-week challenges. You start strong and see some progress. Then work gets busy, you miss a week, and it slides. A few months later you're back at the start.",
@@ -126,8 +126,8 @@ const offers = [
       cta: "Apply now",
     },
     landing: {
-      headline: "Tired of starting over every few months?",
-      subheadline: "Tell Zack your goal and your schedule. He replies within 24 hours with how 1:1 coaching would work for you.",
+      headline: "Get stronger every month and stay consistent this time",
+      subheadline: "A plan built around your life means you keep making progress instead of starting over every few months. Tell Zack your goal and you'll hear back within 24 hours.",
       formTitle: "Tell Zack your goal",
       cta: "Apply now",
     },
@@ -141,9 +141,9 @@ const offers = [
     summary: "A nutrition plan built around how you already eat, with recipes, check-ins and adjustments.",
     sales: {
       callout: "For people who've lost weight before and watched it come back",
-      headline: "Nutrition coaching for people who are done losing the same 20 pounds",
+      headline: "Lose the weight for good, even if you've lost it and gained it back before",
       subheadline:
-        "Zack builds your plan around how you already eat, dinners out and the odd glass of wine included, then adjusts it with you until the weight comes off and stays off. His clients have lost anywhere from 20 to 74 lb.",
+        "Keep eating the food you like, enjoy dinners out and the odd glass of wine, and watch the weight come off and stay off. Clients have lost anywhere from 20 to 74 lb.",
       problemTitle: "You've lost weight before, and it came back every time",
       problem: [
         "Keto, counting points, shakes, no carbs after 6pm. Each one worked for a while. Then came a holiday, a stressful month or a birthday dinner, the rules fell apart, and the weight came back with a few extra pounds.",
@@ -182,8 +182,8 @@ const offers = [
       cta: "Start my plan",
     },
     landing: {
-      headline: "Lost the same weight more than once?",
-      subheadline: "Tell Zack how you eat now and what your goal is. He replies within 24 hours with how he'd help you lose it and keep it off.",
+      headline: "Lose the weight for good, without giving up dinners out",
+      subheadline: "No foods banned, no starting over every Monday, and results that last after the plan ends. Tell Zack your goal and you'll hear back within 24 hours.",
       formTitle: "Tell Zack your goal",
       cta: "Start my plan",
     },
@@ -197,9 +197,9 @@ const offers = [
     summary: "Weight cut, rehydration and fight-week support for amateur and pro fighters.",
     sales: {
       callout: "For amateur and pro fighters in camp",
-      headline: "Weight cut coaching for fighters who want to make weight and still feel strong on fight night",
+      headline: "Make weight and still feel strong on fight night",
       subheadline:
-        "Zack is a fighter with 50+ bouts and a certified athletic therapist. He plans your cut across your whole camp, builds a rehydration protocol for your body, and supports you through fight day.",
+        "Step on the scale on weight without a last-week panic, rehydrate properly, and walk out with all the strength and cardio you built in camp still in your legs.",
       problemTitle: "Your last cut cost you more than the weight",
       problem: [
         "You spent the last week of camp hungry, spitting and sitting in a sauna suit. You made weight, barely. Then you woke up on fight day flat and heavy-legged, and you were tired by the second round.",
@@ -238,8 +238,8 @@ const offers = [
       cta: "Plan my cut",
     },
     landing: {
-      headline: "Got a fight coming up and weight to cut?",
-      subheadline: "Tell Zack your weight class, your fight date and where your weight is now. He replies within 24 hours with how he'd plan your cut.",
+      headline: "Make weight and feel like yourself on fight night",
+      subheadline: "A cut planned across your whole camp, so you don't spend fight week starving and walk out flat. Send your weight class and fight date and you'll hear back within 24 hours.",
       formTitle: "Tell Zack about your fight",
       cta: "Plan my cut",
     },
@@ -253,9 +253,9 @@ const offers = [
     summary: "A 10-week workout plan and nutrition guide, coached by Zack, in a group of 5 to 20 people.",
     sales: {
       callout: "For people who want coaching and accountability without paying for 1:1",
-      headline: "A 10-week group program for people who train harder when someone's counting on them",
+      headline: "Get fitter and stronger in 10 weeks, with a group that keeps you showing up",
       subheadline:
-        "You get a 10-week workout plan, a nutrition guide with recipes and bi-weekly check-ins from Zack, with a group of 5 to 20 people going through it with you.",
+        "Know exactly what to do every session, eat in a way that supports it, and stay consistent because people are expecting you, for less than 1:1 coaching.",
       problemTitle: "It's hard to stay consistent when nobody notices if you skip",
       problem: [
         "You know roughly what to do. But on your own it's easy to push the workout to tomorrow, skip the last set, or let one missed week turn into a month.",
@@ -293,8 +293,8 @@ const offers = [
       cta: "Join the group",
     },
     landing: {
-      headline: "Want coaching and people to train with, without 1:1 prices?",
-      subheadline: "Leave your details and Zack will let you know when the next 10-week group opens.",
+      headline: "Get fit in 10 weeks, with a group that keeps you going",
+      subheadline: "A plan to follow, simple nutrition and people who expect you to show up, for less than 1:1 coaching. Leave your details to hear when the next group opens.",
       formTitle: "Join the next group",
       cta: "Join the group",
     },
