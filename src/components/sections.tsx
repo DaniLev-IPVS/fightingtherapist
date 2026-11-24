@@ -47,7 +47,7 @@ export function Hero() {
           alt={heroAlt}
           fetchPriority="high"
           loading="eager"
-          className="absolute inset-0 -z-20 h-full w-full object-cover object-[50%_12%] md:object-[72%_25%]"
+          className="absolute inset-x-0 top-0 -z-20 h-[78svh] w-full object-cover object-[50%_0%] [mask-image:linear-gradient(to_bottom,#000_70%,transparent)] md:inset-0 md:h-full md:object-[72%_25%] md:[mask-image:none]"
         />
       </picture>
       <div aria-hidden="true" className="absolute inset-0 -z-10 bg-[linear-gradient(90deg,rgba(9,16,28,0.96)_0%,rgba(9,16,28,0.78)_36%,rgba(9,16,28,0.2)_64%,rgba(9,16,28,0)_100%)] max-md:bg-[linear-gradient(0deg,rgba(9,16,28,0.98)_0%,rgba(9,16,28,0.82)_48%,rgba(9,16,28,0.2)_82%)]" />
