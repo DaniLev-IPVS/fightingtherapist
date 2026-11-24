@@ -3,7 +3,7 @@ import Link from "next/link";
 import { offers } from "@/content/site";
 import { PageHero } from "@/components/page-hero";
 import { OfferBlock } from "@/components/programs";
-import { ContactBlock } from "@/components/sections";
+import { TalkCta } from "@/components/sections";
 import { Container } from "@/components/ui";
 
 export const metadata: Metadata = {
@@ -54,7 +54,7 @@ export default function ProgramsPage() {
         </Container>
       </section>
 
-      <ContactBlock pageType="programs" />
+      <TalkCta />
     </>
   );
 }

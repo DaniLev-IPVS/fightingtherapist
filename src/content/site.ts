@@ -48,8 +48,8 @@ export const serviceCards: {
     label: "Rehab",
     title: "Get out of pain for good",
     images: [
-      { src: "/images/services/rehab-1.jpg", alt: "Zack assessing a client's ankle on a treatment table" },
-      { src: "/images/services/rehab-2.jpg", alt: "Zack working on a client's hip" },
+      { src: "/images/programs/rehab.jpg", alt: "A therapist taping an athlete's shoulder" },
+      { src: "/images/services/rehab-1.jpg", alt: "Zack assessing a client's ankle" },
       { src: "/images/services/rehab-3.jpg", alt: "Zack testing a client's shoulder range of motion" },
     ],
   },
@@ -58,9 +58,9 @@ export const serviceCards: {
     label: "Training",
     title: "Build a body that holds up",
     images: [
+      { src: "/images/programs/training.jpg", alt: "A woman pushing a heavy sled across gym turf" },
       { src: "/images/services/train-1.jpg", alt: "Zack coaching a kettlebell floor press" },
       { src: "/images/services/train-2.jpg", alt: "Zack watching a client squat" },
-      { src: "/images/services/train-3.jpg", alt: "Zack coaching a core exercise on turf" },
     ],
   },
   {
@@ -68,18 +68,46 @@ export const serviceCards: {
     label: "Nutrition",
     title: "Lose fat or make weight",
     images: [
-      { src: "/images/services/nutrition-1.jpg", alt: "Zack portioning meal prep into containers" },
-      { src: "/images/services/fight-1.jpg", alt: "Zack celebrating a win in the fight arena" },
+      { src: "/images/programs/nutrition.jpg", alt: "Meal prep containers, a food scale and a meal plan" },
+      { src: "/images/services/nutrition-1.jpg", alt: "Zack portioning meal prep" },
     ],
   },
 ];
 
-/** "What brings you here?" doors, in the visitor's words. */
-export const goals: { key: ServiceKey; title: string; text: string }[] = [
-  { key: "rehab", title: "I'm injured", text: "Back, knee, shoulder, or a surgery you're coming back from." },
-  { key: "training", title: "I want to get strong", text: "A program built around your body, sport and schedule." },
-  { key: "nutrition", title: "I want to lose fat", text: "Eat for results without giving up the foods you love." },
-  { key: "fight-camp", title: "I have a fight", text: "Weight cut, rehydration and fight-week support." },
+/** "What brings you here?" panels: the visitor's problem, then the outcome they want. */
+export const goals: { key: ServiceKey; title: string; outcome: string; text: string; image: string; imageAlt: string }[] = [
+  {
+    key: "rehab",
+    title: "I'm injured",
+    outcome: "Train without pain again.",
+    text: "Back, knee, shoulder or post-surgery. A step-by-step plan that gets you moving and keeps the injury from coming back.",
+    image: "/images/goals/injured.jpg",
+    imageAlt: "A woman sprinting on an indoor track with tape on her knee",
+  },
+  {
+    key: "training",
+    title: "I want to get strong",
+    outcome: "Lift more. Move better.",
+    text: "A program built around your body, your sport and your schedule, adjusted every week as you progress.",
+    image: "/images/goals/strong.jpg",
+    imageAlt: "A man finishing a heavy deadlift in a dark gym",
+  },
+  {
+    key: "nutrition",
+    title: "I want to lose fat",
+    outcome: "Lose it and keep it off.",
+    text: "Eat for results without giving up dinners out. Clients have lost anywhere from 20 to 74 lb.",
+    image: "/images/goals/fat.jpg",
+    imageAlt: "A lean man smiling after a morning run by the water",
+  },
+  {
+    key: "fight-camp",
+    title: "I have a fight",
+    outcome: "Make weight. Fight strong.",
+    text: "Weight cut, rehydration and fight-week support from a coach with 50+ fights behind him.",
+    image: "/images/goals/fight.jpg",
+    imageAlt: "A fighter with wrapped hands walking out through an arena tunnel",
+  },
 ];
 
 export type Offer = {
@@ -91,6 +119,8 @@ export type Offer = {
   terms: string;
   image: string;
   imageAlt: string;
+  /** Short dream-outcome line for program cards. */
+  outcome: string;
 };
 
 /** Coaching offers kept in step 3 (all online). Copy from the current site, tightened. */
@@ -107,8 +137,9 @@ export const offers: Offer[] = [
       "Return-to-sport testing before you go back to full training",
     ],
     terms: "Monthly coaching. Apply to get your plan.",
-    image: "/images/zack/treating.jpg",
-    imageAlt: "Zack treating a client's ankle",
+    image: "/images/programs/rehab.jpg",
+    imageAlt: "A therapist taping an athlete's shoulder",
+    outcome: "Pain-free and back in the gym",
   },
   {
     key: "training",
@@ -123,8 +154,9 @@ export const offers: Offer[] = [
       "Advanced tier: two 30-minute video calls a month",
     ],
     terms: "Monthly, 3-month minimum. 25% off your last month on a 6-month commitment.",
-    image: "/images/zack/coaching.jpg",
-    imageAlt: "Zack coaching a client through a kettlebell press",
+    image: "/images/programs/training.jpg",
+    imageAlt: "A woman pushing a heavy sled across gym turf",
+    outcome: "Stronger every single month",
   },
   {
     key: "nutrition",
@@ -138,8 +170,9 @@ export const offers: Offer[] = [
       "Included in every coaching tier",
     ],
     terms: "Part of 1:1 coaching. Apply to get started.",
-    image: "/images/services/nutrition-1.jpg",
-    imageAlt: "Zack portioning meal prep",
+    image: "/images/programs/nutrition.jpg",
+    imageAlt: "Meal prep containers, a food scale and a meal plan",
+    outcome: "Leaner without crash diets",
   },
   {
     key: "fight-camp",
@@ -154,8 +187,9 @@ export const offers: Offer[] = [
       "Fight-day support",
     ],
     terms: "Priced to your camp. Travel not included.",
-    image: "/images/zack/fight-win.jpg",
-    imageAlt: "Zack with his arms raised after a win",
+    image: "/images/programs/fight.jpg",
+    imageAlt: "A fighter pulling on boxing gloves next to a scale",
+    outcome: "On weight and at full power",
   },
   {
     key: "group",
@@ -169,8 +203,9 @@ export const offers: Offer[] = [
       "Groups of 5 to 20 people",
     ],
     terms: "10 weeks. Next group opens when enough people join.",
-    image: "/images/zack/coaching-floor.jpg",
-    imageAlt: "Zack coaching a client on turf",
+    image: "/images/programs/group.jpg",
+    imageAlt: "A small group doing battle ropes and kettlebells together",
+    outcome: "Results with a crew behind you",
   },
 ];
 
@@ -180,6 +215,14 @@ export type Review = {
   quote: string;
   tag: "Rehab" | "Training" | "Nutrition" | "Fight camp";
   featured?: boolean;
+};
+
+/** Header image for each review card, by category. */
+export const reviewImages: Record<Review["tag"], string[]> = {
+  Rehab: ["/images/goals/injured.jpg", "/images/programs/rehab.jpg"],
+  Training: ["/images/goals/strong.jpg", "/images/programs/training.jpg"],
+  Nutrition: ["/images/goals/fat.jpg", "/images/programs/nutrition.jpg"],
+  "Fight camp": ["/images/programs/fight.jpg", "/images/goals/fight.jpg"],
 };
 
 /**
@@ -315,3 +358,18 @@ export const nav = [
   { href: "/about", label: "About Zack" },
   { href: "/contact", label: "Contact" },
 ];
+
+/** Recent Instagram reels (thumbnails saved from the old site's feed). */
+export const reels = [
+  { href: "https://www.instagram.com/reel/De7Ft7CiN-K/", image: "/images/reels/reel-1.jpg", title: "Your $150 pillow isn't fixing your neck pain" },
+  { href: "https://www.instagram.com/reel/DeQGM99E3lt/", image: "/images/reels/reel-2.jpg", title: "What an ankle dislocation really means" },
+  { href: "https://www.instagram.com/reel/DdUNK6lp3j3/", image: "/images/reels/reel-5.jpg", title: "Two types of pain every fighter should know" },
+  { href: "https://www.instagram.com/reel/Dc3gmBbptYF/", image: "/images/reels/reel-9.jpg", title: "Why resting your back injury backfires" },
+  { href: "https://www.instagram.com/reel/DdW6PSRpxcY/", image: "/images/reels/reel-4.jpg", title: "The overhand right that finished Benn" },
+  { href: "https://www.instagram.com/reel/Dc_TZxLJfho/", image: "/images/reels/reel-7.jpg", title: "Back pain: mistakes #1 and #2" },
+  { href: "https://www.instagram.com/reel/DdB_InwpRiC/", image: "/images/reels/reel-6.jpg", title: "The biggest lie you were told about tilts" },
+  { href: "https://www.instagram.com/reel/Dc6TTiJpraA/", image: "/images/reels/reel-8.jpg", title: "The phrase I never want patients to hear" },
+];
+
+export const instagram = { handle: "@the.fighting.therapist", followers: "2.6K", posts: "490" };
+

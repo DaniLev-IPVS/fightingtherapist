@@ -99,3 +99,18 @@
     text-transform: uppercase;
   }
 }
+
+@layer components {
+  /* "What brings you here?" panels: the hovered or focused panel opens wide,
+     the first one is open when nothing is hovered. Phones stack them. */
+  @media (min-width: 768px) {
+    .goal-panel { flex: 1 1 0; transition: flex-grow 0.5s ease-out; }
+    .goal-panels:not(:hover):not(:focus-within) .goal-panel:first-child,
+    .goal-panel:hover,
+    .goal-panel:focus-visible { flex-grow: 2.6; }
+    .goal-text { max-height: 0; opacity: 0; overflow: hidden; transition: max-height 0.5s ease, opacity 0.4s ease; }
+    .goal-panels:not(:hover):not(:focus-within) .goal-panel:first-child .goal-text,
+    .goal-panel:hover .goal-text,
+    .goal-panel:focus-visible .goal-text { max-height: 10rem; opacity: 1; }
+  }
+}

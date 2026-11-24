@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { reviews, site } from "@/content/site";
 import { PageHero } from "@/components/page-hero";
-import { ContactBlock, ReviewCard, StatsBand } from "@/components/sections";
+import { ReviewCard, StatsRow, TalkCta, imageForReview } from "@/components/sections";
 import { Button, Container, Stars } from "@/components/ui";
 
 export const metadata: Metadata = {
@@ -40,7 +40,7 @@ export default function ResultsPage() {
         <Container className="flex flex-col gap-6">
           <div className="grid gap-5 lg:grid-cols-3">
             {featured.map((r) => (
-              <ReviewCard key={r.name} review={r} large />
+              <ReviewCard key={r.name} review={r} image={imageForReview(r, 0)} />
             ))}
           </div>
           <div className="columns-1 gap-5 md:columns-2 lg:columns-3 [&>*]:mb-5 [&>*]:break-inside-avoid">
@@ -54,8 +54,12 @@ export default function ResultsPage() {
         </Container>
       </section>
 
-      <StatsBand />
-      <ContactBlock title="Want results like these?" pageType="other" />
+      <section aria-label="Zack in numbers" className="bg-charcoal py-12">
+        <Container>
+          <StatsRow dark />
+        </Container>
+      </section>
+      <TalkCta title="Want results like these?" />
     </>
   );
 }

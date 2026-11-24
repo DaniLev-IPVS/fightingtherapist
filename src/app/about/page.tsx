@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import { PageHero } from "@/components/page-hero";
-import { ContactBlock, Press, StatsBand } from "@/components/sections";
-import { Button, Container, Eyebrow } from "@/components/ui";
+import { Press, StatsRow, TalkCta } from "@/components/sections";
+import { Container, Eyebrow } from "@/components/ui";
 
 export const metadata: Metadata = {
   title: "About Zack",
@@ -74,17 +74,14 @@ export default function AboutPage() {
         </Container>
       </section>
 
-      <StatsBand />
-      <Press />
-
-      <section className="bg-paper py-20">
-        <Container className="flex flex-col items-start justify-between gap-6 md:flex-row md:items-center">
-          <h2 className="display text-[40px] text-charcoal sm:text-[52px]">Ready to work with Zack?</h2>
-          <Button href="/programs" size="lg">Find your program</Button>
+      <section aria-label="Zack in numbers" className="bg-charcoal py-12">
+        <Container>
+          <StatsRow dark />
         </Container>
       </section>
+      <Press />
 
-      <ContactBlock title="Questions first? Ask Zack." pageType="other" />
+      <TalkCta title="Ready to get started?" />
     </>
   );
 }

@@ -1,18 +1,7 @@
-import {
-  ContactBlock,
-  Goals,
-  Hero,
-  HowItWorks,
-  MeetZack,
-  Press,
-  ProofBar,
-  SocialStrip,
-  StatsBand,
-  Testimonials,
-} from "@/components/sections";
+import { Goals, Hero, Press, ProofBar, RecentlyPosted, TalkCta, Testimonials, WhyItWorks } from "@/components/sections";
 import { ProgramShelf } from "@/components/programs";
 
-/** Section order approved in step 3, round 2. */
+/** Section order from Daniel's round-3 notes: outcome first, Zack only as proof. */
 export default function Home() {
   return (
     <>
@@ -20,13 +9,11 @@ export default function Home() {
       <ProofBar />
       <Testimonials />
       <Goals />
-      <StatsBand />
-      <MeetZack />
-      <HowItWorks />
+      <WhyItWorks />
       <ProgramShelf />
       <Press />
-      <SocialStrip />
-      <ContactBlock />
+      <RecentlyPosted />
+      <TalkCta />
     </>
   );
 }
