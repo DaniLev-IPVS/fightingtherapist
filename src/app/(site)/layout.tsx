@@ -1,6 +1,7 @@
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import { AttributionCapture } from "@/components/attribution-capture";
+import { ScrollEffects } from "@/components/scroll-effects";
 import { StickyCta } from "@/components/sticky-cta";
 
 /** Public site chrome. The admin lives outside this group and has its own layout. */
@@ -18,6 +19,7 @@ export default function SiteLayout({ children }: Readonly<{ children: React.Reac
       <Footer />
       <StickyCta />
       <AttributionCapture />
+      <ScrollEffects />
     </>
   );
 }

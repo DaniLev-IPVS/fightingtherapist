@@ -28,19 +28,6 @@
   --font-sans: var(--font-source), "Segoe UI", Helvetica, Arial, sans-serif;
   --font-mono: var(--font-jetbrains), ui-monospace, Menlo, Consolas, monospace;
 
-  --animate-fade-3: fade-3 9s infinite;
-  --animate-fade-2: fade-2 6s infinite;
-
-  @keyframes fade-3 {
-    0% { opacity: 0; }
-    5%, 33% { opacity: 1; }
-    38%, 100% { opacity: 0; }
-  }
-  @keyframes fade-2 {
-    0% { opacity: 0; }
-    7%, 50% { opacity: 1; }
-    57%, 100% { opacity: 0; }
-  }
 }
 
 @layer base {
@@ -113,4 +100,92 @@
     .goal-panel:hover .goal-text,
     .goal-panel:focus-visible .goal-text { max-height: 10rem; opacity: 1; }
   }
+}
+
+/* ───────── Motion ───────── */
+
+@keyframes hero-fill {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+
+/* Hero slides cross-fade; the visible one slowly settles from a slight zoom. */
+.hero-slide {
+  opacity: 0;
+  transform: scale(1.07);
+  transition: opacity 1.2s ease, transform 9s cubic-bezier(0.2, 0.6, 0.2, 1);
+}
+.hero-slide.is-active {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Press names marquee. */
+.marquee-track { animation: marquee 28s linear infinite; }
+.marquee:hover .marquee-track { animation-play-state: paused; }
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+/* Scroll reveals (classes set by ScrollEffects; nothing is hidden without JavaScript). */
+@media (prefers-reduced-motion: no-preference) {
+  .reveal-ready [data-reveal]:not([data-done]) {
+    transition:
+      opacity 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) var(--reveal-delay, 0ms),
+      transform 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) var(--reveal-delay, 0ms),
+      clip-path 1s cubic-bezier(0.2, 0.7, 0.2, 1) var(--reveal-delay, 0ms);
+  }
+  .reveal-ready [data-reveal]:not([data-shown]) {
+    opacity: 0;
+    transform: translateY(32px);
+  }
+  .reveal-ready [data-reveal="zoom"]:not([data-shown]) { transform: scale(0.94); }
+  .reveal-ready [data-reveal="left"]:not([data-shown]) { transform: translateX(-40px); }
+  .reveal-ready [data-reveal="right"]:not([data-shown]) { transform: translateX(40px); }
+}
+
+/* Scroll-linked effects where the browser supports them (Chrome, Edge, Safari 26+). Others see the page still. */
+.scroll-progress { display: none; }
+@supports (animation-timeline: scroll()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .scroll-progress {
+      display: block;
+      animation: hero-fill linear both;
+      animation-timeline: scroll(root);
+    }
+    /* Hero photo drifts down slower than the page; the copy lifts and fades. */
+    .hero-parallax {
+      animation: hero-drift linear both;
+      animation-timeline: scroll(root);
+      animation-range: 0 100svh;
+    }
+    .hero-copy {
+      animation: hero-lift linear both;
+      animation-timeline: scroll(root);
+      animation-range: 0 80svh;
+    }
+    /* Section backgrounds move a little against the scroll. */
+    .parallax-bg {
+      animation: bg-drift linear both;
+      animation-timeline: view();
+    }
+  }
+}
+@keyframes hero-drift {
+  to { transform: translateY(18%) scale(1.04); }
+}
+@keyframes hero-lift {
+  to { transform: translateY(-70px); opacity: 0.25; }
+}
+@keyframes bg-drift {
+  from { transform: translateY(-9%) scale(1.18); }
+  to { transform: translateY(9%) scale(1.18); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track { animation: none; flex-wrap: wrap; width: auto; justify-content: center; }
+  .marquee-track > [aria-hidden="true"] { display: none; }
+  .marquee { mask-image: none !important; }
+  .hero-slide { transition: none; transform: none; }
 }

@@ -15,11 +15,23 @@ import {
 } from "@/content/site";
 import { Arrow, Button, Container, Eyebrow, SectionHeading, Stars, cn } from "@/components/ui";
 import { Scroller } from "@/components/scroller";
+import { HeroShow, type HeroCard } from "@/components/hero-show";
+import { CountUp } from "@/components/count-up";
 
 /* ───────────────────────── Hero ───────────────────────── */
 
 const heroAlt =
   "Zack Benbouchta with arms crossed in a dark training studio, with kettlebells and a heavy bag behind him";
+
+const SLIDES = [
+  { key: "rehab", src: "/images/hero/slide-rehab.jpg", alt: "A therapist taping an athlete's shoulder" },
+  { key: "training", src: "/images/hero/slide-training.jpg", alt: "A woman pushing a heavy sled across gym turf" },
+  { key: "nutrition", src: "/images/hero/slide-nutrition.jpg", alt: "Meal prep containers, a food scale and a meal plan" },
+];
+
+/** Mobile: photo across the top 78% fading into the copy. Desktop: full bleed behind the copy. */
+const slideImg =
+  "absolute inset-x-0 top-0 h-[78svh] w-full object-cover [mask-image:linear-gradient(to_bottom,#000_70%,transparent)] md:inset-0 md:h-full md:[mask-image:none]";
 
 export function Hero() {
   // Art direction: the wide studio shot from md up, the matching portrait on phones (the wide one goes soft there).
@@ -37,98 +49,63 @@ export function Hero() {
     sizes: "100vw",
   });
 
+  const backgrounds = [
+    <picture key="zack">
+      <source media="(min-width: 768px)" srcSet={wideSrcSet} sizes="100vw" />
+      <img
+        {...imgProps}
+        srcSet={portraitSrcSet}
+        alt={heroAlt}
+        fetchPriority="high"
+        loading="eager"
+        className={cn(slideImg, "object-[50%_0%] md:object-[72%_25%]")}
+      />
+    </picture>,
+    ...SLIDES.map((s) => {
+      const { props } = getImageProps({ alt: s.alt, src: s.src, width: 1792, height: 1008, quality: 85, sizes: "100vw" });
+      // eslint-disable-next-line @next/next/no-img-element -- getImageProps output, same as the Zack slide
+      return <img key={s.key} {...props} alt={s.alt} className={cn(slideImg, "object-[68%_50%] md:object-[62%_50%]")} />;
+    }),
+  ];
+
+  const cards: HeroCard[] = serviceCards.map((c) => ({
+    key: c.key,
+    label: c.label,
+    title: c.title,
+    href: `/programs#${c.key}`,
+    image: c.images[0].src,
+    alt: c.images[0].alt,
+  }));
+
   return (
-    <section className="relative isolate overflow-hidden bg-charcoal text-off-white">
-      <picture>
-        <source media="(min-width: 768px)" srcSet={wideSrcSet} sizes="100vw" />
-        <img
-          {...imgProps}
-          srcSet={portraitSrcSet}
-          alt={heroAlt}
-          fetchPriority="high"
-          loading="eager"
-          className="absolute inset-x-0 top-0 -z-20 h-[78svh] w-full object-cover object-[50%_0%] [mask-image:linear-gradient(to_bottom,#000_70%,transparent)] md:inset-0 md:h-full md:object-[72%_25%] md:[mask-image:none]"
-        />
-      </picture>
-      <div aria-hidden="true" className="absolute inset-0 -z-10 bg-[linear-gradient(90deg,rgba(9,16,28,0.96)_0%,rgba(9,16,28,0.78)_36%,rgba(9,16,28,0.2)_64%,rgba(9,16,28,0)_100%)] max-md:bg-[linear-gradient(0deg,rgba(9,16,28,0.98)_0%,rgba(9,16,28,0.82)_48%,rgba(9,16,28,0.2)_82%)]" />
-      <div aria-hidden="true" className="absolute inset-x-0 bottom-0 -z-10 h-56 bg-gradient-to-t from-charcoal to-transparent" />
-
-      <Container className="flex min-h-[94svh] flex-col justify-end pb-10 pt-32 md:pb-14 md:pt-40">
-        <div className="flex max-w-[640px] flex-col gap-6 max-md:mt-[34vh]">
-          <p className="eyebrow text-blue-pale">Online rehab · Training · Nutrition</p>
-          <h1 className="display text-[64px] leading-[0.88] sm:text-[96px] lg:text-[120px]">
-            Fight-tested
-            <br />
-            coaching.
-          </h1>
-          <p className="max-w-[44ch] text-[19px] text-mist sm:text-[21px]">
-            Get out of pain, get strong, get lean. A plan built around your body and your goal, coached by an athletic
-            therapist who has been in the fight.
-          </p>
-          <div className="flex flex-wrap items-center gap-3">
-            <Button href="/programs" size="lg">
-              Find your program <Arrow />
-            </Button>
-            <Button href="/contact" size="lg" variant="ghost-light">
-              Talk to Zack
-            </Button>
-          </div>
-          <p className="flex flex-wrap items-center gap-x-3 gap-y-1 font-mono text-[12px] uppercase tracking-[0.1em] text-steel-light">
-            <span className="inline-flex items-center gap-1.5 text-off-white">
-              <Stars className="text-[13px]" /> 5.0 from 69 reviews
-            </span>
-            <span aria-hidden="true">·</span>
-            <span>CAT(C) athletic therapist</span>
-            <span aria-hidden="true">·</span>
-            <span>50+ fights</span>
-          </p>
-        </div>
-
-        <ServiceCards className="mt-12 md:mt-16" />
-      </Container>
-    </section>
-  );
-}
-
-/** Three cards that each cycle through their photos, like Jeff Nippard's product row. */
-export function ServiceCards({ className }: { className?: string }) {
-  return (
-    <div className={cn("-mx-5 flex snap-x snap-mandatory gap-3 overflow-x-auto px-5 pb-2 [scrollbar-width:none] md:mx-0 md:grid md:grid-cols-3 md:gap-4 md:overflow-visible md:px-0", className)}>
-      {serviceCards.map((card) => {
-        const n = card.images.length;
-        const cycle = n === 3 ? "animate-fade-3" : "animate-fade-2";
-        const delays = n === 3 ? ["-1s", "2s", "5s"] : ["-0.5s", "2.5s"];
-        return (
-          <Link
-            key={card.key}
-            href={`/programs#${card.key}`}
-            className="group relative block aspect-[4/5] w-[74%] shrink-0 snap-start overflow-hidden rounded-[6px] bg-charcoal-2 ring-1 ring-white/10 md:aspect-[4/3] md:w-auto lg:aspect-[16/11]"
-          >
-            {card.images.map((img, i) => (
-              <Image
-                key={img.src}
-                src={img.src}
-                alt={i === 0 ? img.alt : ""}
-                fill
-                sizes="(min-width: 768px) 33vw, 74vw"
-                className={cn("object-cover transition-transform duration-700 group-hover:scale-[1.04]", cycle, i === 0 ? "opacity-100" : "opacity-0")}
-                style={{ animationDelay: delays[i] }}
-              />
-            ))}
-            <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-t from-ink/95 via-ink/30 to-transparent" />
-            <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-3 p-5">
-              <div className="flex flex-col gap-1">
-                <span className="eyebrow text-[11px] text-blue-pale">{card.label}</span>
-                <span className="display text-[26px] leading-[0.95] text-off-white sm:text-[30px]">{card.title}</span>
-              </div>
-              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-white/30 text-white transition-colors group-hover:border-blue group-hover:bg-blue">
-                <Arrow />
-              </span>
-            </div>
-          </Link>
-        );
-      })}
-    </div>
+    <HeroShow backgrounds={backgrounds} cards={cards} eyebrow={["Online rehab", "Training", "Nutrition"]}>
+      <h1 className="display text-[64px] leading-[0.88] sm:text-[96px] lg:text-[120px]">
+        Fight-tested
+        <br />
+        coaching.
+      </h1>
+      <p className="max-w-[44ch] text-[19px] text-mist sm:text-[21px]">
+        Get out of pain, get strong, get lean. A plan built around your body and your goal, coached by an athletic
+        therapist who has been in the fight.
+      </p>
+      <div className="flex flex-wrap items-center gap-3">
+        <Button href="/programs" size="lg">
+          Find your program <Arrow />
+        </Button>
+        <Button href="/contact" size="lg" variant="ghost-light">
+          Talk to Zack
+        </Button>
+      </div>
+      <p className="flex flex-wrap items-center gap-x-3 gap-y-1 font-mono text-[12px] uppercase tracking-[0.1em] text-steel-light">
+        <span className="inline-flex items-center gap-1.5 text-off-white">
+          <Stars className="text-[13px]" /> 5.0 from 69 reviews
+        </span>
+        <span aria-hidden="true">·</span>
+        <span>CAT(C) athletic therapist</span>
+        <span aria-hidden="true">·</span>
+        <span>50+ fights</span>
+      </p>
+    </HeroShow>
   );
 }
 
@@ -139,13 +116,20 @@ export function ProofBar() {
     <section aria-label="As seen on" className="border-y border-line-dark bg-charcoal py-8 text-steel-light">
       <Container className="flex flex-col items-center gap-5 md:flex-row md:justify-between">
         <p className="eyebrow shrink-0 text-[11px]">As seen on / fought for</p>
-        <ul className="flex flex-wrap items-center justify-center gap-x-10 gap-y-3 md:justify-end">
-          {pressLogos.map((name) => (
-            <li key={name} className="display text-[22px] tracking-[0.04em] text-mist/80 sm:text-[26px]">
-              {name}
-            </li>
-          ))}
-        </ul>
+        {/* Endless strip of names; it stops on hover and sits still for reduced motion. */}
+        <div className="marquee relative w-full min-w-0 overflow-hidden [mask-image:linear-gradient(90deg,transparent,#000_12%,#000_88%,transparent)] md:max-w-[720px]">
+          <ul className="marquee-track flex w-max items-center">
+            {[...pressLogos, ...pressLogos].map((name, i) => (
+              <li
+                key={`${name}-${i}`}
+                aria-hidden={i >= pressLogos.length}
+                className="display whitespace-nowrap px-6 text-[22px] tracking-[0.04em] text-mist/80 sm:text-[26px]"
+              >
+                {name}
+              </li>
+            ))}
+          </ul>
+        </div>
       </Container>
     </section>
   );
@@ -276,7 +260,7 @@ export function StatsRow({ dark = false, className }: { dark?: boolean; classNam
         <div key={s.label} className={cn("flex flex-col gap-1 border-l-2 pl-4", dark ? "border-blue" : "border-blue")}>
           <dt className="sr-only">{s.label}</dt>
           <dd className={cn("display flex items-baseline gap-1.5 text-[34px] leading-none", dark ? "text-off-white" : "text-charcoal")}>
-            {s.value}
+            <CountUp value={s.value} />
             {s.star && <Stars className="text-[13px]" label="stars" />}
           </dd>
           <dd className={cn("text-[13px]", dark ? "text-mist" : "text-steel")} aria-hidden="true">{s.label}</dd>
@@ -413,7 +397,7 @@ export function RecentlyPosted() {
 export function TalkCta({ title = "Not sure where to start?" }: { title?: string }) {
   return (
     <section id="talk" className="relative isolate overflow-hidden bg-charcoal py-20 text-off-white sm:py-24">
-      <Image src="/images/goals/strong.jpg" alt="" fill sizes="100vw" className="-z-20 object-cover object-center opacity-30" />
+      <Image src="/images/goals/strong.jpg" alt="" fill sizes="100vw" className="parallax-bg -z-20 object-cover object-center opacity-30" />
       <div aria-hidden="true" className="absolute inset-0 -z-10 bg-gradient-to-r from-charcoal via-charcoal/90 to-charcoal/60" />
       <Container className="flex flex-col items-start justify-between gap-8 md:flex-row md:items-end">
         <div className="flex max-w-[640px] flex-col gap-4">

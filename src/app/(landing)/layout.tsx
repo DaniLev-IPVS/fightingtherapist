@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { AttributionCapture } from "@/components/attribution-capture";
+import { ScrollEffects } from "@/components/scroll-effects";
 import { site } from "@/content/site";
 
 /** Landing pages: logo only, no menu, so the form is the one thing to do. */
@@ -25,6 +26,7 @@ export default function LandingLayout({ children }: Readonly<{ children: React.R
         </div>
       </footer>
       <AttributionCapture />
+      <ScrollEffects />
     </>
   );
 }
