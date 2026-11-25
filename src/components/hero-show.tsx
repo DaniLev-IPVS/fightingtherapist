@@ -200,7 +200,7 @@ export function HeroShow({
                     alt={card.alt}
                     fill
                     sizes="(min-width: 768px) 33vw, 74vw"
-                    className={cn("object-cover transition-transform duration-700 group-hover:scale-[1.04]", on && "scale-[1.04]")}
+                    className={cn("object-cover object-[74%_50%] transition-transform duration-700 group-hover:scale-[1.04] md:object-[70%_50%]", on && "scale-[1.04]")}
                   />
                   <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-t from-ink/95 via-ink/30 to-transparent" />
                   <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-3 p-5">

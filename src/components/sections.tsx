@@ -25,14 +25,18 @@ const heroAlt =
   "Zack Benbouchta with arms crossed in a dark training studio, with kettlebells and a heavy bag behind him";
 
 const SLIDES = [
-  { key: "rehab", src: "/images/hero/slide-rehab.jpg", alt: "A therapist taping an athlete's shoulder" },
-  { key: "training", src: "/images/hero/slide-training.jpg", alt: "A woman pushing a heavy sled across gym turf" },
-  { key: "nutrition", src: "/images/hero/slide-nutrition.jpg", alt: "Meal prep containers, a food scale and a meal plan" },
+  // pos: where each photo is anchored. Phones show a narrow slice, so it centres on the person who matters.
+  { key: "rehab", src: "/images/hero/slide-rehab-knee.jpg", alt: "An athlete on the gym floor with a bandaged knee, wincing through a band exercise while a therapist supports the knee", pos: "object-[80%_30%] md:object-[60%_40%]" },
+  { key: "training", src: "/images/hero/slide-training-duo.jpg", alt: "A muscular man and woman doing heavy dumbbell rows side by side", pos: "object-[62%_40%] md:object-[60%_40%]" },
+  { key: "nutrition", src: "/images/hero/slide-nutrition.jpg", alt: "Meal prep containers, a food scale and a meal plan", pos: "object-[68%_50%] md:object-[62%_50%]" },
 ];
 
-/** Mobile: photo across the top 78% fading into the copy. Desktop: full bleed behind the copy. */
+/**
+ * Mobile: photo across the top 78% fading into the copy. Desktop: one screen tall behind the copy,
+ * fading out behind the cards (sized to the whole section it would zoom in and crop heads).
+ */
 const slideImg =
-  "absolute inset-x-0 top-0 h-[78svh] w-full object-cover [mask-image:linear-gradient(to_bottom,#000_70%,transparent)] md:inset-0 md:h-full md:[mask-image:none]";
+  "absolute inset-x-0 top-0 h-[78svh] w-full object-cover [mask-image:linear-gradient(to_bottom,#000_70%,transparent)] md:h-[100svh] md:[mask-image:linear-gradient(to_bottom,#000_78%,transparent)]";
 
 export function Hero() {
   // Art direction: the wide studio shot from md up, the matching portrait on phones (the wide one goes soft there).
@@ -65,7 +69,7 @@ export function Hero() {
     ...SLIDES.map((s) => {
       const { props } = getImageProps({ alt: s.alt, src: s.src, width: 1792, height: 1008, quality: 85, sizes: "100vw" });
       // eslint-disable-next-line @next/next/no-img-element -- getImageProps output, same as the Zack slide
-      return <img key={s.key} {...props} alt={s.alt} className={cn(slideImg, "object-[68%_50%] md:object-[62%_50%]")} />;
+      return <img key={s.key} {...props} alt={s.alt} className={cn(slideImg, s.pos)} />;
     }),
   ];
 
@@ -74,8 +78,9 @@ export function Hero() {
     label: c.label,
     title: c.title,
     href: `/programs#${c.key}`,
-    image: c.images[0].src,
-    alt: c.images[0].alt,
+    // The card shows the same picture as its hero slide, cropped to the people on the right.
+    image: SLIDES.find((s) => s.key === c.key)?.src ?? c.images[0].src,
+    alt: SLIDES.find((s) => s.key === c.key)?.alt ?? c.images[0].alt,
   }));
 
   return (
