@@ -74,6 +74,34 @@ export const serviceCards: {
   },
 ];
 
+/**
+ * Homepage hero, one entry per slide: Zack first, then rehab, training and
+ * nutrition (same order as serviceCards). Headline = what the visitor gets;
+ * subheadline = why they aren't there yet and what changes.
+ */
+export const heroCopy = [
+  {
+    headline: "Fight-tested coaching.",
+    sub: "Get out of pain, get strong, get lean. A plan built around your body and your goal, coached by an athletic therapist who has been in the fight.",
+    cta: { label: "Find your program", href: "/programs" },
+  },
+  {
+    headline: "Get back to the sport you love.",
+    sub: "Most injuries come back because the pain gets treated and the strength around it never gets rebuilt. Your plan fixes both, so you go back stronger than before.",
+    cta: { label: "See the rehab program", href: "/programs/rehab" },
+  },
+  {
+    headline: "Build the body you want.",
+    sub: "Most people stall because their program wasn't built for their body. Yours is, and your lifts get checked every week so you keep progressing.",
+    cta: { label: "See 1:1 coaching", href: "/programs/training" },
+  },
+  {
+    headline: "Feel good in your body again.",
+    sub: "No meal plan you'll quit in two weeks. Food you like, portions that fit your goal, and weekly check-ins that keep the weight off.",
+    cta: { label: "See nutrition coaching", href: "/programs/nutrition" },
+  },
+];
+
 /** "What brings you here?" panels: the visitor's problem, then the outcome they want. */
 export const goals: { key: ServiceKey; title: string; outcome: string; text: string; image: string; imageAlt: string }[] = [
   {

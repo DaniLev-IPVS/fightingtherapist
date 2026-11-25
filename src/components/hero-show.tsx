@@ -3,9 +3,11 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState, useSyncExternalStore, type ReactNode } from "react";
-import { Arrow, Container, cn } from "@/components/ui";
+import { Arrow, Button, Container, cn } from "@/components/ui";
 
 export type HeroCard = { key: string; label: string; title: string; href: string; image: string; alt: string };
+/** Words for one slide: its own headline, subheadline and main button. */
+export type HeroCopy = { headline: string; sub: string; cta: { label: string; href: string } };
 
 const DURATION = 6500;
 const MOTION = "(prefers-reduced-motion: reduce)";
@@ -25,12 +27,15 @@ const subscribeMotion = (cb: () => void) => {
 export function HeroShow({
   backgrounds,
   cards,
+  copy,
   eyebrow,
   children,
 }: {
   backgrounds: ReactNode[];
   cards: HeroCard[];
+  copy: HeroCopy[];
   eyebrow: string[];
+  /** The proof line under the buttons, the same on every slide. */
   children: ReactNode;
 }) {
   const count = backgrounds.length;
@@ -85,7 +90,7 @@ export function HeroShow({
       <div aria-hidden="true" className="absolute inset-x-0 bottom-0 -z-10 h-56 bg-gradient-to-t from-charcoal to-transparent" />
 
       <Container className="flex min-h-[94svh] flex-col justify-end pb-10 pt-32 md:pb-14 md:pt-40">
-        <div className="hero-copy flex max-w-[640px] flex-col gap-6 max-md:mt-[34vh]">
+        <div className="hero-copy flex max-w-[720px] flex-col gap-6 max-md:mt-[34vh]">
           <p className="eyebrow flex flex-wrap gap-x-2 text-blue-pale">
             {eyebrow.map((word, i) => (
               <span key={word} className="contents">
@@ -94,6 +99,34 @@ export function HeroShow({
               </span>
             ))}
           </p>
+          {/* Every slide's words sit in the same grid cell, so the block keeps the height of the longest and nothing jumps. */}
+          <div className="grid">
+            {copy.map((c, i) => {
+              const on = i === active;
+              const Heading = i === 0 ? "h1" : "p";
+              return (
+                <div
+                  key={c.headline}
+                  aria-hidden={!on}
+                  className={cn(
+                    "col-start-1 row-start-1 flex flex-col gap-6 transition-[opacity,transform] duration-700",
+                    on ? "translate-y-0 opacity-100" : "pointer-events-none translate-y-3 opacity-0",
+                  )}
+                >
+                  <Heading className="display text-[52px] leading-[0.9] sm:text-[80px] lg:text-[100px]">{c.headline}</Heading>
+                  <p className="max-w-[46ch] text-[18px] text-mist sm:text-[20px]">{c.sub}</p>
+                  <div className="flex flex-wrap items-center gap-3">
+                    <Button href={c.cta.href} size="lg" tabIndex={on ? undefined : -1}>
+                      {c.cta.label} <Arrow />
+                    </Button>
+                    <Button href="/contact" size="lg" variant="ghost-light" tabIndex={on ? undefined : -1}>
+                      Talk to Zack
+                    </Button>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
           {children}
         </div>
 

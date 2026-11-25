@@ -2,6 +2,7 @@ import Image, { getImageProps } from "next/image";
 import Link from "next/link";
 import {
   goals,
+  heroCopy,
   instagram,
   press,
   pressLogos,
@@ -78,24 +79,7 @@ export function Hero() {
   }));
 
   return (
-    <HeroShow backgrounds={backgrounds} cards={cards} eyebrow={["Online rehab", "Training", "Nutrition"]}>
-      <h1 className="display text-[64px] leading-[0.88] sm:text-[96px] lg:text-[120px]">
-        Fight-tested
-        <br />
-        coaching.
-      </h1>
-      <p className="max-w-[44ch] text-[19px] text-mist sm:text-[21px]">
-        Get out of pain, get strong, get lean. A plan built around your body and your goal, coached by an athletic
-        therapist who has been in the fight.
-      </p>
-      <div className="flex flex-wrap items-center gap-3">
-        <Button href="/programs" size="lg">
-          Find your program <Arrow />
-        </Button>
-        <Button href="/contact" size="lg" variant="ghost-light">
-          Talk to Zack
-        </Button>
-      </div>
+    <HeroShow backgrounds={backgrounds} cards={cards} copy={heroCopy} eyebrow={["Online rehab", "Training", "Nutrition"]}>
       <p className="flex flex-wrap items-center gap-x-3 gap-y-1 font-mono text-[12px] uppercase tracking-[0.1em] text-steel-light">
         <span className="inline-flex items-center gap-1.5 text-off-white">
           <Stars className="text-[13px]" /> 5.0 from 69 reviews
