@@ -2,22 +2,23 @@ import Image, { getImageProps } from "next/image";
 import Link from "next/link";
 import {
   goals,
+  googleRating,
   heroCopy,
   instagram,
   press,
   pressLogos,
   reels,
-  reviewImages,
-  reviews,
   serviceCards,
   site,
   stats,
+  wallReviews,
   type Review,
 } from "@/content/site";
 import { Arrow, Button, Container, Eyebrow, SectionHeading, Stars, cn } from "@/components/ui";
 import { Scroller } from "@/components/scroller";
 import { HeroShow, type HeroCard } from "@/components/hero-show";
 import { CountUp } from "@/components/count-up";
+import { ReviewWall } from "@/components/review-wall";
 
 /* ───────────────────────── Hero ───────────────────────── */
 
@@ -164,42 +165,12 @@ export function ReviewCard({
   );
 }
 
-/** Pick a header image per review, alternating within each category. */
-export function imageForReview(review: Review, index: number) {
-  const list = reviewImages[review.tag];
-  return list[index % list.length];
-}
-
+/** Homepage reviews: no title, the rating and the clients do the talking. */
 export function Testimonials() {
-  const counts: Record<string, number> = {};
   return (
-    <section className="bg-off-white py-20 sm:py-28">
-      <Container className="flex flex-col gap-10">
-        <div className="flex flex-col justify-between gap-6 md:flex-row md:items-end">
-          <SectionHeading eyebrow="Results" title={<>Real clients.<br />Real comebacks.</>} />
-          <a
-            href={site.googleReviewsUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-4 self-start rounded-[6px] border border-line bg-paper px-5 py-4 transition-colors hover:border-blue md:self-auto"
-          >
-            <span className="display text-[44px] leading-none text-charcoal">5.0</span>
-            <span className="flex flex-col gap-1">
-              <Stars className="text-[16px]" />
-              <span className="text-[14px] text-steel">69 Google reviews · read them all</span>
-            </span>
-          </a>
-        </div>
-        <Scroller label="client reviews">
-          {reviews.map((r) => {
-            counts[r.tag] = (counts[r.tag] ?? -1) + 1;
-            return (
-              <div key={r.name} className="w-[290px] shrink-0 snap-start sm:w-[330px]">
-                <ReviewCard review={r} image={imageForReview(r, counts[r.tag])} clamp />
-              </div>
-            );
-          })}
-        </Scroller>
+    <section className="overflow-x-clip bg-off-white py-20 sm:py-28">
+      <Container>
+        <ReviewWall reviews={wallReviews} score={googleRating.score} count={googleRating.count} googleUrl={site.googleReviewsUrl} />
       </Container>
     </section>
   );
@@ -218,6 +189,7 @@ export function Goals() {
             <Link
               key={g.key}
               href={`/programs#${g.key}`}
+              data-glow
               className="goal-panel group/panel relative flex h-[340px] overflow-hidden rounded-[6px] bg-charcoal-2 md:h-auto"
             >
               <Image src={g.image} alt={g.imageAlt} fill sizes="(min-width: 768px) 50vw, 100vw" className="object-cover transition-transform duration-700 group-hover/panel:scale-[1.03]" />
@@ -264,8 +236,8 @@ export function WhyItWorks() {
     <section className="bg-paper py-16 sm:py-20">
       <Container className="flex flex-col gap-10">
         <div className="grid items-center gap-8 md:grid-cols-[220px_1fr] lg:grid-cols-[260px_1fr_auto] lg:gap-12">
-          <div className="relative aspect-square w-[160px] overflow-hidden rounded-[6px] bg-charcoal md:w-full">
-            <Image src="/images/zack/fight-punch.jpg" alt="Zack landing a punch during a Karate Combat fight" fill sizes="260px" className="object-cover object-[62%_center]" />
+          <div data-reveal="zoom" className="relative aspect-square w-[160px] overflow-hidden rounded-[6px] bg-charcoal md:w-full">
+            <Image src="/images/zack/fight-punch.jpg" alt="Zack landing a punch during a Karate Combat fight" fill sizes="260px" className="parallax-bg object-cover object-[62%_center]" />
           </div>
           <div className="flex flex-col gap-3">
             <Eyebrow>Why it works</Eyebrow>
@@ -301,8 +273,9 @@ export function Press({ tone = "light" }: { tone?: "light" | "dark" }) {
               href={p.href}
               target="_blank"
               rel="noopener noreferrer"
+              data-tilt
               className={cn(
-                "group flex flex-col overflow-hidden rounded-[6px] border transition-colors",
+                "group relative flex flex-col overflow-hidden rounded-[6px] border transition-colors",
                 dark ? "border-line-dark bg-charcoal-2 hover:border-blue" : "border-line bg-paper hover:border-charcoal",
               )}
             >
@@ -365,6 +338,7 @@ export function RecentlyPosted() {
               href={r.href}
               target="_blank"
               rel="noopener noreferrer"
+              data-tilt
               className={cn("group relative block aspect-[9/16] w-[200px] shrink-0 snap-start overflow-hidden rounded-[10px] bg-charcoal ring-1 ring-white/10 sm:w-[220px]", i % 2 === 1 && "md:mt-10")}
             >
               <Image src={r.image} alt="" fill sizes="220px" className="object-cover transition-transform duration-500 group-hover:scale-105" />

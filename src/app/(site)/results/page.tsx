@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
-import { reviews, site } from "@/content/site";
+import { googleRating, site, wallReviews } from "@/content/site";
 import { PageHero } from "@/components/page-hero";
-import { ReviewCard, StatsRow, TalkCta, imageForReview } from "@/components/sections";
-import { Button, Container, Stars } from "@/components/ui";
+import { StatsRow, TalkCta } from "@/components/sections";
+import { ReviewWall } from "@/components/review-wall";
+import { Container, Stars } from "@/components/ui";
 
 export const metadata: Metadata = {
   title: "Results",
@@ -10,8 +11,6 @@ export const metadata: Metadata = {
 };
 
 export default function ResultsPage() {
-  const featured = reviews.filter((r) => r.featured);
-  const rest = reviews.filter((r) => !r.featured);
   return (
     <>
       <PageHero
@@ -36,21 +35,10 @@ export default function ResultsPage() {
         </a>
       </PageHero>
 
-      <section className="bg-off-white py-20 sm:py-28">
-        <Container className="flex flex-col gap-6">
-          <div className="grid gap-5 lg:grid-cols-3">
-            {featured.map((r) => (
-              <ReviewCard key={r.name} review={r} image={imageForReview(r, 0)} />
-            ))}
-          </div>
-          <div className="columns-1 gap-5 md:columns-2 lg:columns-3 [&>*]:mb-5 [&>*]:break-inside-avoid">
-            {rest.map((r) => (
-              <ReviewCard key={r.name} review={r} />
-            ))}
-          </div>
-          <div className="flex justify-center pt-6">
-            <Button href={site.googleReviewsUrl} variant="ghost-dark">Read all 69 reviews on Google</Button>
-          </div>
+      <section className="overflow-x-clip bg-off-white py-16 sm:py-24">
+        <Container>
+          {/* The hero above already shows the rating, so the wall starts at the filters. */}
+          <ReviewWall reviews={wallReviews} score={googleRating.score} count={googleRating.count} googleUrl={site.googleReviewsUrl} rating={false} />
         </Container>
       </section>
 

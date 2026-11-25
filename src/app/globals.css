@@ -145,6 +145,98 @@
   .reveal-ready [data-reveal="right"]:not([data-shown]) { transform: translateX(40px); }
 }
 
+/* Section headings wipe up from their baseline as they arrive. */
+@media (prefers-reduced-motion: no-preference) {
+  .reveal-ready h2[data-reveal]:not([data-shown]) { clip-path: inset(0 0 100% 0); transform: translateY(0.45em); }
+  .reveal-ready h2[data-reveal][data-shown]:not([data-done]) { clip-path: inset(-0.2em -0.1em); }
+}
+
+/* ───────── Review wall ───────── */
+
+/* A window onto the columns: clipped, faded at the top and bottom, with room at the sides for hover shadows. */
+.review-wall.is-windowed {
+  height: min(76svh, 640px);
+  overflow: clip;
+  margin-inline: -14px;
+  padding: 6px 14px 0;
+  mask-image: linear-gradient(to bottom, transparent, #000 6%, #000 76%, transparent);
+}
+@media (min-width: 1024px) {
+  .review-wall.is-windowed { height: 760px; }
+}
+/* Each track holds the cards twice, so sliding it by half loops without a seam. */
+.wall-track.is-drifting {
+  animation: wall-drift var(--wall-duration, 120s) linear infinite;
+  will-change: transform;
+}
+.review-wall[data-paused] .wall-track { animation-play-state: paused; }
+@media (hover: hover) {
+  .review-wall:hover .wall-track { animation-play-state: paused; }
+}
+@keyframes wall-drift {
+  to { transform: translateY(-50%); }
+}
+.wall-swap { animation: wall-swap 0.5s cubic-bezier(0.2, 0.7, 0.2, 1); }
+@keyframes wall-swap {
+  from { opacity: 0; transform: translateY(18px); }
+}
+.review-card {
+  transition: transform 0.3s cubic-bezier(0.2, 0.7, 0.2, 1), box-shadow 0.3s ease, border-color 0.2s ease;
+}
+@media (hover: hover) {
+  .review-card:hover { transform: translateY(-4px); box-shadow: 0 18px 40px -18px rgb(9 16 28 / 0.45); }
+}
+.review-card:active { transform: scale(0.985); }
+
+.review-dialog[open] { animation: dialog-in 0.32s cubic-bezier(0.2, 0.7, 0.2, 1); }
+.review-dialog::backdrop {
+  background: rgb(9 16 28 / 0.74);
+  backdrop-filter: blur(6px);
+  animation: backdrop-in 0.3s ease;
+}
+@keyframes dialog-in {
+  from { opacity: 0; transform: translateY(26px) scale(0.97); }
+}
+@keyframes backdrop-in {
+  from { opacity: 0; }
+}
+/* Stepping to the next or previous review slides it in from that side. */
+.review-swap { animation: review-swap 0.35s cubic-bezier(0.2, 0.7, 0.2, 1); }
+@keyframes review-swap {
+  from { opacity: 0; transform: translateX(var(--swap-from, 28px)); }
+}
+html:has(.review-dialog[open]) { overflow: hidden; }
+
+/* ───────── Pointer effects (set by ScrollEffects; mouse only) ───────── */
+
+.arrow { transition: transform 0.25s cubic-bezier(0.2, 0.7, 0.2, 1); }
+@media (hover: hover) {
+  :is(a, button):hover .arrow { transform: translateX(4px); }
+}
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  /* Cards lean toward the pointer and settle back when it leaves. */
+  [data-tilt] {
+    transform: perspective(1000px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+    transition: transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1), border-color 0.2s ease;
+  }
+  [data-tilt][data-tilting] { transition-duration: 0.12s, 0.2s; }
+  /* A soft light follows the pointer across the card. */
+  [data-tilt]::after,
+  [data-glow]::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    border-radius: inherit;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    background: radial-gradient(380px circle at var(--px, 50%) var(--py, 50%), rgb(124 200 240 / 0.22), transparent 65%);
+  }
+  [data-tilt]:hover::after,
+  [data-glow]:hover::after { opacity: 1; }
+}
+
 /* Scroll-linked effects where the browser supports them (Chrome, Edge, Safari 26+). Others see the page still. */
 .scroll-progress { display: none; }
 @supports (animation-timeline: scroll()) {
@@ -188,4 +280,6 @@
   .marquee-track > [aria-hidden="true"] { display: none; }
   .marquee { mask-image: none !important; }
   .hero-slide { transition: none; transform: none; }
+  .wall-track.is-drifting { animation: none; }
 }
+

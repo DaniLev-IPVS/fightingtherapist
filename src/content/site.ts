@@ -245,14 +245,6 @@ export type Review = {
   featured?: boolean;
 };
 
-/** Header image for each review card, by category. */
-export const reviewImages: Record<Review["tag"], string[]> = {
-  Rehab: ["/images/goals/injured.jpg", "/images/programs/rehab.jpg"],
-  Training: ["/images/goals/strong.jpg", "/images/programs/training.jpg"],
-  Nutrition: ["/images/goals/fat.jpg", "/images/programs/nutrition.jpg"],
-  "Fight camp": ["/images/programs/fight.jpg", "/images/goals/fight.jpg"],
-};
-
 /**
  * Excerpts from Zack's public Google reviews (an ellipsis marks a cut, light typo fixes only). Names shortened to first name and
  * last initial; Daniel/Zack are confirming permission for the featured three.
@@ -347,7 +339,317 @@ export const reviews: Review[] = [
   },
 ];
 
-export const pressLogos = ["Karate Combat", "Global News", "The Fight Space", "TriStar Gym"];
+/** Google rating shown beside the reviews. */
+export const googleRating = { score: "5.0", count: "69" };
+
+/** A review on the homepage wall. Short ones have no headline; ones that don't say what the client came for have no tag. */
+export type WallReview = Omit<Review, "headline" | "tag"> & { headline?: string; tag?: Review["tag"] };
+
+/**
+ * More excerpts from the same public Google reviews, read on 24 Nov 2026, for the
+ * homepage wall. Same rules as above: verbatim, an ellipsis marks a cut, light
+ * typo fixes only, first name and last initial. Headlines are our words and only
+ * say what the review itself says.
+ */
+export const moreReviews: WallReview[] = [
+  {
+    name: "Steven V.",
+    headline: "Just under 30 lb of fat gone in 12 weeks",
+    quote:
+      "After 12 weeks I can say I have lost just under 30 pounds of fat while maintaining/gaining lean mass, I am stronger than I have been in years and have no pain from any of my injuries.",
+    tag: "Training",
+  },
+  {
+    name: "Emerick S.",
+    headline: "Two years of lower back pain, gone",
+    quote: "Had lower back pain for almost 2 years, and now it's gone! Clear, simple, easy exercises, and very well explained.",
+    tag: "Rehab",
+  },
+  {
+    name: "Jabez A.",
+    headline: "16 lb down in a little over a week",
+    quote:
+      "10/10 told me everything I needed to do and eat in order to drop 16lbs in a little over a week and I felt great after. He also walked me through what I needed to do to rehydrate and fight the next day",
+    tag: "Fight camp",
+  },
+  { name: "Ian P.", quote: "Best in the city" },
+  {
+    name: "Daniel I.",
+    headline: "Bulged disc, back to normal in 12 weeks",
+    quote: "I came in with a bulged disc in my back that lingered for almost a year. With his program, I was back to normal within 12 weeks.",
+    tag: "Rehab",
+  },
+  {
+    name: "Sheena C.",
+    headline: "Strong enough to climb Kilimanjaro",
+    quote:
+      "I was able to put on a substantial amount of muscle mass which translated into increased strength and mobility… I have been able to get back to my passion of hiking and have, in fact, just accomplished my first high altitude climb of Mount Kilimanjaro.",
+    tag: "Training",
+  },
+  {
+    name: "Pa A.",
+    headline: "Three herniated discs, running again",
+    quote:
+      "I have three herniated discs in my back and for the longest time I dreaded having to pick anything off the ground. Today, I'm back to running, lifting and living a virtually pain free life!",
+    tag: "Rehab",
+  },
+  {
+    name: "Drew A.",
+    headline: "Best fight camp to date",
+    quote: "He helped me put together the best fight performance, weight cut, and diet of my fight camps to date. I will 100% be back for his expertise.",
+    tag: "Fight camp",
+  },
+  {
+    name: "Devon L.",
+    quote: "Most talented fighter I know. Anyone ever wanting to take there fight game to the next level - this is your guy!!!",
+    tag: "Fight camp",
+  },
+  {
+    name: "Kathlene L.",
+    headline: "Partially torn ACL, never felt stronger",
+    quote:
+      "When I came to Zack I was on the verge of giving in to having surgery for a partially torn ACL… Since working with Zack I have never felt stronger; not just my knee, but my body as a whole.",
+    tag: "Rehab",
+  },
+  {
+    name: "Eugénie C.",
+    headline: "Pain free today",
+    quote:
+      "Not only did I heal my back, but I also learned how to understand my pain, how to work through it and not letting it dictate my life… Today, I am pain free.",
+    tag: "Rehab",
+  },
+  {
+    name: "Dylan N.",
+    headline: "A healthy lifestyle without unrealistic sacrifices",
+    quote: "Working one on one to curate an optimal nutrition plan, coach Zak has helped me achieve a healthy lifestyle without making unrealistic sacrifices.",
+    tag: "Nutrition",
+  },
+  {
+    name: "George A.",
+    headline: "From shooting leg pain to back in training",
+    quote:
+      "I couldn't sit down for too long because when I would stand up I'd get a pain that shot down my leg. Zach helped me recover and got me back to training quickly and safely.",
+    tag: "Rehab",
+  },
+  { name: "Mike L.", quote: "Incredible knowledge, pragmatic advice, and always available for answers!" },
+  {
+    name: "James V.",
+    headline: "Full shoulder mobility back, years after the injury",
+    quote: "I have regained full control and mobility of my right shoulder which was previously injured in wrestling back in 2012 (sub-luxation of the right rotator cuff).",
+    tag: "Rehab",
+  },
+  {
+    name: "Jonathan P.",
+    headline: "Stronger and faster on the mats",
+    quote: "I am stronger and faster and have seen direct results within my jiu Jitsu and striking because of his MMA specific workouts.",
+    tag: "Training",
+  },
+  {
+    name: "Nathaniel K.",
+    headline: "Stronger than before the injury",
+    quote: "He helped rehab my leg as I had pain while doing BJJ, and actually made me stronger than I was before my injury!",
+    tag: "Rehab",
+  },
+  {
+    name: "Trevor N.",
+    headline: "A youth athlete's weight cut, handled",
+    quote:
+      "He was the only one willing to work with a youth athlete in a weight management situation… Even after a large weight cut, he felt energized and ready to go!",
+    tag: "Fight camp",
+  },
+  {
+    name: "Manpreet K.",
+    headline: "A lifelong knee issue, sorted",
+    quote:
+      "I started training with Zak six weeks postpartum after giving birth to my beautiful daughter… I've had a lifelong issue with my knee, and thanks to his expertise, it's now cured.",
+    tag: "Rehab",
+  },
+  {
+    name: "Aiemann Z.",
+    quote: "My favourite thing about Zak is how he checks in on me after a session to see how I'm recovering. Amazing service!",
+  },
+  {
+    name: "Sarah K.",
+    headline: "A neck that feels stable and strong",
+    quote:
+      "Recently I've received the comment (from a new, much better chiro/kine therapist) that my neck feels really stable and strong and that it's night and day compared to before.",
+    tag: "Rehab",
+  },
+  {
+    name: "Teri B.",
+    headline: "PRs that were out of reach before",
+    quote: "I have been able to hit many PRs that I hadn't been able to in the past. Moreover, his programs are always tailored to your goals.",
+    tag: "Training",
+  },
+  {
+    name: "Rachael D.",
+    headline: "Caught up after ACL surgery",
+    quote:
+      "I signed up at about 6 months post op feeling weak and behind in my recovery… He pushed me to try things I wasn't sure I was ready for but because of his knowledge and passion he was able to get me to where I needed to be.",
+    tag: "Rehab",
+  },
+  {
+    name: "Ramston R.",
+    quote: "Zak was super helpful with the entire weight cutting process! I think his knowledge about weight cutting and nutrition is world class.",
+    tag: "Fight camp",
+  },
+  {
+    name: "Sandra S.",
+    headline: "From avoiding weights to enjoying them",
+    quote: "Thanks to Zakaria, I now enjoy strength training (which I've always avoided to prioritize cardio). My strength has increased tremendously during the past months.",
+    tag: "Training",
+  },
+  {
+    name: "Thomas C.",
+    headline: "A smooth recovery from elbow surgery",
+    quote:
+      "Zak has been extremely helpful in my elbow surgery recovery… I have no doubt his programming is the reason my recovery has gone smoothly and I'd highly recommend him to any athlete.",
+    tag: "Rehab",
+  },
+  { name: "Peter C.", quote: "Absolutely one of the best I've worked with and will continue too!" },
+  {
+    name: "Cynthia S.",
+    headline: "Two knee surgeries, then someone who listened",
+    quote: "…after 2 knee surgeries, Zak was the first one to listen to me and take his time to slowly evaluate why I was having pain in the first place.",
+    tag: "Rehab",
+  },
+  {
+    name: "Michelle P.",
+    quote: "I've been consistently going to the gym since June 2023 and I can confidently say that I look and feel amazing.",
+    tag: "Training",
+  },
+  {
+    name: "Sidney S.",
+    headline: "Multiple injuries rehabbed in a short time",
+    quote:
+      "Not only has he helped me rehab multiple injuries in a very short time but he has equipped me with the knowledge and foundation for a lifetime of strength training.",
+    tag: "Rehab",
+  },
+  {
+    name: "Anthony M.",
+    headline: "Performance, nutrition and recovery, all improved",
+    quote:
+      "As an experienced fighter and long time athlete, Zack helped me improve every aspect of my game from performance, to nutrition, to recovery. Best part, no broscience, all his programs are supported by sports science literature!",
+    tag: "Training",
+  },
+  {
+    name: "Jon S.",
+    headline: "Back to training after shoulder surgery",
+    quote: "I definitely made the right choice in having The Fighting Therapist help get me back to training after having shoulder labrum and bicep tendon surgery.",
+    tag: "Rehab",
+  },
+  {
+    name: "Benjamin R.",
+    quote: "I tried many different physio over the years and this is without a doubt the best one I highly recommend",
+    tag: "Rehab",
+  },
+  {
+    name: "Simon M.",
+    headline: "Back in the gym right away",
+    quote:
+      "I went to see him with a shoulder injury and he was quick to figure out what it was. He gave me some small changes to make to my training program and had me back in the gym and on my way to my regular routine right away.",
+    tag: "Rehab",
+  },
+  {
+    name: "Nazeer K.",
+    headline: "Better in and out of the gym",
+    quote:
+      "I see physical progress, but more so, the changes made to my mental health has been paramount… I can truly say my quality of life wouldn't be as good without his support both in and out of the gym.",
+    tag: "Training",
+  },
+  {
+    name: "Olivia S.",
+    quote:
+      "I pulled my quad playing soccer and Zac helped me so much to rehabilitate it. He was very thorough and knowledgeable and gave me a series of exercises to help me get my strength back.",
+    tag: "Rehab",
+  },
+  {
+    name: "Eliane L.",
+    headline: "Changes that training alone never gave",
+    quote: "Also been seeing changes on my body that I couldn't see before no matter how much I trained.",
+    tag: "Training",
+  },
+  {
+    name: "Russel N.",
+    headline: "Healed a knee and got stronger",
+    quote: "Through Zach's workout program, I was able to heal a knee injury while still being able to gain overall strength and power.",
+    tag: "Rehab",
+  },
+  { name: "Boyana S.", quote: "From the very first session, I felt welcomed, understood and genuinely cared for." },
+  {
+    name: "Alyssa V.",
+    headline: "A few injuries, all resolved",
+    quote: "I went to him for a few injuries and all resolved within no time. He takes the time to properly teach you what is needed for you to recover quickly.",
+    tag: "Rehab",
+  },
+  {
+    name: "Jose S.",
+    headline: "Training less, performing better",
+    quote:
+      "I used to think the more the better, used to demolish my body in the S&C sesh, kept me tired during the busy days and left me without energy for my sport… I'm able to perform better at my sport…",
+    tag: "Training",
+  },
+  {
+    name: "Jason G.",
+    quote: "Pretty good, he help me from can't use my shoulders to better than before my injury.",
+    tag: "Rehab",
+  },
+  {
+    name: "Charbel A.",
+    headline: "Back to full-time training after a bad injury",
+    quote: "Zach helped me get back to full time training after a bad injury. The recovery was perfectly planned in a easy to follow method…",
+    tag: "Rehab",
+  },
+  {
+    name: "Suzanna S.",
+    headline: "A specialist who understands high-level athletes",
+    quote:
+      "As a high-level athlete, I struggled to find a knowledgeable specialist who truly understood my challenges… You can tell he genuinely cares about your progress and is fully invested.",
+    tag: "Rehab",
+  },
+  {
+    name: "Adam E.",
+    quote: "From his social media posts to the workouts he set up for me he's what I thought I'd be getting and more!",
+    tag: "Training",
+  },
+  {
+    name: "Francis G.",
+    quote: "I have a knee injury that happened during BJJ, and the structure given truly helps.",
+    tag: "Rehab",
+  },
+  {
+    name: "Teresa O.",
+    quote: "Each step along the way things were explained to me in a meaningful way. My goals were prioritized and the program worked for me!!",
+    tag: "Training",
+  },
+  {
+    name: "James C.",
+    headline: "Training again after wrist surgery",
+    quote: "…when I had 1/2 surgeries done on my wrist I thought I would never be able to return and train properly again, but I love the progress I've had so far.",
+    tag: "Rehab",
+  },
+  {
+    name: "Arshia",
+    quote: "He took the time to understand my specific needs and provided a personalized workout plan that has already shown great results.",
+    tag: "Rehab",
+  },
+  {
+    name: "Jason D.",
+    quote: "Zack has helped me understand how to take care and improve my body in areas of mobility, muscle building, and nutrition.",
+    tag: "Training",
+  },
+  {
+    name: "Daniel L.",
+    quote: "He's guided me through both weight loss and a knee injury, and I can't thank him enough for his support.",
+    tag: "Training",
+  },
+  { name: "Clem V.", quote: "Great service" },
+];
+
+/** Every review with text, for the homepage wall: the twelve with full write-ups first. */
+export const wallReviews: WallReview[] = [...reviews, ...moreReviews];
+
+export const pressLogos =["Karate Combat", "Global News", "The Fight Space", "TriStar Gym"];
 
 export const press = [
   {

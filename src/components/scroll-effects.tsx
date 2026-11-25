@@ -9,6 +9,8 @@ import { useEffect } from "react";
  * page loads is left alone, so the first paint never waits on JavaScript.
  * Add data-reveal (="zoom" | "left" | "right") to opt an element in, or
  * data-no-reveal to keep a block and everything inside it still.
+ * It also runs the mouse effects: data-tilt (card leans toward the pointer)
+ * and data-glow (a light follows the pointer).
  */
 const AUTO = [
   "main h2",
@@ -102,6 +104,56 @@ export function ScrollEffects() {
       io.disconnect();
       mo.disconnect();
       root.classList.remove("reveal-ready");
+    };
+  }, []);
+
+  // Mouse only: cards marked data-tilt lean toward the pointer, and data-tilt / data-glow get a light that follows it.
+  useEffect(() => {
+    if (!window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    let active: HTMLElement | null = null;
+    let last: PointerEvent | null = null;
+    let raf = 0;
+    const settle = (el: HTMLElement) => {
+      el.style.removeProperty("--rx");
+      el.style.removeProperty("--ry");
+      delete el.dataset.tilting;
+    };
+    const apply = () => {
+      raf = 0;
+      const target = last?.target;
+      const el = target instanceof Element ? target.closest<HTMLElement>("[data-tilt], [data-glow]") : null;
+      if (active && active !== el) settle(active);
+      active = el;
+      if (!el || !last) return;
+      // Leave elements React has not hydrated yet alone.
+      if (!Object.keys(el).some((k) => k.startsWith("__reactFiber"))) return;
+      const r = el.getBoundingClientRect();
+      const x = (last.clientX - r.left) / r.width;
+      const y = (last.clientY - r.top) / r.height;
+      el.style.setProperty("--px", `${(x * 100).toFixed(1)}%`);
+      el.style.setProperty("--py", `${(y * 100).toFixed(1)}%`);
+      if (!el.hasAttribute("data-tilt")) return;
+      const max = Math.min(7, 2200 / r.width); // big cards lean less
+      el.style.setProperty("--ry", `${((x - 0.5) * 2 * max).toFixed(2)}deg`);
+      el.style.setProperty("--rx", `${((0.5 - y) * 2 * max).toFixed(2)}deg`);
+      el.dataset.tilting = "";
+    };
+    const move = (e: PointerEvent) => {
+      last = e;
+      if (!raf) raf = requestAnimationFrame(apply);
+    };
+    const leave = () => {
+      if (active) settle(active);
+      active = null;
+    };
+    document.addEventListener("pointermove", move, { passive: true });
+    document.documentElement.addEventListener("pointerleave", leave);
+    return () => {
+      cancelAnimationFrame(raf);
+      document.removeEventListener("pointermove", move);
+      document.documentElement.removeEventListener("pointerleave", leave);
+      leave();
     };
   }, []);
 

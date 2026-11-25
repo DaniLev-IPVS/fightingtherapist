@@ -40,6 +40,7 @@ function ProgramTile({ offer, large = false, className }: { offer: Offer; large?
   return (
     <Link
       href={`/programs#${offer.key}`}
+      data-tilt
       className={cn("group relative flex min-h-[320px] overflow-hidden rounded-[6px] bg-charcoal text-off-white", large && "min-h-[440px]", className)}
     >
       <Image

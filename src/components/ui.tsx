@@ -88,7 +88,7 @@ export function Stars({ className, label = "5 out of 5 stars" }: { className?: s
 
 export function Arrow({ className }: { className?: string }) {
   return (
-    <svg viewBox="0 0 20 20" className={cn("h-4 w-4", className)} fill="none" aria-hidden="true">
+    <svg viewBox="0 0 20 20" className={cn("arrow h-4 w-4", className)} fill="none" aria-hidden="true">
       <path d="M4 10h11m-4-5 5 5-5 5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   );
